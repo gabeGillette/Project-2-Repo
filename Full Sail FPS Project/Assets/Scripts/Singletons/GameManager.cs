@@ -50,8 +50,6 @@ public class GameManager : MonoBehaviour
   void Awake()
   {
 
-    Debug.LogWarning("this isn't a trule singleton what the fuck");
-
     instance = this;
 
     if (playerObject == null)
