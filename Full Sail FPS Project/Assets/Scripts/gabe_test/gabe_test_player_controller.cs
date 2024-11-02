@@ -6,14 +6,13 @@ using UnityEngine.UIElements;
 
 public class test_player_controller : MonoBehaviour
 {
-
   private uint speed = 10;
   [SerializeField] CharacterController characterController;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+    
     }
 
     // Update is called once per frame
@@ -46,5 +45,13 @@ public class test_player_controller : MonoBehaviour
       characterController.transform.Rotate(new Vector3(0, -20 * Time.deltaTime * speed, 0));
 
     }
+
+    if (Input.GetKeyDown(KeyCode.R))
+    {
+
+      GameManager.instance.RespawnPlayer();
+
+    }
+
   }
 }
