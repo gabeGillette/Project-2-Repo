@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -5,32 +6,30 @@ using UnityEngine;
 
 public class playerController : MonoBehaviour
 {
+    //character controller
     [SerializeField] CharacterController controller;
+    //mask to ignore player
     [SerializeField] LayerMask ignoreMask;
 
+    //variables that manipulate player--
 
+    //speed the player goes
     [SerializeField] int speed;
+    //multiplier for speed
     [SerializeField] int sprintMod;
-    [SerializeField] int jumpMax;
-    [SerializeField] int jumpSpeed;
+    //max amount of jumps
+    [SerializeField] int max_Amount_Of_Jumps;
+    //how fast we jump
+    [SerializeField] int jumpHeight;
+    //gravity to pull us down
     [SerializeField] int gravity;
-    [SerializeField] int shootDamage;
-    [SerializeField] float shootRate;
-    [SerializeField] int shootDist;
-
-
-
-
-    Vector3 moveDir;
-    Vector3 playerVel;
-
-
-    bool isSprinting;
-    bool isShooting;
-
-
+    //current amount of jumps
     int jumpCount;
-    // Start is called before the first frame update
+    //direction we're moving
+    Vector3 moveDir;
+    //our velocity
+    Vector3 playerVel;
+    
     void Start()
     {
 
@@ -39,82 +38,68 @@ public class playerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.DrawRay(Camera.main.transform.position, Camera.main.transform.forward * shootDist, Color.red);
+        //constantly check how we're moving
         movement();
-        sprint();
+        //sprint();
 
 
     }
 
     void movement()
     {
-        // Check if the character is on the ground
+        //if player is grounded
         if (controller.isGrounded)
         {
-            // Reset vertical velocity when grounded
+            //set players velocity to 0 because they're on the ground
             playerVel.y = 0;
 
-            // Handle jumping and horizontal movement
-            jump();
+            //handle jump
+            //jump();
         }
 
-        // Get input for movement
-        moveDir = (transform.forward * Input.GetAxis("Vertical")) +
-                   (transform.right * Input.GetAxis("Horizontal"));
+        //get players vertical and horizontal movement-- vertical is .forward, horizontal is .right
+        moveDir = (transform.forward * Input.GetAxis("Vertical")) + (transform.right * Input.GetAxis("Horizontal"));
 
-        // Apply horizontal movement
+        // we use the moveDir variable we just set along with speed and delta time to move the character around
         controller.Move(moveDir * speed * Time.deltaTime);
 
-        // Apply gravity
+        //we constantly apply gravity to player velocity
         playerVel.y -= gravity * Time.deltaTime;
+
+        //we move the player in the air based on velocity
+        //controller.Move(playerVel * Time.deltaTime);
+
 
     }
 
 
 
-
+    //how we handle jump
     void jump()
     {
-        if (Input.GetButtonDown("Jump") && jumpCount < jumpMax)
+        //check if player is jumping
+        if (Input.GetButtonDown("jump")&& jumpCount<max_Amount_Of_Jumps) 
         {
-            jumpCount++;
-            playerVel.y = jumpSpeed;
+            //set player velocity based on jump height
+            playerVel.y = jumpHeight;
         }
+        
     }
 
     void sprint()
     {
-        if (Input.GetButtonDown("Sprint"))
+        if (Input.GetButtonDown("sprint"))
         {
+            //multiply speed by modifier
             speed *= sprintMod;
-            isSprinting = true;
+
         }
-        else if (Input.GetButtonUp("Sprint"))
+        else if (Input.GetButtonUp("sprint"))
         {
             speed /= sprintMod;
-            isSprinting = false;
-
         }
 
-    }
 
-    IEnumerator shoot()
-    {
-        isShooting = true;
 
-        RaycastHit hit;
-        if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, shootDist, ~ignoreMask))
-        {
-            Debug.Log(hit.collider.name);
-            IDamage dmg = hit.collider.GetComponent<IDamage>();
-            if (dmg != null)
-            {
-                dmg.takeDamage(shootDamage);
-            }
-
-        }
-
-        yield return new WaitForSeconds(shootRate);
-        isShooting = false;
     }
 }
