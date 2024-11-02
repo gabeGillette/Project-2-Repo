@@ -49,7 +49,7 @@ public class test_player_controller : MonoBehaviour
     if (Input.GetKeyDown(KeyCode.R))
     {
 
-      GameManager.Instance().RespawnPlayer();
+      GameManager.instance.RespawnPlayer();
 
     }
 

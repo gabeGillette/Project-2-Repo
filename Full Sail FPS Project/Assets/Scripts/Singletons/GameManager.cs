@@ -23,7 +23,7 @@ public class GameManager : MonoBehaviour
 
 /*---------------------------------------------------- PRIVATE CLASS MEMBERS */
 
-  static private GameManager _instance;
+  static public GameManager instance;
 
   /* These are what are known as bitflags */
 
@@ -42,23 +42,26 @@ public class GameManager : MonoBehaviour
 
 
   private PlayerState _playerState;
+  private Vector3 _pos;
+  private Quaternion _rot;
 
 
   // Start is called before the first frame update
   void Awake()
   {
-    _instance = this;
+
+    Debug.LogWarning("this isn't a trule singleton what the fuck");
+
+    instance = this;
 
     if (playerObject == null)
     {
       Debug.LogError("GameManager: playerObject field not set!");
     }
 
+    _playerState = new PlayerState();
 
-
-    PlayerState _playerState = new PlayerState();
-
-  _checkPointFlags = 0;
+    _checkPointFlags = 0;
     _monsterSpawnerFlags = 0;
     _gameEventFlags = 0;
 
@@ -66,9 +69,6 @@ public class GameManager : MonoBehaviour
     _monsterSpawnerCount = 0;
     _gameEventCount = 0;
 
-    //_playerState.transform.position = playerObject.transform.position;
-    //_playerState.transform.rotation = playerObject.transform.rotation;
-    //_playerState.transform.localScale = playerObject.transform.localScale;
 
   }
 
@@ -80,16 +80,11 @@ public class GameManager : MonoBehaviour
     return ref playerObject;
   }
 
-  static public ref GameManager Instance()
-  {
-    return ref _instance;
-  } // Instance
 
   public void RespawnPlayer()
   {
-    playerObject.transform.position = new Vector3(0, 0, 0);
-    //playerObject.transform.rotation = _playerState.transform.rotation;
-    //playerObject.transform.localScale = _playerState.transform.localScale;
+    Debug.LogWarning(_playerState.Position);
+    playerObject.transform.SetPositionAndRotation(_playerState.Position, _playerState.Rotation);
   }
 
   public int RegisterCheckpoint()
@@ -114,10 +109,8 @@ public class GameManager : MonoBehaviour
     {
 
       _checkPointFlags |= flag;
-
-      _playerState.transform.position = playerObject.transform.position;
-      _playerState.transform.rotation = playerObject.transform.rotation;
-      _playerState.transform.localScale = playerObject.transform.localScale;
+      _playerState.Position = playerObject.transform.position;
+      _playerState.Rotation = playerObject.transform.rotation;
     }
   }
 
