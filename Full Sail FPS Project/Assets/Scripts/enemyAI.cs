@@ -18,6 +18,8 @@ public class enemyAI : MonoBehaviour, IDamage
     [SerializeField] float meleeAttackRate;
     [SerializeField] bool rangedAttacker;
 
+    private GameObject player;
+
     Color colorOrig;
 
     bool isSpiting;
@@ -47,9 +49,14 @@ public class enemyAI : MonoBehaviour, IDamage
             //    canSpit = true;
             //}
 
-            playerDir = GameManager.instance.GetPlayer().transform.position - headPos.position;
 
-            agent.SetDestination(GameManager.instance.GetPlayer().transform.position);
+            player = GameObject.FindGameObjectWithTag("Player");
+            playerDir = player.transform.position - headPos.position;
+
+
+            Debug.Log(playerDir);
+
+            agent.SetDestination(player.transform.position);
 
             //Moves the enemy towards the player
             if(agent.remainingDistance <= agent.stoppingDistance)
