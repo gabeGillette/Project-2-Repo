@@ -300,6 +300,10 @@ PrefabInstance:
       propertyPath: agent
       value: 
       objectReference: {fileID: 395295571}
+    - target: {fileID: 2895214849735529810, guid: 256b7e021f91aad47bb2ee8a8e73714b, type: 3}
+      propertyPath: meleeAttackRange
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 3851602374540915918, guid: 256b7e021f91aad47bb2ee8a8e73714b, type: 3}
       propertyPath: m_Radius
       value: 20
@@ -559,6 +563,22 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -8272704363750745743, guid: 44ced99c337aa094583adc3bdc78ee67, type: 3}
+      propertyPath: m_UseGravity
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3330616952148820207, guid: 44ced99c337aa094583adc3bdc78ee67, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3330616952148820207, guid: 44ced99c337aa094583adc3bdc78ee67, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3330616952148820207, guid: 44ced99c337aa094583adc3bdc78ee67, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.2
+      objectReference: {fileID: 0}
     - target: {fileID: 3330616952148820207, guid: 44ced99c337aa094583adc3bdc78ee67, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -598,6 +618,10 @@ PrefabInstance:
     - target: {fileID: 3330616952148820207, guid: 44ced99c337aa094583adc3bdc78ee67, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3810371359669635557, guid: 44ced99c337aa094583adc3bdc78ee67, type: 3}
+      propertyPath: speed
+      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 7961641615730851448, guid: 44ced99c337aa094583adc3bdc78ee67, type: 3}
       propertyPath: m_Name

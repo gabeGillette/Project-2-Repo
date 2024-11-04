@@ -18,6 +18,8 @@ public class enemyAI : MonoBehaviour, IDamage
     [SerializeField] float meleeAttackRate;
     [SerializeField] bool rangedAttacker;
 
+    [SerializeField] float meleeAttackRange;
+
     private GameObject player;
 
     Color colorOrig;
@@ -41,36 +43,52 @@ public class enemyAI : MonoBehaviour, IDamage
     // Update is called once per frame
     void Update()
     {
-        //Move enemy towards player and if ranged attacker start ranged attack
+
+        //Move enemy Towards player
         if (playerInSpitRange)
         {
-            //if (rangedAttacker)
-            //{
-            //    canSpit = true;
-            //}
-
-
             player = GameObject.FindGameObjectWithTag("Player");
             playerDir = player.transform.position - headPos.position;
 
 
-            Debug.Log(playerDir);
 
             agent.SetDestination(player.transform.position);
+            canSpit = true;
+        }
+        //Move enemy towards player and if ranged attacker start ranged attack
+        if (canSpit)
+            {
+                if (!isSpiting)
+                {
+                    StartCoroutine(shoot());
+                }
+            }
+
+
+            
 
             //Moves the enemy towards the player
             if(agent.remainingDistance <= agent.stoppingDistance)
             {
                 faceTarget();
+                
+            }
+            else if (agent.remainingDistance <= meleeAttackRange)
+            {
+                canSpit = false;
+                playerInMeleeRange = true;
+                StartCoroutine(meleeAttack());
+            }
+            else if (agent.remainingDistance >= agent.stoppingDistance)
+            {
+                playerInMeleeRange = false;
+                canSpit = true;
             }
 
             //If within melee range stops spit attack but allows melee attack
-            //if (playerInMeleeRange)
-            //{
+           
 
-            //}
-
-        }
+        
     }
 
     private void OnTriggerEnter(Collider other)
