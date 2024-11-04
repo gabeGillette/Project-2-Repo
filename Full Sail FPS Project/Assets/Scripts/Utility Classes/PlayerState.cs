@@ -8,6 +8,7 @@ public class PlayerState
 
   private Vector3 _pos;
   private Quaternion _rot;
+  private int _activeCheckpointID;
 
 
   public PlayerState()
@@ -27,4 +28,11 @@ public class PlayerState
     get { return _rot; }
     set { _rot = value; }
   }
+
+  public int ActiveCheckpointID
+  {
+    get { return _activeCheckpointID; }
+    set { _activeCheckpointID = value; }
+  }
+
 }
