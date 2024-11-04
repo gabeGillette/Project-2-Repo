@@ -19,7 +19,7 @@ public class playerController : MonoBehaviour
     [SerializeField] int sprintMod;
     //max amount of jumps
     [SerializeField] int max_Amount_Of_Jumps;
-    //how fast we jump
+    //how high we jump
     [SerializeField] int jumpHeight;
     //gravity to pull us down
     [SerializeField] int gravity;
@@ -32,7 +32,6 @@ public class playerController : MonoBehaviour
     
     void Start()
     {
-        jumpCount = 0;
 
     }
 
@@ -51,7 +50,7 @@ public class playerController : MonoBehaviour
         //if player is grounded
         if (controller.isGrounded)
         {
-            //set players velocity to 0 because they're on the ground
+            //set players velocity to -1f because they're on the ground and to help the model fully ground it's self
             playerVel.y = -1f;
             jumpCount = 0;
 
