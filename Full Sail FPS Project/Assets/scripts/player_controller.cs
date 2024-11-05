@@ -19,7 +19,7 @@ public class playerController : MonoBehaviour
     [SerializeField] int sprintMod;
     //max amount of jumps
     [SerializeField] int max_Amount_Of_Jumps;
-    //how fast we jump
+    //how high we jump
     [SerializeField] int jumpHeight;
     //gravity to pull us down
     [SerializeField] int gravity;
@@ -40,7 +40,7 @@ public class playerController : MonoBehaviour
     {
         //constantly check how we're moving
         movement();
-        //sprint();
+        sprint();
 
 
     }
@@ -50,11 +50,12 @@ public class playerController : MonoBehaviour
         //if player is grounded
         if (controller.isGrounded)
         {
-            //set players velocity to 0 because they're on the ground
-            playerVel.y = 0;
+            //set players velocity to -1f because they're on the ground and to help the model fully ground it's self
+            playerVel.y = -1f;
+            jumpCount = 0;
 
             //handle jump
-            //jump();
+            jump();
         }
 
         //get players vertical and horizontal movement-- vertical is .forward, horizontal is .right
@@ -67,7 +68,7 @@ public class playerController : MonoBehaviour
         playerVel.y -= gravity * Time.deltaTime;
 
         //we move the player in the air based on velocity
-        //controller.Move(playerVel * Time.deltaTime);
+        controller.Move(playerVel * Time.deltaTime);
 
 
     }
@@ -78,23 +79,24 @@ public class playerController : MonoBehaviour
     void jump()
     {
         //check if player is jumping
-        if (Input.GetButtonDown("jump")&& jumpCount<max_Amount_Of_Jumps) 
+        if (Input.GetButtonDown("Jump")&& jumpCount<max_Amount_Of_Jumps)
         {
             //set player velocity based on jump height
             playerVel.y = jumpHeight;
+            jumpCount++;
         }
-        
+
     }
 
     void sprint()
     {
-        if (Input.GetButtonDown("sprint"))
+        if (Input.GetButtonDown("Sprint"))
         {
             //multiply speed by modifier
             speed *= sprintMod;
 
         }
-        else if (Input.GetButtonUp("sprint"))
+        else if (Input.GetButtonUp("Sprint"))
         {
             speed /= sprintMod;
         }
