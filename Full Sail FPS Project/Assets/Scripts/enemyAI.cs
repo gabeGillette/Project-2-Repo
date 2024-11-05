@@ -9,11 +9,14 @@ public class enemyAI : MonoBehaviour, IDamage
     [SerializeField] Renderer model;
     [SerializeField] Transform shootPos;
     [SerializeField] Transform headPos;
+    [SerializeField] Transform meleePos;
 
     [SerializeField] int HP;
     [SerializeField] int faceTargetSpeed;
 
     [SerializeField] GameObject spit;
+    [SerializeField] GameObject melee;
+
     [SerializeField] float spitRate;
     [SerializeField] float meleeAttackRate;
     [SerializeField] bool rangedAttacker;
@@ -24,11 +27,14 @@ public class enemyAI : MonoBehaviour, IDamage
 
     Color colorOrig;
 
+    bool playerInMovementRange; //See if the player is within the sphere collider to start moving towards player
+    bool canSpit;  //Only is true if player is within movement range, will turn true for all characters
+
+
     bool isSpiting;
     bool isMeleeAttacking;
     bool playerInSpitRange;
     bool playerInMeleeRange;
-    bool canSpit;
 
     Vector3 playerDir;
 
@@ -45,45 +51,35 @@ public class enemyAI : MonoBehaviour, IDamage
     {
 
         //Move enemy Towards player
-        if (playerInSpitRange)
-        {
-            player = GameObject.FindGameObjectWithTag("Player");
-            playerDir = player.transform.position - headPos.position;
+        moveTowardsPlayer();
 
-
-
-            agent.SetDestination(player.transform.position);
-            canSpit = true;
-        }
         //Move enemy towards player and if ranged attacker start ranged attack
-        if (canSpit)
+        if (canSpit && rangedAttacker)
+        {
+            if (!isSpiting)
             {
-                if (!isSpiting)
-                {
-                    StartCoroutine(shoot());
-                }
+                StartCoroutine(shoot());
             }
+        }
 
-
-            
-
-            //Moves the enemy towards the player
-            if(agent.remainingDistance <= agent.stoppingDistance)
+        else if (playerInMeleeRange)
+        {
+            if(!isMeleeAttacking)
             {
-                faceTarget();
-                
-            }
-            else if (agent.remainingDistance <= meleeAttackRange)
-            {
-                canSpit = false;
-                playerInMeleeRange = true;
                 StartCoroutine(meleeAttack());
             }
-            else if (agent.remainingDistance >= agent.stoppingDistance)
-            {
-                playerInMeleeRange = false;
-                canSpit = true;
-            }
+        }
+            //else if (agent.remainingDistance <= meleeAttackRange)
+            //{
+            //    canSpit = false;
+            //    playerInMeleeRange = true;
+            //    StartCoroutine(meleeAttack());
+            //}
+            //else if (agent.remainingDistance >= agent.stoppingDistance)
+            //{
+            //    playerInMeleeRange = false;
+            //    canSpit = true;
+            //}
 
             //If within melee range stops spit attack but allows melee attack
            
@@ -95,14 +91,15 @@ public class enemyAI : MonoBehaviour, IDamage
     {
         if (other.CompareTag("Player"))
         {
-            playerInSpitRange = true;
+            playerInMovementRange = true;
         }
     }
     private void OnTriggerExit(Collider other)
     {
         if(other.CompareTag("Player"))
         {
-            playerInSpitRange = false;
+            playerInMovementRange = false;
+            canSpit = false;
         }
     }
 
@@ -147,6 +144,8 @@ public class enemyAI : MonoBehaviour, IDamage
     {
         isMeleeAttacking = true;
 
+        Instantiate(melee, shootPos.position, transform.rotation);
+
         yield return new WaitForSeconds(meleeAttackRate);
         isMeleeAttacking = false;
     }
@@ -156,6 +155,32 @@ public class enemyAI : MonoBehaviour, IDamage
     {
         Quaternion rot = Quaternion.LookRotation(playerDir);
         transform.rotation = Quaternion.Lerp(transform.rotation, rot, Time.deltaTime * faceTargetSpeed);
+    }
+
+    void moveTowardsPlayer()
+    {
+        if (playerInMovementRange)
+        {
+            player = GameObject.FindGameObjectWithTag("Player");
+            playerDir = player.transform.position - headPos.position;
+
+
+
+            agent.SetDestination(player.transform.position);
+            canSpit = true;
+        }
+        if (agent.remainingDistance <= agent.stoppingDistance)
+        {
+            faceTarget();
+            canSpit = false;
+        }
+        if(agent.remainingDistance >= meleeAttackRange && playerInMovementRange)
+        {
+            playerInMeleeRange = true;
+
+        }
+
+
     }
 
 }

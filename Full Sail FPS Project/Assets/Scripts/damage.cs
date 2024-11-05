@@ -8,8 +8,10 @@ public class damage : MonoBehaviour
     [SerializeField] damageType type;
     [SerializeField] Rigidbody rb;
 
-    [SerializeField] int damageAmount;
-    [SerializeField] int speed;
+    [SerializeField] int spitDamageAmount;
+    [SerializeField] int meleeDamageAmount;
+    [SerializeField] int meleeSpeed;
+    [SerializeField] int spitSpeed;
     [SerializeField] float destroyTime;
 
     // Start is called before the first frame update
@@ -17,7 +19,12 @@ public class damage : MonoBehaviour
     {
         if (type == damageType.spit)
         {
-            rb.velocity = transform.forward * speed;
+            rb.velocity = transform.forward * spitSpeed;
+            Destroy(gameObject, destroyTime);
+        }
+        if (type == damageType.melee)
+        {
+            rb.velocity = transform.forward * meleeSpeed;
             Destroy(gameObject, destroyTime);
         }
     }
@@ -37,12 +44,24 @@ public class damage : MonoBehaviour
 
         if(dmg != null)
         {
-            dmg.takeDamage(damageAmount);
+            if (type == damageType.spit)
+            {
+                dmg.takeDamage(spitDamageAmount);
+            }
+            if (type == damageType.melee)
+            {
+                dmg.takeDamage(meleeDamageAmount);
+            }
         }
 
         if(type == damageType.spit)
         {
             Destroy(gameObject);
         }
+        if(type == damageType.melee)
+        {
+            Destroy(gameObject);
+        }
     }
+   
 }
