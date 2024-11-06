@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class EnemyController : MonoBehaviour, IDamage
 {
@@ -20,7 +21,7 @@ public class EnemyController : MonoBehaviour, IDamage
     private float lastSpitTime;
 
     //MeshAgent to allow the enemy to move along/avoid terrain
-   // [SerializeField] NavMeshAgent agent;
+    [SerializeField] NavMeshAgent agent;
     //Allows the identification of the specific renderer model
     [SerializeField] Renderer model;
     //Where the shoot object should start from
