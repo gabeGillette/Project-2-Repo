@@ -25,12 +25,21 @@ public class playerController : MonoBehaviour, IDamage
     [SerializeField] int gravity;
     // health
     [SerializeField] int healthPoints;
+    
+    [SerializeField] int shootDmg;
+
+    [SerializeField] float fireRate;
+
+    [SerializeField] float fireRange;
+
     //current amount of jumps
     int jumpCount;
     //direction we're moving
     Vector3 moveDir;
     //our velocity
     Vector3 playerVel;
+    // is the player currently shooting?
+    bool isShooting;
     
     void Start()
     {
@@ -72,7 +81,11 @@ public class playerController : MonoBehaviour, IDamage
         //we move the player in the air based on velocity
         controller.Move(playerVel * Time.deltaTime);
 
-
+        // If the "shoot" button is trigged and the player can shoot, then shoot.
+        if (Input.GetButton("Fire1") && !isShooting)
+        {
+            StartCoroutine(Shoot());
+        }
     }
 
 
@@ -107,7 +120,7 @@ public class playerController : MonoBehaviour, IDamage
 
     }
 
-    public void takeDamage(int amount)
+    public void TakeDamage(int amount)
     {
         // take damage
         healthPoints -= amount;
@@ -117,5 +130,34 @@ public class playerController : MonoBehaviour, IDamage
         {
             // die here
         }
+    }
+
+    IEnumerator Shoot()
+    {
+        // so the player can shoot only once at a time.
+        isShooting = true;
+
+        // Raycast test for shooting.
+        // shooting from the camera.
+        RaycastHit hit;
+        if (Physics.Raycast(Camera.main.transform.position,
+          Camera.main.transform.forward, out hit, fireRange, ~ignoreMask))
+        {
+
+            // log the name of the object hit.
+            Debug.Log(hit.collider.name);
+
+            // run the damage script of the object hit if there is one.
+            IDamage dmg = hit.collider.GetComponent<IDamage>();
+            if (dmg != null)
+            {
+                dmg.TakeDamage(shootDmg);
+            }
+        }
+
+        // pause for shootRate seconds
+        yield return new WaitForSeconds(fireRate);
+
+        isShooting = false;
     }
 }

@@ -46,11 +46,11 @@ public class damage : MonoBehaviour
         {
             if (type == damageType.spit)
             {
-                dmg.takeDamage(spitDamageAmount);
+                dmg.TakeDamage(spitDamageAmount);
             }
             if (type == damageType.melee)
             {
-                dmg.takeDamage(meleeDamageAmount);
+                dmg.TakeDamage(meleeDamageAmount);
             }
         }
 
