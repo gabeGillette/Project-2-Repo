@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class EnemyController : MonoBehaviour, IDamage
 {
+<<<<<<< Updated upstream
     [Header("Movement and Attack")]
     [SerializeField] float moveSpeed = 2f;
     [SerializeField] float rotationSpeed = 5f;
@@ -18,24 +19,47 @@ public class EnemyController : MonoBehaviour, IDamage
     private bool isSpiting = false;
     private bool canSpit = true;
     private float lastSpitTime;
+=======
 
+    //MeshAgent to allow the enemy to move along/avoid terrain
+    [SerializeField] NavMeshAgent agent;
+    //Allows the identification of the specific renderer model
+    [SerializeField] Renderer model;
+    //Where the shoot object should start from
+    [SerializeField] Transform shootPos;
+    //Where the enemy will base it's 'look' from and turn towards player
+    [SerializeField] Transform headPos;
+    //Where the melee should originate from
+    [SerializeField] Transform meleePos;
+
+    //How many Hit Points the enemy will have
+    [SerializeField] int HP;
+    //How quickly the enemy will turn towards the player
+    [SerializeField] int faceTargetSpeed;
+>>>>>>> Stashed changes
+
+    //Which object and physics for the spit mechanic
     [SerializeField] GameObject spit;
+    //Which object and physics for the melee mechanic
     [SerializeField] GameObject melee;
 
+    //How fast the enemy can spit/shoot
     [SerializeField] float spitRate;
+    //How fast teh enemy can melee attack
     [SerializeField] float meleeAttackRate;
+    //Option to make any enemy ranged or just melee
     [SerializeField] bool rangedAttacker;
-
+    //Range at which enemy will attempt a melee attack
     [SerializeField] float meleeAttackRange;
 
-    //Fields for Random Wandering
-    [SerializeField] bool canWander; //Check if you want the enemy to wander
-    [SerializeField] float wanderSpeed;
-    [SerializeField] float wanderRadius;
-    [SerializeField] float wanderTime;
+    ////Fields for Random Wandering Not implemented yet////
+    //[SerializeField] bool canWander; //Check if you want the enemy to wander
+    //[SerializeField] float wanderSpeed;
+    //[SerializeField] float wanderRadius;
+    //[SerializeField] float wanderTime;
 
-    private Vector3 wanderTargetPosition;
-    private float timer;
+    //private Vector3 wanderTargetPosition;
+    //private float timer;
 
 
     private GameObject player;
@@ -46,10 +70,10 @@ public class EnemyController : MonoBehaviour, IDamage
     bool canSpit;  //Only is true if player is within movement range, will turn true for all characters
 
 
-    bool isSpiting;
-    bool isMeleeAttacking;
-    bool playerInSpitRange;
-    bool playerInMeleeRange;
+    bool isSpiting; //Check is enemy is ranged attacking
+    bool isMeleeAttacking; //Check if enemy is melee attacking
+    bool playerInSpitRange; //Check if player is in spitRange
+    bool playerInMeleeRange; //Check if player is in meleeRange
 
     Vector3 playerDir;
 
@@ -60,7 +84,6 @@ public class EnemyController : MonoBehaviour, IDamage
         //Setting the original color so we can change it later to show damage
         colorOrig = model.material.color;
 
-        //Start Wandering
     }
 
     private void Update()
@@ -70,6 +93,21 @@ public class EnemyController : MonoBehaviour, IDamage
             LookAtPlayer();
             TrySpit();
         }
+<<<<<<< Updated upstream
+=======
+
+        else if (playerInMeleeRange)
+        {
+            if(!isMeleeAttacking)
+            {
+                StartCoroutine(meleeAttack());
+            }
+        }
+          
+           
+
+        
+>>>>>>> Stashed changes
     }
 
     // This method checks if the enemy can spit and if it's time to do so
@@ -120,7 +158,6 @@ public class EnemyController : MonoBehaviour, IDamage
         if (other.CompareTag("Player"))
         {
             playerInMovementRange = true;
-            canWander = false;
         }
     }
     private void OnTriggerExit(Collider other)
@@ -129,7 +166,6 @@ public class EnemyController : MonoBehaviour, IDamage
         {
             playerInMovementRange = false;
             canSpit = false;
-            canWander = true;
         }
     }
 
@@ -197,6 +233,7 @@ public class EnemyController : MonoBehaviour, IDamage
         transform.rotation = Quaternion.Lerp(transform.rotation, rot, Time.deltaTime * faceTargetSpeed);
     }
 
+    //Process to move towards player and turn/face in the proper direction
     void moveTowardsPlayer()
     {
         if (playerInMovementRange)
