@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -23,6 +24,16 @@ public class enemyAI : MonoBehaviour, IDamage
 
     [SerializeField] float meleeAttackRange;
 
+    //Fields for Random Wandering
+    [SerializeField] bool canWander; //Check if you want the enemy to wander
+    [SerializeField] float wanderSpeed;
+    [SerializeField] float wanderRadius;
+    [SerializeField] float wanderTime;
+
+    private Vector3 wanderTargetPosition;
+    private float timer;
+
+
     private GameObject player;
 
     Color colorOrig;
@@ -44,6 +55,8 @@ public class enemyAI : MonoBehaviour, IDamage
     {
         //Setting the original color so we can change it later to show damage
         colorOrig = model.material.color;
+
+        //Start Wandering
     }
 
     // Update is called once per frame
@@ -92,6 +105,7 @@ public class enemyAI : MonoBehaviour, IDamage
         if (other.CompareTag("Player"))
         {
             playerInMovementRange = true;
+            canWander = false;
         }
     }
     private void OnTriggerExit(Collider other)
@@ -100,6 +114,7 @@ public class enemyAI : MonoBehaviour, IDamage
         {
             playerInMovementRange = false;
             canSpit = false;
+            canWander = true;
         }
     }
 
@@ -182,5 +197,10 @@ public class enemyAI : MonoBehaviour, IDamage
 
 
     }
+
+  
+
+   
+
 
 }

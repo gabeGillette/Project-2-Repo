@@ -69,11 +69,6 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 3686313730180156067}
   m_SourcePrefab: {fileID: 100100000, guid: 227ee07e9e5b7914ba8fbb8f430be9a5, type: 3}
---- !u!1 &892333351316976336 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1392145505060850, guid: 227ee07e9e5b7914ba8fbb8f430be9a5, type: 3}
-  m_PrefabInstance: {fileID: 893619634391315746}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &892381960483181068 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1309486516299566, guid: 227ee07e9e5b7914ba8fbb8f430be9a5, type: 3}
@@ -99,11 +94,15 @@ MonoBehaviour:
   HP: 10
   faceTargetSpeed: 2
   spit: {fileID: 7961641615730851448, guid: 44ced99c337aa094583adc3bdc78ee67, type: 3}
-  melee: {fileID: 892333351316976336}
+  melee: {fileID: 7222818553318368160, guid: 8e08976b5e2fa544e8548940044fa782, type: 3}
   spitRate: 0
   meleeAttackRate: 2
   rangedAttacker: 0
   meleeAttackRange: 3
+  canWander: 0
+  wanderSpeed: 0
+  wanderRadius: 0
+  wanderTime: 0
 --- !u!195 &2623316587545883443
 NavMeshAgent:
   m_ObjectHideFlags: 0
