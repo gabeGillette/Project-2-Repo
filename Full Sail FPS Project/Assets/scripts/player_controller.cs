@@ -23,6 +23,8 @@ public class playerController : MonoBehaviour, IDamage
     [SerializeField] int jumpHeight;
     //gravity to pull us down
     [SerializeField] int gravity;
+    // health
+    [SerializeField] int healthPoints;
     //current amount of jumps
     int jumpCount;
     //direction we're moving
@@ -107,6 +109,13 @@ public class playerController : MonoBehaviour, IDamage
 
     public void takeDamage(int amount)
     {
-        throw new NotImplementedException();
+        // take damage
+        healthPoints -= amount;
+
+        // death event
+        if(healthPoints <= 0)
+        {
+            // die here
+        }
     }
 }
