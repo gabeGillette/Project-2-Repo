@@ -5,7 +5,6 @@ using UnityEngine;
 
 public class EnemyController : MonoBehaviour, IDamage
 {
-<<<<<<< Updated upstream
     [Header("Movement and Attack")]
     [SerializeField] float moveSpeed = 2f;
     [SerializeField] float rotationSpeed = 5f;
@@ -19,14 +18,13 @@ public class EnemyController : MonoBehaviour, IDamage
     private bool isSpiting = false;
     private bool canSpit = true;
     private float lastSpitTime;
-=======
 
     //MeshAgent to allow the enemy to move along/avoid terrain
-    [SerializeField] NavMeshAgent agent;
+   // [SerializeField] NavMeshAgent agent;
     //Allows the identification of the specific renderer model
     [SerializeField] Renderer model;
     //Where the shoot object should start from
-    [SerializeField] Transform shootPos;
+  //  [SerializeField] Transform shootPos;
     //Where the enemy will base it's 'look' from and turn towards player
     [SerializeField] Transform headPos;
     //Where the melee should originate from
@@ -36,7 +34,6 @@ public class EnemyController : MonoBehaviour, IDamage
     [SerializeField] int HP;
     //How quickly the enemy will turn towards the player
     [SerializeField] int faceTargetSpeed;
->>>>>>> Stashed changes
 
     //Which object and physics for the spit mechanic
     [SerializeField] GameObject spit;
@@ -62,15 +59,15 @@ public class EnemyController : MonoBehaviour, IDamage
     //private float timer;
 
 
-    private GameObject player;
+   // private GameObject player;
 
     Color colorOrig;
 
     bool playerInMovementRange; //See if the player is within the sphere collider to start moving towards player
-    bool canSpit;  //Only is true if player is within movement range, will turn true for all characters
+   // bool canSpit;  //Only is true if player is within movement range, will turn true for all characters
 
 
-    bool isSpiting; //Check is enemy is ranged attacking
+   // bool isSpiting; //Check is enemy is ranged attacking
     bool isMeleeAttacking; //Check if enemy is melee attacking
     bool playerInSpitRange; //Check if player is in spitRange
     bool playerInMeleeRange; //Check if player is in meleeRange
@@ -93,8 +90,6 @@ public class EnemyController : MonoBehaviour, IDamage
             LookAtPlayer();
             TrySpit();
         }
-<<<<<<< Updated upstream
-=======
 
         else if (playerInMeleeRange)
         {
@@ -107,7 +102,6 @@ public class EnemyController : MonoBehaviour, IDamage
            
 
         
->>>>>>> Stashed changes
     }
 
     // This method checks if the enemy can spit and if it's time to do so
@@ -160,14 +154,14 @@ public class EnemyController : MonoBehaviour, IDamage
             playerInMovementRange = true;
         }
     }
-    private void OnTriggerExit(Collider other)
-    {
-        if(other.CompareTag("Player"))
-        {
-            playerInMovementRange = false;
-            canSpit = false;
-        }
-    }
+    //private void OnTriggerExit(Collider other)
+    //{
+    //    if(other.CompareTag("Player"))
+    //    {
+    //        playerInMovementRange = false;
+    //        canSpit = false;
+    //    }
+    //}
 
     // When the player is in range and can be attacked, the spit can be fired
     private void OnTriggerStay(Collider other)
@@ -238,20 +232,20 @@ public class EnemyController : MonoBehaviour, IDamage
     {
         if (playerInMovementRange)
         {
-            player = GameObject.FindGameObjectWithTag("Player");
+        //    player = GameObject.FindGameObjectWithTag("Player");
             playerDir = player.transform.position - headPos.position;
 
 
 
-            agent.SetDestination(player.transform.position);
+            //agent.SetDestination(player.transform.position);
             canSpit = true;
         }
-        if (agent.remainingDistance <= agent.stoppingDistance)
+     //   if (agent.remainingDistance <= agent.stoppingDistance)
         {
             faceTarget();
             canSpit = false;
         }
-        if(agent.remainingDistance >= meleeAttackRange && playerInMovementRange)
+     //   if(agent.remainingDistance >= meleeAttackRange && playerInMovementRange)
         {
             playerInMeleeRange = true;
 
