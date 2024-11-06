@@ -1075,7 +1075,7 @@ Transform:
   m_LocalScale: {x: 1, y: 0.2, z: 0.24999994}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 135601858}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &275167475
 MonoBehaviour:
@@ -1310,6 +1310,19 @@ MonoBehaviour:
   ignoreMask:
     serializedVersion: 2
     m_Bits: 0
+  spit: {fileID: 0}
+  melee: {fileID: 0}
+  spitRate: 0
+  meleeAttackRate: 0
+  rangedAttacker: 0
+  meleeAttackRange: 0
+  canWander: 0
+  wanderSpeed: 0
+  wanderRadius: 0
+  wanderTime: 0
+  model: {fileID: 0}
+  agent: {fileID: 0}
+  headPos: {fileID: 0}
 --- !u!1 &514782392
 GameObject:
   m_ObjectHideFlags: 0
@@ -1436,7 +1449,7 @@ Transform:
   m_LocalScale: {x: 0.2, y: 1, z: 0.25000003}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1097371786}
+  m_Father: {fileID: 1147619924}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &591954588
 MonoBehaviour:
@@ -9169,8 +9182,7 @@ Transform:
   m_LocalPosition: {x: -19.990892, y: 0, z: 0}
   m_LocalScale: {x: 20, y: 1, z: 20}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 1378992299}
+  m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!43 &1561061657
@@ -13624,6 +13636,19 @@ MonoBehaviour:
   ignoreMask:
     serializedVersion: 2
     m_Bits: 0
+  spit: {fileID: 7961641615730851448, guid: 44ced99c337aa094583adc3bdc78ee67, type: 3}
+  melee: {fileID: 0}
+  spitRate: 2
+  meleeAttackRate: 0
+  rangedAttacker: 1
+  meleeAttackRange: 0
+  canWander: 1
+  wanderSpeed: 4
+  wanderRadius: 10
+  wanderTime: 5
+  model: {fileID: 5133915164596865378}
+  agent: {fileID: 1842674742645688097}
+  headPos: {fileID: 0}
 --- !u!1 &6748312386794307274
 GameObject:
   m_ObjectHideFlags: 0
@@ -14974,6 +14999,19 @@ MonoBehaviour:
   ignoreMask:
     serializedVersion: 2
     m_Bits: 0
+  spit: {fileID: 0}
+  melee: {fileID: 0}
+  spitRate: 0
+  meleeAttackRate: 0
+  rangedAttacker: 0
+  meleeAttackRange: 0
+  canWander: 0
+  wanderSpeed: 0
+  wanderRadius: 0
+  wanderTime: 0
+  model: {fileID: 0}
+  agent: {fileID: 0}
+  headPos: {fileID: 0}
 --- !u!195 &8347817791692442033
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -15380,3 +15418,4 @@ SceneRoots:
   - {fileID: 7227479243410231533}
   - {fileID: 7676427124233854305}
   - {fileID: 543450653417803544}
+  - {fileID: 275167474}
