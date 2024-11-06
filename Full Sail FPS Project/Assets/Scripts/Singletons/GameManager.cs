@@ -2,7 +2,7 @@
 // Desc: Singleton class that keeps track of the current game state and acts as
 //   a glue between game elements.
 // Authors: Gabriel Gillette
-// Last Updated: Nov 1, 2024
+// Last Updated: Nov 6, 2024
 
 /*---------------------------------------------------------- SYSTEM INCLUDES */
 
@@ -17,136 +17,137 @@ public class GameManager : MonoBehaviour
 {
 
 
-/*-------------------------------------------------------- SERIALIZED FIELDS */
-
-  [SerializeField] GameObject playerObject;
-
-/*---------------------------------------------------- PRIVATE CLASS MEMBERS */
-
-  static public GameManager instance;
-
-  /* These are what are known as bitflags */
-
-  private int _checkPointFlags;
-  //private int _monsterSpawnTriggerFlags;
-  //private int _gameEventFlags;
+    /*-------------------------------------------------------- SERIALIZED FIELDS */
 
 
-  private const int CHECKPOINT_MAX = 32;
-  //private const int MONSTERSPAWNTRIGGER_MAX = 32*32;
-  //private const int GAMEEVENT_MAX = 32*32;
+    [SerializeField] GameObject menuActive;
+    [SerializeField] GameObject menuPause;
+    [SerializeField] GameObject menuWin;
+    [SerializeField] GameObject menuLose;
+    [SerializeField] GameObject menuConfirmQuit;
+    [SerializeField] GameObject menuConfirmRestart;
 
-  private int _checkPointCount;
-  //private int _monsterSpawnTriggerCount;
-  //private int _gameEventCount;
+    /*---------------------------------------------------- PRIVATE CLASS MEMBERS */
 
+    GameObject _player;
+    float timeScaleOrig;
+    bool isPaused;
 
-  private PlayerState _playerState;
-  //private Vector3 _pos;
-  //private Quaternion _rot;
+    static public GameManager instance;
 
-  public PlayerState CurrentPlayerState { get { return _playerState; } }
+    /* These are what are known as bitflags */
 
-
-  // Start is called before the first frame update
-  void Awake()
-  {
-
-    instance = this;
-
-    if (playerObject == null)
-    {
-      Debug.LogError("GameManager: playerObject field not set!");
-    }
-
-    _playerState = new PlayerState();
-
-    _checkPointFlags = 0;
-    //_monsterSpawnTriggerFlags = 0;
-    //_gameEventFlags = 0;
-
-    _checkPointCount = 0;
-    //_monsterSpawnTriggerCount = 0;
-    //_gameEventCount = 0;
+    private int _checkPointFlags;
 
 
-  }
 
-  // Update is called once per frame
-  void Update(){}
-
-  public ref GameObject GetPlayer()
-  {
-    return ref playerObject;
-  }
+    private const int CHECKPOINT_MAX = 32;
 
 
-  public void RespawnPlayer()
-  {
-    Debug.LogWarning(_playerState.Position);
-    playerObject.transform.SetPositionAndRotation(_playerState.Position, _playerState.Rotation);
-  }
+    private int _checkPointCount;
 
-  public int RegisterCheckpoint()
-  {
-    if (_checkPointCount < CHECKPOINT_MAX)
-    {
-      _checkPointCount++;
-      return _checkPointCount;
-    }
-    else
-    {
-      Debug.LogError("Too many checkpoints!");
-    }
-    return 0;
-  }
 
-  public void ActivateCheckPoint(int index)
-  {
-    int flag = 1 << index;
 
-    if ((flag & _checkPointFlags) == 0)
+    private PlayerState _playerState;
+
+
+    public PlayerState CurrentPlayerState { get { return _playerState; } }
+
+
+    public GameObject Player { get { return _player; } }
+
+    // Start is called before the first frame update
+    void Awake()
     {
 
-      _checkPointFlags |= flag;
-      _playerState.Position = playerObject.transform.position;
-      _playerState.Rotation = playerObject.transform.rotation;
-      _playerState.ActiveCheckpointID = index;
+        instance = this;
+        timeScaleOrig = Time.timeScale;
+        _player = GameObject.FindWithTag("Player");
 
-      //_monsterSpawnTriggerFlags = 0;
-      //_gameEventFlags = 0;
+
+        _playerState = new PlayerState();
+
+        _checkPointFlags = 0;
+
+
+        _checkPointCount = 0;
+
+
+
     }
-  }
 
-  /*
-  public int RegisterMonsterSpawnerTrigger(int checkPointID)
-  {
-    if (_monsterSpawnTriggerCount * _checkPointCount < MONSTERSPAWNTRIGGER_MAX)
+    // Update is called once per frame
+    void Update(){
+        if (Input.GetButtonDown("Cancel"))
+        {
+            if (menuActive == null)
+            {
+                statePause();
+                menuActive = menuPause;
+                menuActive.SetActive(true);
+            }
+            else if (menuActive == menuPause)
+            {
+                stateUnpause();
+            }
+        }
+    }
+
+
+
+    public void RespawnPlayer()
     {
-      _monsterSpawnTriggerCount++;
-      return (_checkPointCount == 0) ? _monsterSpawnTriggerCount : (_monsterSpawnTriggerCount / _checkPointCount);
+        Debug.LogWarning(_playerState.Position);
+        _player.transform.SetPositionAndRotation(_playerState.Position, _playerState.Rotation);
     }
-    else
+
+    public int RegisterCheckpoint()
     {
-      Debug.LogError("Too many spawners!");
+        if (_checkPointCount < CHECKPOINT_MAX)
+        {
+            _checkPointCount++;
+            return _checkPointCount;
+        }
+        else
+        {
+            Debug.LogError("Too many checkpoints!");
+        }
+        return 0;
     }
-    return 0;
-  }
 
-  public void ActivateSpawner(int checkPoint, int spawnIndex)
-  {
-
-    if(_playerState.ActiveCheckpointID != checkPoint) return;
-    
-
-    int flag = 1 << spawnIndex;
-
-    if ((flag & _monsterSpawnTriggerFlags) == 0)
+    public void ActivateCheckPoint(int index)
     {
-      _monsterSpawnTriggerFlags |= flag;
-      
+        int flag = 1 << index;
+
+        if ((flag & _checkPointFlags) == 0)
+        {
+
+            _checkPointFlags |= flag;
+            _playerState.Position = _player.transform.position;
+            _playerState.Rotation = _player.transform.rotation;
+            _playerState.ActiveCheckpointID = index;
+
+
+        }
     }
-  }
-  */
+
+    public void statePause()
+    {
+        isPaused = !isPaused;
+        Cursor.lockState = CursorLockMode.Confined;
+        Cursor.visible = true;
+        Time.timeScale = 0;
+    }
+
+    public void stateUnpause()
+    {
+        isPaused = !isPaused;
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+        Time.timeScale = timeScaleOrig;
+        menuActive.SetActive(false);
+        menuActive = null;
+    }
+
 }
   
