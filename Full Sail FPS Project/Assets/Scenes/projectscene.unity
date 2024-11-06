@@ -416,16 +416,12 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 114024263972142150, guid: b5a5a17dc3a6d9e47bd468828a2dec34, type: 3}
+    - {fileID: 82379819288447364, guid: b5a5a17dc3a6d9e47bd468828a2dec34, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 1534469393933210, guid: b5a5a17dc3a6d9e47bd468828a2dec34, type: 3}
-      insertIndex: 1
-      addedObject: {fileID: 2078277372}
-    - targetCorrespondingSourceObject: {fileID: 1534469393933210, guid: b5a5a17dc3a6d9e47bd468828a2dec34, type: 3}
-      insertIndex: 2
-      addedObject: {fileID: 2078277373}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b5a5a17dc3a6d9e47bd468828a2dec34, type: 3}
 --- !u!43 &173169282
 Mesh:
@@ -1310,19 +1306,18 @@ MonoBehaviour:
   ignoreMask:
     serializedVersion: 2
     m_Bits: 0
+  agent: {fileID: 0}
+  model: {fileID: 0}
+  headPos: {fileID: 0}
+  meleePos: {fileID: 0}
+  HP: 0
+  faceTargetSpeed: 0
   spit: {fileID: 0}
   melee: {fileID: 0}
   spitRate: 0
   meleeAttackRate: 0
   rangedAttacker: 0
   meleeAttackRange: 0
-  canWander: 0
-  wanderSpeed: 0
-  wanderRadius: 0
-  wanderTime: 0
-  model: {fileID: 0}
-  agent: {fileID: 0}
-  headPos: {fileID: 0}
 --- !u!1 &514782392
 GameObject:
   m_ObjectHideFlags: 0
@@ -8765,6 +8760,10 @@ MonoBehaviour:
   max_Amount_Of_Jumps: 2
   jumpHeight: 5
   gravity: 9
+  healthPoints: 0
+  shootDmg: 0
+  fireRate: 0
+  fireRange: 0
 --- !u!143 &1284174825
 CharacterController:
   m_ObjectHideFlags: 0
@@ -9952,37 +9951,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 1534469393933210, guid: b5a5a17dc3a6d9e47bd468828a2dec34, type: 3}
   m_PrefabInstance: {fileID: 120790520}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &2078277372
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2078277365}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9ce1a9e4a08100f4680ff744a2d36994, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  DistanceOpen: 3
-  text: {fileID: 983048383}
---- !u!114 &2078277373
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2078277365}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 731917776111cfd4e8e238be7a676f44, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  open: 0
-  smooth: 1
-  asource: {fileID: 0}
-  openDoor: {fileID: 0}
-  closeDoor: {fileID: 0}
 --- !u!1 &2111934873 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3929430561553498377, guid: b754f81b6568956489779930fc6e2935, type: 3}
@@ -13636,19 +13604,18 @@ MonoBehaviour:
   ignoreMask:
     serializedVersion: 2
     m_Bits: 0
+  agent: {fileID: 1842674742645688097}
+  model: {fileID: 5133915164596865378}
+  headPos: {fileID: 0}
+  meleePos: {fileID: 0}
+  HP: 0
+  faceTargetSpeed: 0
   spit: {fileID: 7961641615730851448, guid: 44ced99c337aa094583adc3bdc78ee67, type: 3}
   melee: {fileID: 0}
   spitRate: 2
   meleeAttackRate: 0
   rangedAttacker: 1
   meleeAttackRange: 0
-  canWander: 1
-  wanderSpeed: 4
-  wanderRadius: 10
-  wanderTime: 5
-  model: {fileID: 5133915164596865378}
-  agent: {fileID: 1842674742645688097}
-  headPos: {fileID: 0}
 --- !u!1 &6748312386794307274
 GameObject:
   m_ObjectHideFlags: 0
@@ -14999,19 +14966,18 @@ MonoBehaviour:
   ignoreMask:
     serializedVersion: 2
     m_Bits: 0
+  agent: {fileID: 0}
+  model: {fileID: 0}
+  headPos: {fileID: 0}
+  meleePos: {fileID: 0}
+  HP: 0
+  faceTargetSpeed: 0
   spit: {fileID: 0}
   melee: {fileID: 0}
   spitRate: 0
   meleeAttackRate: 0
   rangedAttacker: 0
   meleeAttackRange: 0
-  canWander: 0
-  wanderSpeed: 0
-  wanderRadius: 0
-  wanderTime: 0
-  model: {fileID: 0}
-  agent: {fileID: 0}
-  headPos: {fileID: 0}
 --- !u!195 &8347817791692442033
 NavMeshAgent:
   m_ObjectHideFlags: 0
