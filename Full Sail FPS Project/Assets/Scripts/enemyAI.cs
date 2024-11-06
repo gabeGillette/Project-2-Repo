@@ -2,18 +2,22 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.AI;
 
-public class enemyAI : MonoBehaviour, IDamage
+public class EnemyController : MonoBehaviour, IDamage
 {
-    [SerializeField] NavMeshAgent agent;
-    [SerializeField] Renderer model;
-    [SerializeField] Transform shootPos;
-    [SerializeField] Transform headPos;
-    [SerializeField] Transform meleePos;
+    [Header("Movement and Attack")]
+    [SerializeField] float moveSpeed = 2f;
+    [SerializeField] float rotationSpeed = 5f;
+    [SerializeField] float attackRate = 2f; // Time between spits
+    [SerializeField] float attackRange = 10f; // Range to spit at player
+    [SerializeField] GameObject spitPrefab; // The spit prefab
+    [SerializeField] Transform shootPos; // Where the spit should be fired from
+    [SerializeField] Transform player; // The player transform
+    [SerializeField] LayerMask ignoreMask; // Layer mask to ignore during attacks
 
-    [SerializeField] int HP;
-    [SerializeField] int faceTargetSpeed;
+    private bool isSpiting = false;
+    private bool canSpit = true;
+    private float lastSpitTime;
 
     [SerializeField] GameObject spit;
     [SerializeField] GameObject melee;
@@ -59,47 +63,58 @@ public class enemyAI : MonoBehaviour, IDamage
         //Start Wandering
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
-
-        //Move enemy Towards player
-        moveTowardsPlayer();
-
-        //Move enemy towards player and if ranged attacker start ranged attack
-        if (canSpit && rangedAttacker)
+        if (player != null)
         {
-            if (!isSpiting)
-            {
-                StartCoroutine(shoot());
-            }
+            LookAtPlayer();
+            TrySpit();
         }
-
-        else if (playerInMeleeRange)
-        {
-            if(!isMeleeAttacking)
-            {
-                StartCoroutine(meleeAttack());
-            }
-        }
-            //else if (agent.remainingDistance <= meleeAttackRange)
-            //{
-            //    canSpit = false;
-            //    playerInMeleeRange = true;
-            //    StartCoroutine(meleeAttack());
-            //}
-            //else if (agent.remainingDistance >= agent.stoppingDistance)
-            //{
-            //    playerInMeleeRange = false;
-            //    canSpit = true;
-            //}
-
-            //If within melee range stops spit attack but allows melee attack
-           
-
-        
     }
 
+    // This method checks if the enemy can spit and if it's time to do so
+    private void TrySpit()
+    {
+        if (canSpit && !isSpiting && Vector3.Distance(transform.position, player.position) <= attackRange)
+        {
+            Debug.Log("Ready to spit! Starting shoot coroutine...");
+            StartCoroutine(Shoot());
+        }
+    }
+
+    private void LookAtPlayer()
+    {
+        Vector3 directionToPlayer = player.position - transform.position;
+        directionToPlayer.y = 0; // Keep the y-axis unaffected (keep enemy upright)
+        Quaternion rotation = Quaternion.LookRotation(directionToPlayer);
+        transform.rotation = Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime * rotationSpeed);
+    }
+
+    // Coroutine to handle the spit action
+    private IEnumerator Shoot()
+    {
+        isSpiting = true;
+        Debug.Log("Spitting at player.");
+
+        // Instantiate the spit prefab at the shoot position with the correct rotation
+        GameObject spitInstance = Instantiate(spitPrefab, shootPos.position, transform.rotation);
+        Debug.Log($"Instantiating spit at position: {shootPos.position}");
+
+        // Check if the spit has a Rigidbody for movement
+        Rigidbody spitRb = spitInstance.GetComponent<Rigidbody>();
+        if (spitRb != null)
+        {
+            spitRb.velocity = transform.forward * 10f; // Adjust speed here
+            Debug.Log("Spit moving towards the player.");
+        }
+
+        // Wait for the specified rate before allowing another spit
+        yield return new WaitForSeconds(attackRate);
+        isSpiting = false;
+        canSpit = true;
+    }
+
+    // This is the trigger detection for the spit hitting something
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
@@ -118,20 +133,30 @@ public class enemyAI : MonoBehaviour, IDamage
         }
     }
 
+    // When the player is in range and can be attacked, the spit can be fired
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.CompareTag("Player") && !isSpiting)
+        {
+            if (Time.time - lastSpitTime >= attackRate)
+            {
+                canSpit = true;
+            }
+        }
+    }
+
+    // If the enemy stops seeing the player, reset
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            canSpit = false;
+        }
+    }
 
     public void takeDamage(int amount)
     {
-        HP -= amount;
-        StartCoroutine(damageFlash());
-
-        //If the enemy takes damage outside of normal agro range head towards the player's last attack position
-        agent.SetDestination(GameManager.instance.GetPlayer().transform.position);
-
-        //Destroy the object
-        if (HP <= 0)
-        {
-            Destroy(gameObject);
-        }
+        throw new System.NotImplementedException();
     }
 
     //A way to demo the enemy took damage. Change the Color.red to other colors if necessary

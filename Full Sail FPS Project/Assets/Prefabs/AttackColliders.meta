@@ -1,6 +1,10 @@
 fileFormatVersion: 2
-guid: 231d2e1ff3e68ed45968b776343dc31d
+<<<<<<<< HEAD:Full Sail FPS Project/Assets/Prefabs/AttackColliders.meta
+guid: c13d096897cdc5e40857fa93a5234aea
 folderAsset: yes
+========
+guid: ced7a634d5199e24db0dad89348f556c
+>>>>>>>> c9228d9 (created a level):Full Sail FPS Project/Assets/Free Wood Door Pack/Readme.pdf.meta
 DefaultImporter:
   externalObjects: {}
   userData: 

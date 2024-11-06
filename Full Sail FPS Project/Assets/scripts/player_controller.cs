@@ -4,7 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class playerController : MonoBehaviour
+public class playerController : MonoBehaviour, IDamage
 {
     //character controller
     [SerializeField] CharacterController controller;
@@ -103,5 +103,10 @@ public class playerController : MonoBehaviour
 
 
 
+    }
+
+    public void takeDamage(int amount)
+    {
+        throw new NotImplementedException();
     }
 }

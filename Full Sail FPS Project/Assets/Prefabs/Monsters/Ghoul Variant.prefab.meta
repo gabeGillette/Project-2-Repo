@@ -1,6 +1,12 @@
 fileFormatVersion: 2
-guid: de49af7dbd43aa44a8237e77d65ceb23
+<<<<<<<< HEAD:Full Sail FPS Project/Assets/Prefabs/Monsters/Ghoul Variant.prefab.meta
+guid: fc0f5577915a87d4eae20a40864e2d54
 PrefabImporter:
+========
+guid: aa20049b9c2b5274db3b79c50bc3b34a
+folderAsset: yes
+DefaultImporter:
+>>>>>>>> c9228d9 (created a level):Full Sail FPS Project/Assets/Asset pack for horror game.meta
   externalObjects: {}
   userData: 
   assetBundleName: 

@@ -51,7 +51,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: 0
   rb: {fileID: -8272704363750745743}
-  spitDamageAmount: 0
+  spitDamageAmount: 1
   meleeDamageAmount: 0
   meleeSpeed: 0
   spitSpeed: 25
