@@ -5,7 +5,7 @@ using UnityEngine;
 public class SpawnTrigger : MonoBehaviour
 {
 
-  [SerializeField] GameObject checkPoint;
+  GameObject checkPoint;
 
   //int _checkPointIndex;
   //int _monsterSpawnerIndex;
@@ -14,19 +14,25 @@ public class SpawnTrigger : MonoBehaviour
 
   // Start is called before the first frame update
   void Start()
-  { 
-    if (checkPoint != null)
-    {
-      //_checkPointIndex = checkPoint.GetComponent<CheckPoint>().CheckPointIndex;
-      //_monsterSpawnerIndex = GameManager.instance.RegisterMonsterSpawnerTrigger(_checkPointIndex);
-      //gameObject.SetActive(false);
-      checkPoint.GetComponent<CheckPoint>().ResisterSpawner(gameObject);
+  {
+        /*if (checkPoint != null)
+        {
+          checkPoint.GetComponent<CheckPoint>().ResisterSpawner(gameObject);
+        }
+        else
+        {
+          //_monsterSpawnerIndex = GameManager.instance.RegisterMonsterSpawnerTrigger(0);
+        }*/
+
+        // find all spawn triggers
+        for (int childIndex = 0; childIndex < transform.childCount; childIndex++)
+        {
+            if (transform.GetChild(childIndex).CompareTag("Spawn_Container"))
+            {
+                _spContainers.Add(transform.GetChild(childIndex).gameObject);
+            }
+        }
     }
-    else
-    {
-      //_monsterSpawnerIndex = GameManager.instance.RegisterMonsterSpawnerTrigger(0);
-    }
-  }
 
   // Update is called once per frame
   void Update()

@@ -189,23 +189,26 @@ public class playerController : MonoBehaviour, IDamage
     // turn reticle red upoc aiming at player
     void UpdateReticle()
     {
-        Ray ray = Camera.main.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2, 0));
-        RaycastHit hit;
-
-        if (Physics.Raycast(ray, out hit, maxRaycastDistance))
+        if (reticle != null)
         {
-            if (hit.collider.CompareTag("Enemy"))
+            Ray ray = Camera.main.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2, 0));
+            RaycastHit hit;
+
+            if (Physics.Raycast(ray, out hit, maxRaycastDistance))
             {
-                reticle.color = enemyColor; // reticle changes color
+                if (hit.collider.CompareTag("Enemy"))
+                {
+                    reticle.color = enemyColor; // reticle changes color
+                }
+                else
+                {
+                    reticle.color = defaultColor;
+                }
             }
             else
             {
                 reticle.color = defaultColor;
             }
-        }
-        else
-        {
-            reticle.color = defaultColor;
         }
     }
     IEnumerator flashDamage()
