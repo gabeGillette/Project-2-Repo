@@ -142,6 +142,11 @@ public class GameManager : MonoBehaviour
 
     public void restartlevel()
     {
+        
+        if (menuLose != null)
+        {
+            menuLose.SetActive(false);
+        }
         statePause();
         menuActive = menuConfirmRestart;
         menuActive.SetActive(true);
@@ -159,7 +164,6 @@ public class GameManager : MonoBehaviour
     {
         menuConfirmRestart.SetActive(false);
         menuActive = null;
-        stateUnpause(); // Resume the game
     }
 
     public void ConfirmQuit()
