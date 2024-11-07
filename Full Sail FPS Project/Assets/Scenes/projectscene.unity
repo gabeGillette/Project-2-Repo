@@ -2651,6 +2651,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 7329318435321597763, guid: c27fafdcb61f1c44b89f4a139bf9ab77, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ConfirmRestartY
+      objectReference: {fileID: 0}
     - target: {fileID: 8690228028616469544, guid: c27fafdcb61f1c44b89f4a139bf9ab77, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
