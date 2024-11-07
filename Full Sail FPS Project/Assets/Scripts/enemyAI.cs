@@ -112,7 +112,10 @@ public class EnemyController : MonoBehaviour, IDamage
         if (canSpit && !isSpiting && Vector3.Distance(transform.position, player.position) <= attackRange)
         {
             Debug.Log("Ready to spit! Starting shoot coroutine...");
-            StartCoroutine(Shoot());
+            if (shootPos != null && spitPrefab != null)
+            {
+                StartCoroutine(Shoot());
+            }
         }
     }
 
