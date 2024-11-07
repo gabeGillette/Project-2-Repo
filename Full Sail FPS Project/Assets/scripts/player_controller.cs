@@ -116,7 +116,7 @@ public class playerController : MonoBehaviour, IDamage
     void jump()
     {
         //check if player is jumping
-        if (Input.GetButtonDown("Jump")&& jumpCount<max_Amount_Of_Jumps)
+        if (Input.GetButtonDown("Jump") && jumpCount < max_Amount_Of_Jumps)
         {
             //set player velocity based on jump height
             playerVel.y = jumpHeight;
