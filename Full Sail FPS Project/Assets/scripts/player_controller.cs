@@ -39,7 +39,7 @@ public class playerController : MonoBehaviour, IDamage
     //our velocity
     Vector3 playerVel;
     // is the player currently shooting?
-    bool isShooting;
+    public bool isShooting;
     
     void Start()
     {

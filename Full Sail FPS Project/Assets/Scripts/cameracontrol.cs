@@ -16,6 +16,8 @@ public class cameracontrol : MonoBehaviour
     void Start()
     {
         Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
+
 
     }
 
