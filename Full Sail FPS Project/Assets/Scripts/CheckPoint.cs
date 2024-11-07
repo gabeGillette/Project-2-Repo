@@ -17,6 +17,15 @@ public class CheckPoint : MonoBehaviour
   // Start is called before the first frame update
   void Start()
   {
+        // find all spawn triggers
+        for (int childIndex = 0; childIndex < transform.childCount; childIndex++)
+        {
+            if(transform.GetChild(childIndex).CompareTag("Spawn_Trigger"))
+            {
+                _spawners.Add(transform.GetChild(childIndex).gameObject);
+            }
+        }
+
     //_spawners = new List<GameObject>();
     _checkPointIndex = GameManager.instance.RegisterCheckpoint();
   }
@@ -29,8 +38,9 @@ public class CheckPoint : MonoBehaviour
 
     if (!other.isTrigger)
     {
-      if (other.GetComponent<test_player_controller>() != null)
+      if (other.CompareTag("Player"))
       {
+        GameManager.instance.displayInfo("CheckPoint Reached!");
         GameManager.instance.ActivateCheckPoint(_checkPointIndex);
         foreach(GameObject spawner in _spawners)
         {
@@ -40,7 +50,7 @@ public class CheckPoint : MonoBehaviour
     }
   }
 
-  public void ResisterSpawner(GameObject spawner)
+  public void RegisterSpawner(GameObject spawner)
   {
     spawner.gameObject.SetActive(false);
     _spawners.Add(spawner);

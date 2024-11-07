@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class SpawnContainer : MonoBehaviour
 {
-  [SerializeField] GameObject trigger;
+  //[SerializeField] GameObject trigger;
   [SerializeField] GameObject monster;
   [SerializeField] float delay;
 
@@ -13,7 +13,7 @@ public class SpawnContainer : MonoBehaviour
 
   private void Start()
   {
-    if(trigger != null) trigger.GetComponent<SpawnTrigger>().registerContainer(gameObject);
+    //if(trigger != null) trigger.GetComponent<SpawnTrigger>().registerContainer(gameObject);
   }
 
   public void Spawn()

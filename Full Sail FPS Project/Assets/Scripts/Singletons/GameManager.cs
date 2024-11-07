@@ -66,6 +66,7 @@ public class GameManager : MonoBehaviour
 
     //public Image PlayerHPBar { get { return playerHPBar; } }
 
+
     // Start is called before the first frame update
     void Awake()
     {
@@ -82,12 +83,12 @@ public class GameManager : MonoBehaviour
 
         _checkPointCount = 0;
 
-
-
     }
+
 
     private void Start()
     {
+        displayInfo("poopdog");
     }
 
     // Update is called once per frame
@@ -177,9 +178,11 @@ public class GameManager : MonoBehaviour
 
     IEnumerator _displayInfo(string msg, float time)
     {
+        infoText.alpha = 0.5f;
         infoText.gameObject.SetActive(true);
         infoText.text = msg;
-        yield return new WaitForSeconds(time);
+        yield return new WaitForSeconds(time/2);
+
         infoText.gameObject.SetActive(false);
     }
 
