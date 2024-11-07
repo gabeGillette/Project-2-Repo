@@ -11,6 +11,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -31,6 +32,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject menuConfirmRestart;
     [SerializeField] UnityEngine.UI.Image playerHPBar;
     [SerializeField] TMP_Text playerHPText;
+    [SerializeField] TMP_Text infoText;
+    [SerializeField] float infoTime;
 
     /*---------------------------------------------------- PRIVATE CLASS MEMBERS */
 
@@ -81,6 +84,10 @@ public class GameManager : MonoBehaviour
 
 
 
+    }
+
+    private void Start()
+    {
     }
 
     // Update is called once per frame
@@ -159,9 +166,21 @@ public class GameManager : MonoBehaviour
     public void updatePlayerHealth(int total, int max)
     {
         float normalizedAmt = (float)total / (float)max;
-        normalizedAmt = Mathf.Clamp(normalizedAmt, 0, 1);
         playerHPBar.fillAmount = Mathf.Clamp(normalizedAmt, 0, 1);
         playerHPText.text = (normalizedAmt * 100).ToString("F0");
+    }
+
+    public void displayInfo(string msg)
+    {
+        Coroutine dinfo = StartCoroutine(_displayInfo(msg, infoTime));
+    }
+
+    IEnumerator _displayInfo(string msg, float time)
+    {
+        infoText.gameObject.SetActive(true);
+        infoText.text = msg;
+        yield return new WaitForSeconds(time);
+        infoText.gameObject.SetActive(false);
     }
 
 }
