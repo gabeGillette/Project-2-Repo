@@ -2,7 +2,10 @@ using JetBrains.Annotations;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using UnityEngine;
+using UnityEngine.UI;
+
 
 public class playerController : MonoBehaviour, IDamage
 {
@@ -43,6 +46,12 @@ public class playerController : MonoBehaviour, IDamage
     // Player's initial health amount
     private int initHealth;
 
+    // This is for the reticle color changing
+    public Image reticle;
+    public Color defaultColor = Color.white;
+    public Color enemyColor = Color.red;
+    public float maxRaycastDistance = 100f;
+
     public bool Shooting { get { return isShooting; } }
     
     void Start()
@@ -64,6 +73,8 @@ public class playerController : MonoBehaviour, IDamage
         movement();
         sprint();
 
+        // update reticle
+        UpdateReticle();
 
     }
 
@@ -142,7 +153,7 @@ public class playerController : MonoBehaviour, IDamage
         // death event
         if (healthPoints <= 0)
         {
-            // die here
+            GameManager.instance.youLose();
         }
     }
 
@@ -173,5 +184,28 @@ public class playerController : MonoBehaviour, IDamage
         yield return new WaitForSeconds(fireRate);
 
         isShooting = false;
+    }
+
+    // turn reticle red upoc aiming at player
+    void UpdateReticle()
+    {
+        Ray ray = Camera.main.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2, 0));
+        RaycastHit hit;
+
+        if (Physics.Raycast(ray, out hit, maxRaycastDistance))
+        {
+            if (hit.collider.CompareTag("Enemy"))
+            {
+                reticle.color = enemyColor; // reticle changes color
+            }
+            else
+            {
+                reticle.color = defaultColor;
+            }
+        }
+        else
+        {
+            reticle.color = defaultColor;
+        }
     }
 }
