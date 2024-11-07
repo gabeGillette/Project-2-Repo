@@ -56,6 +56,8 @@ public class playerController : MonoBehaviour, IDamage
     // Update is called once per frame
     void Update()
     {
+        Debug.DrawRay(Camera.main.transform.position, Camera.main.transform.forward * fireRange, Color.red);
+
 
 
         //constantly check how we're moving
