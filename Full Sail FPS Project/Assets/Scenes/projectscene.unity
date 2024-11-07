@@ -2440,7 +2440,6 @@ GameObject:
   m_Component:
   - component: {fileID: 3962355418049823323}
   - component: {fileID: 5133915164596865378}
-  - component: {fileID: 5133915164596865379}
   m_Layer: 0
   m_Name: Mesh_0
   m_TagString: Untagged
@@ -5892,29 +5891,6 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.091894865, y: -0.28441554, z: 0.21859002}
     m_Extent: {x: 1.0960145, y: 1.2286377, z: 0.7611774}
   m_DirtyAABB: 0
---- !u!136 &5133915164596865379
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 41742151397475318}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.012750171
-  m_Height: 0.020510668
-  m_Direction: 1
-  m_Center: {x: -0.00037268695, y: -0.0024118808, z: 0.007147191}
 --- !u!1 &5142852980077508746
 GameObject:
   m_ObjectHideFlags: 0
@@ -8439,6 +8415,7 @@ GameObject:
   - component: {fileID: 3991826300776952568}
   - component: {fileID: 941096296877800997}
   - component: {fileID: 4735057936592562568}
+  - component: {fileID: 9015194722831664165}
   m_Layer: 7
   m_Name: spitterEnemy
   m_TagString: Untagged
@@ -9139,6 +9116,29 @@ MonoBehaviour:
   meleeAttackRate: 0
   rangedAttacker: 1
   meleeAttackRange: 0
+--- !u!136 &9015194722831664165
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8000357459041028695}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.009370615
+  m_Height: 0.020088498
+  m_Direction: 1
+  m_Center: {x: 0.000022955239, y: 0.00005644979, z: 0.00005590543}
 --- !u!1 &9019515343221523700
 GameObject:
   m_ObjectHideFlags: 0
