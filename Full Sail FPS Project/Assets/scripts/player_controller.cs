@@ -142,7 +142,7 @@ public class playerController : MonoBehaviour, IDamage
         // death event
         if (healthPoints <= 0)
         {
-            // die here
+            GameManager.instance.youLose();
         }
     }
 

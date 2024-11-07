@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -7,50 +5,46 @@ public class ButtonFunctions : MonoBehaviour
 {
     public void Resume()
     {
-        //GameManager.instance.stateUnpause();
-        Debug.Log("resume");
+        GameManager.instance.stateUnpause();
     }
 
     public void Restart()
     {
-        Debug.Log("restart");
-        //SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-        //GameManager.instance.stateUnpause();
+        GameManager.instance.restartlevel();
     }
 
     public void LastCheckPoint()
     {
-        Debug.Log("lcp");
+        GameManager.instance.RespawnPlayer();
     }
 
     public void ConfirmQuitY()
     {
-        Debug.Log("lcp");
+        GameManager.instance.ConfirmQuit();
     }
 
     public void ConfirmQuitN()
     {
-        Debug.Log("lcp");
+        GameManager.instance.CancelQuit();
     }
 
     public void ConfirmRestartY()
     {
-        Debug.Log("lcp");
+        GameManager.instance.ConfirmRestart();
     }
 
     public void ConfirmRestartN()
     {
-        Debug.Log("lcp");
+        GameManager.instance.CancelRestart();
     }
 
     public void Quit()
     {
-        Debug.Log("get me the heck outa here!");
+        Debug.Log("Exiting the game...");
 #if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false;
 #else
-Application.Quit();
-
+        Application.Quit();
 #endif
     }
 }

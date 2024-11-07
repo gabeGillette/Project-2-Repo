@@ -25,7 +25,7 @@ public class EnemyController : MonoBehaviour, IDamage
     //Allows the identification of the specific renderer model
     [SerializeField] Renderer model;
     //Where the shoot object should start from
-  //  [SerializeField] Transform shootPos;
+    //  [SerializeField] Transform shootPos;
     //Where the enemy will base it's 'look' from and turn towards player
     [SerializeField] Transform headPos;
     //Where the melee should originate from
@@ -60,15 +60,15 @@ public class EnemyController : MonoBehaviour, IDamage
     //private float timer;
 
 
-   // private GameObject player;
+    // private GameObject player;
 
     Color colorOrig;
 
     bool playerInMovementRange; //See if the player is within the sphere collider to start moving towards player
-   // bool canSpit;  //Only is true if player is within movement range, will turn true for all characters
+                                // bool canSpit;  //Only is true if player is within movement range, will turn true for all characters
 
 
-   // bool isSpiting; //Check is enemy is ranged attacking
+    // bool isSpiting; //Check is enemy is ranged attacking
     bool isMeleeAttacking; //Check if enemy is melee attacking
     bool playerInSpitRange; //Check if player is in spitRange
     bool playerInMeleeRange; //Check if player is in meleeRange
@@ -79,6 +79,7 @@ public class EnemyController : MonoBehaviour, IDamage
     // Start is called before the first frame update
     void Start()
     {
+        
         //Setting the original color so we can change it later to show damage
         colorOrig = model.material.color;
 
@@ -94,15 +95,15 @@ public class EnemyController : MonoBehaviour, IDamage
 
         else if (playerInMeleeRange)
         {
-            if(!isMeleeAttacking)
+            if (!isMeleeAttacking)
             {
                 StartCoroutine(meleeAttack());
             }
         }
-          
-           
 
-        
+
+
+
     }
 
     // This method checks if the enemy can spit and if it's time to do so
@@ -187,7 +188,14 @@ public class EnemyController : MonoBehaviour, IDamage
 
     public void TakeDamage(int amount)
     {
-        throw new System.NotImplementedException();
+        HP -= amount;
+        StartCoroutine(damageFlash());
+        agent.SetDestination(GameManager.instance.Player.transform.position);
+        if (HP <= 0)
+        {
+            Destroy(gameObject);
+        }
+
     }
 
     //A way to demo the enemy took damage. Change the Color.red to other colors if necessary
@@ -201,7 +209,7 @@ public class EnemyController : MonoBehaviour, IDamage
     //Process to start spitting/shooting
     IEnumerator shoot()
     {
-        
+
         isSpiting = true;
 
         Instantiate(spit, shootPos.position, transform.rotation);
@@ -233,7 +241,7 @@ public class EnemyController : MonoBehaviour, IDamage
     {
         if (playerInMovementRange)
         {
-        //    player = GameObject.FindGameObjectWithTag("Player");
+            //    player = GameObject.FindGameObjectWithTag("Player");
             playerDir = player.transform.position - headPos.position;
 
 
@@ -241,12 +249,12 @@ public class EnemyController : MonoBehaviour, IDamage
             //agent.SetDestination(player.transform.position);
             canSpit = true;
         }
-     //   if (agent.remainingDistance <= agent.stoppingDistance)
+        //   if (agent.remainingDistance <= agent.stoppingDistance)
         {
             faceTarget();
             canSpit = false;
         }
-     //   if(agent.remainingDistance >= meleeAttackRange && playerInMovementRange)
+        //   if(agent.remainingDistance >= meleeAttackRange && playerInMovementRange)
         {
             playerInMeleeRange = true;
 
@@ -255,9 +263,9 @@ public class EnemyController : MonoBehaviour, IDamage
 
     }
 
-  
 
-   
+
+
 
 
 }
