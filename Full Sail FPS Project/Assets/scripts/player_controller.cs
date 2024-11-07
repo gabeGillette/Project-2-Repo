@@ -186,7 +186,7 @@ public class playerController : MonoBehaviour, IDamage
         isShooting = false;
     }
 
-    // turn reticle red upoc aiming at player
+    // turn reticle red upon aiming at player
     void UpdateReticle()
     {
         if (reticle != null)
@@ -216,5 +216,12 @@ public class playerController : MonoBehaviour, IDamage
         GameManager.instance.playerDamageScreen.SetActive(true);
         yield return new WaitForSeconds(0.1f);
         GameManager.instance.playerDamageScreen.SetActive(false);
+    }
+
+    IEnumerator flashPoison()
+    {
+        GameManager.instance.playerPoisonScreen.SetActive(true);
+        yield return new WaitForSeconds(2f);
+        GameManager.instance.playerPoisonScreen.SetActive(false);
     }
 }
