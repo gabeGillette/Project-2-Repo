@@ -34,6 +34,8 @@ public class GameManager : MonoBehaviour
     public PlayerState CurrentPlayerState => _playerState;
     public GameObject Player => _player;
 
+    private bool _playerIsRespawning;
+
     void Awake()
     {
         instance = this;
@@ -64,8 +66,15 @@ public class GameManager : MonoBehaviour
 
     public void RespawnPlayer()
     {
-        Debug.LogWarning(_playerState.Position);
-        _player.transform.SetPositionAndRotation(_playerState.Position, _playerState.Rotation);
+        if (!_playerIsRespawning)
+        {
+            _playerIsRespawning = true;
+
+            Debug.LogWarning(_playerState.Position);
+            _player.transform.SetPositionAndRotation(_playerState.Position, _playerState.Rotation);
+            _player.GetComponent<playerController>().Health = 5;
+            _playerIsRespawning = false;
+        }
     }
 
     public void youLose()
@@ -178,5 +187,10 @@ public class GameManager : MonoBehaviour
         stateUnpause(); // Resume the game
     }
 
-   
+    public void WinGame()
+    {
+        menuWin.SetActive(true);
+        menuActive = menuWin;
+        statePause(); // Resume the game
+    }
 }

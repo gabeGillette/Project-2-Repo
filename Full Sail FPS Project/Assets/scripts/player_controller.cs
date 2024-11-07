@@ -52,6 +52,8 @@ public class playerController : MonoBehaviour, IDamage
     public Color enemyColor = Color.red;
     public float maxRaycastDistance = 100f;
 
+    public int Health {  get { return healthPoints; } set { healthPoints = value; } }
+
     public bool Shooting { get { return isShooting; } }
     
     void Start()
@@ -153,7 +155,8 @@ public class playerController : MonoBehaviour, IDamage
         // death event
         if (healthPoints <= 0)
         {
-            GameManager.instance.youLose();
+            //GameManager.instance.youLose();
+            GameManager.instance.RespawnPlayer();
         }
     }
 
