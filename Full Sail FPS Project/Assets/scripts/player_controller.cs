@@ -25,11 +25,11 @@ public class playerController : MonoBehaviour, IDamage
     [SerializeField] int gravity;
     // health
     [SerializeField] int healthPoints;
-    
+    // amount of shooting damage dealt
     [SerializeField] int shootDmg;
-
+    // rate of fire
     [SerializeField] float fireRate;
-
+    // range of bullet
     [SerializeField] float fireRange;
 
     //current amount of jumps
@@ -39,16 +39,25 @@ public class playerController : MonoBehaviour, IDamage
     //our velocity
     Vector3 playerVel;
     // is the player currently shooting?
-    public bool isShooting;
+    private bool isShooting;
+    // Player's initial health amount
+    private int initHealth;
+
+    public bool Shooting { get { return isShooting; } }
     
     void Start()
     {
+        initHealth = healthPoints;
 
+        // update the health bar
+        GameManager.instance.updatePlayerHealth(healthPoints, initHealth);
     }
 
     // Update is called once per frame
     void Update()
     {
+
+
         //constantly check how we're moving
         movement();
         sprint();
@@ -125,8 +134,11 @@ public class playerController : MonoBehaviour, IDamage
         // take damage
         healthPoints -= amount;
 
+        // update the health bar
+        GameManager.instance.updatePlayerHealth(healthPoints, initHealth);
+
         // death event
-        if(healthPoints <= 0)
+        if (healthPoints <= 0)
         {
             // die here
         }

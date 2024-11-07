@@ -13,7 +13,7 @@ public class gunscript : MonoBehaviour
     void Update()
     {
         // Check if player is shooting and cooldown allows it
-        if (player != null && player.isShooting)
+        if (player != null && player.Shooting)
         {
             // Trigger shooting animation
             TriggerShootAnimation();

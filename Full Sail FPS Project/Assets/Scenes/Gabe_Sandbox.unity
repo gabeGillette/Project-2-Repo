@@ -4575,6 +4575,8 @@ MonoBehaviour:
   menuLose: {fileID: 569548497}
   menuConfirmQuit: {fileID: 72734727}
   menuConfirmRestart: {fileID: 984533587}
+  playerHPBar: {fileID: 516539465}
+  playerHPText: {fileID: 1779849204}
 --- !u!1 &1603970734
 GameObject:
   m_ObjectHideFlags: 0

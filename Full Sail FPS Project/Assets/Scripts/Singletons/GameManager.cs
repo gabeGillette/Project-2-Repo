@@ -9,7 +9,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Drawing;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 /*--------------------------------------------------------- CLASS DEFINITION */
 
@@ -26,6 +29,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject menuLose;
     [SerializeField] GameObject menuConfirmQuit;
     [SerializeField] GameObject menuConfirmRestart;
+    [SerializeField] UnityEngine.UI.Image playerHPBar;
+    [SerializeField] TMP_Text playerHPText;
 
     /*---------------------------------------------------- PRIVATE CLASS MEMBERS */
 
@@ -55,6 +60,8 @@ public class GameManager : MonoBehaviour
 
 
     public GameObject Player { get { return _player; } }
+
+    //public Image PlayerHPBar { get { return playerHPBar; } }
 
     // Start is called before the first frame update
     void Awake()
@@ -147,6 +154,14 @@ public class GameManager : MonoBehaviour
         Time.timeScale = timeScaleOrig;
         menuActive.SetActive(false);
         menuActive = null;
+    }
+
+    public void updatePlayerHealth(int total, int max)
+    {
+        float normalizedAmt = (float)total / (float)max;
+        normalizedAmt = Mathf.Clamp(normalizedAmt, 0, 1);
+        playerHPBar.fillAmount = Mathf.Clamp(normalizedAmt, 0, 1);
+        playerHPText.text = (normalizedAmt * 100).ToString("F0");
     }
 
 }
