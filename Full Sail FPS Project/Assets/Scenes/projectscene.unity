@@ -1912,6 +1912,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 13.331, y: 118.732, z: -10.204}
+--- !u!4 &1489290090 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6493787709931925394, guid: 75193af1191199b4fa5e0832b725f4dd, type: 3}
+  m_PrefabInstance: {fileID: 6470898908177007279}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1492064955
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2644,7 +2649,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2202190850038002780, guid: c27fafdcb61f1c44b89f4a139bf9ab77, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8690228028616469544, guid: c27fafdcb61f1c44b89f4a139bf9ab77, type: 3}
       propertyPath: m_LocalPosition.x
@@ -9359,7 +9364,7 @@ MonoBehaviour:
   attackRange: 10
   spitPrefab: {fileID: 7961641615730851448, guid: 44ced99c337aa094583adc3bdc78ee67, type: 3}
   shootPos: {fileID: 6352228289651257180}
-  player: {fileID: 0}
+  player: {fileID: 1489290090}
   ignoreMask:
     serializedVersion: 2
     m_Bits: 128
