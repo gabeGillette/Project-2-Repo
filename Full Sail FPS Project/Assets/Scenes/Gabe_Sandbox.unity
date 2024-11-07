@@ -989,7 +989,7 @@ GameObject:
   - component: {fileID: 199126079}
   m_Layer: 0
   m_Name: MonsterSpawner
-  m_TagString: Untagged
+  m_TagString: Spawn_Container
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1242,7 +1242,7 @@ GameObject:
   - component: {fileID: 261051499}
   m_Layer: 0
   m_Name: Checkpoint
-  m_TagString: Untagged
+  m_TagString: Spawn_Trigger
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2826,7 +2826,7 @@ GameObject:
   - component: {fileID: 967418791}
   m_Layer: 0
   m_Name: SpawnContainer (1)
-  m_TagString: Untagged
+  m_TagString: Spawn_Container
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2875,7 +2875,7 @@ GameObject:
   - component: {fileID: 984397897}
   m_Layer: 0
   m_Name: MonsterSpawner (1)
-  m_TagString: Untagged
+  m_TagString: Spawn_Trigger
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3071,7 +3071,7 @@ GameObject:
   - component: {fileID: 1012814907}
   m_Layer: 0
   m_Name: SpawnContainer
-  m_TagString: Untagged
+  m_TagString: Spawn_Container
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3117,7 +3117,7 @@ GameObject:
   - component: {fileID: 1031761768}
   m_Layer: 0
   m_Name: SpawnContainer (1)
-  m_TagString: Untagged
+  m_TagString: Spawn_Container
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3149,7 +3149,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3692eeeda85834f40a206de18d9cace7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  monster: {fileID: 1413979691}
+  monster: {fileID: 919132149155446097, guid: befaac04f570ea44986ec5377e028093, type: 3}
   delay: 0
 --- !u!1 &1058967712
 GameObject:

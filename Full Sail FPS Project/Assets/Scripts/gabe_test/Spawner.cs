@@ -47,7 +47,7 @@ public class SpawnTrigger : MonoBehaviour
 
   private void OnTriggerEnter(Collider other)
   {
-    if (other.GetComponent<test_player_controller>() != null)
+    if (other.CompareTag("Player"))
     {
       if (checkPoint != null && GameManager.instance.CurrentPlayerState.ActiveCheckpointID == checkPoint.GetComponent<CheckPoint>().CheckPointID)
       {
