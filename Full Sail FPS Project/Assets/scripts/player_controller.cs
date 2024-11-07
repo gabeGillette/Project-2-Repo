@@ -146,7 +146,7 @@ public class playerController : MonoBehaviour, IDamage
     {
         // take damage
         healthPoints -= amount;
-
+        StartCoroutine(flashDamage());
         // update the health bar
         GameManager.instance.updatePlayerHealth(healthPoints, initHealth);
 
@@ -210,5 +210,11 @@ public class playerController : MonoBehaviour, IDamage
                 reticle.color = defaultColor;
             }
         }
+    }
+    IEnumerator flashDamage()
+    {
+        GameManager.instance.playerDamageScreen.SetActive(true);
+        yield return new WaitForSeconds(0.1f);
+        GameManager.instance.playerDamageScreen.SetActive(false);
     }
 }

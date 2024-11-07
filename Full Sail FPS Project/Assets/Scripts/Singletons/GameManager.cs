@@ -22,6 +22,8 @@ public class GameManager : MonoBehaviour
     bool isPaused;
 
     public static GameManager instance;
+    public GameObject playerDamageScreen;
+
 
     private int _checkPointFlags;
     private const int CHECKPOINT_MAX = 32;
@@ -170,4 +172,6 @@ public class GameManager : MonoBehaviour
         menuActive = null;
         stateUnpause(); // Resume the game
     }
+
+   
 }
