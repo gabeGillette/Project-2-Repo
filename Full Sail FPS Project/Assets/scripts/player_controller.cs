@@ -47,10 +47,22 @@ public class playerController : MonoBehaviour, IDamage
     private int initHealth;
 
     // This is for the reticle color changing
-    public Image reticle;
+    public Image rifleReticle;
+    public Image unarmReticle;
     public Color defaultColor = Color.white;
     public Color enemyColor = Color.red;
+    public Color friendColor = Color.green;
     public float maxRaycastDistance = 100f;
+
+    // UI prompt to interact
+    [SerializeField] GameObject interactPromptUI;
+    // Max distance to interact
+    [SerializeField] float interactDistance = 2f;
+
+    // to track if an interactable object is within range
+    private bool canInteract = false;
+    // The interactable object in focus
+    private GameObject currentInteractable = null;
 
     public int Health {  get { return healthPoints; } set { healthPoints = value; } }
 
@@ -67,9 +79,8 @@ public class playerController : MonoBehaviour, IDamage
     // Update is called once per frame
     void Update()
     {
+        // Draw ray for debugging
         Debug.DrawRay(Camera.main.transform.position, Camera.main.transform.forward * fireRange, Color.red);
-
-
 
         //constantly check how we're moving
         movement();
@@ -78,6 +89,11 @@ public class playerController : MonoBehaviour, IDamage
         // update reticle
         UpdateReticle();
 
+        // Attempt to interact if the interact button is presses
+        if (canInteract && Input.GetButtonDown("Interact"))
+        {
+            Interact();
+        }
     }
 
     void movement()
@@ -192,7 +208,7 @@ public class playerController : MonoBehaviour, IDamage
     // turn reticle red upon aiming at player
     void UpdateReticle()
     {
-        if (reticle != null)
+        if (rifleReticle != null)
         {
             Ray ray = Camera.main.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2, 0));
             RaycastHit hit;
@@ -201,19 +217,46 @@ public class playerController : MonoBehaviour, IDamage
             {
                 if (hit.collider.CompareTag("Enemy"))
                 {
-                    reticle.color = enemyColor; // reticle changes color
+                    rifleReticle.color = enemyColor; // reticle changes color (red)
                 }
                 else
                 {
-                    reticle.color = defaultColor;
+                    rifleReticle.color = defaultColor;
                 }
             }
             else
             {
-                reticle.color = defaultColor;
+                rifleReticle.color = defaultColor;
+            }
+
+            if (Physics.Raycast(ray,out hit, maxRaycastDistance))
+            {
+                if (hit.collider.CompareTag("Friend"))
+                {
+                    rifleReticle.color = friendColor; // reticle changes color (green)
+                }
+                else
+                {
+                    rifleReticle.color = defaultColor;
+                }
             }
         }
     }
+
+    void Interact()
+    {
+        if (currentInteractable != null)
+        {
+            Debug.Log("Interacting with " +  currentInteractable.name);
+
+            var item = currentInteractable.GetComponent<IInteractable>();
+            if (item != null)
+            {
+                item.OnInteract();
+            }
+        }
+    }
+
     IEnumerator flashDamage()
     {
         GameManager.instance.playerDamageScreen.SetActive(true);
