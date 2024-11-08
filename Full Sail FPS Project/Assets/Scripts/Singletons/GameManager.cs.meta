@@ -3,7 +3,19 @@ guid: 703171aeecacd2a46bc45a421d6a7c76
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - menuActive: {instanceID: 0}
+  - menuPause: {instanceID: 0}
+  - menuWin: {instanceID: 0}
+  - menuLose: {instanceID: 0}
+  - menuConfirmQuit: {instanceID: 0}
+  - menuConfirmRestart: {instanceID: 0}
+  - playerHPBar: {instanceID: 0}
+  - playerHPText: {instanceID: 0}
+  - infoText: {instanceID: 0}
+  - playerDamageScreen: {instanceID: 0}
+  - playerPoisonScreen: {instanceID: 0}
+  - player: {fileID: 1932040086678528875, guid: 742bbff536881c44db41c3cd7f7d058b, type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

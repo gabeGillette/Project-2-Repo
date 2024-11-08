@@ -24,6 +24,7 @@ public class GameManager : MonoBehaviour
     public static GameManager instance;
     public GameObject playerDamageScreen;
     public GameObject playerPoisonScreen;
+    public GameObject player;
 
 
     private int _checkPointFlags;
