@@ -1,57 +1,57 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEditor;
-using UnityEngine;
-using UnityEngine.UIElements;
+//using System.Collections;
+//using System.Collections.Generic;
+//using UnityEditor;
+//using UnityEngine;
+//using UnityEngine.UIElements;
 
-public class test_player_controller : MonoBehaviour
-{
-  private uint speed = 10;
-  [SerializeField] CharacterController characterController;
+//public class test_player_controller : MonoBehaviour
+//{
+//  private uint speed = 10;
+//  [SerializeField] CharacterController characterController;
 
-    // Start is called before the first frame update
-    void Start()
-    {
+//    // Start is called before the first frame update
+//    void Start()
+//    {
     
-    }
+//    }
 
-    // Update is called once per frame
-    void Update()
-    {
-        if(Input.GetKey(KeyCode.UpArrow))
-        {
-           characterController.Move(characterController.transform.forward * speed * Time.deltaTime);
-
-
-        }
-
-    if (Input.GetKey(KeyCode.DownArrow))
-    {
-      characterController.Move(characterController.transform.forward * (-1) * speed * Time.deltaTime);
+//    // Update is called once per frame
+//    void Update()
+//    {
+//        if(Input.GetKey(KeyCode.UpArrow))
+//        {
+//           characterController.Move(characterController.transform.forward * speed * Time.deltaTime);
 
 
-    }
+//        }
 
-    if (Input.GetKey(KeyCode.LeftArrow))
-    {
+//    if (Input.GetKey(KeyCode.DownArrow))
+//    {
+//      characterController.Move(characterController.transform.forward * (-1) * speed * Time.deltaTime);
 
-      characterController.transform.Rotate(new Vector3(0, 20 * Time.deltaTime * speed, 0));
 
-    }
+//    }
 
-    if (Input.GetKey(KeyCode.RightArrow))
-    {
+//    if (Input.GetKey(KeyCode.LeftArrow))
+//    {
 
-      characterController.transform.Rotate(new Vector3(0, -20 * Time.deltaTime * speed, 0));
+//      characterController.transform.Rotate(new Vector3(0, 20 * Time.deltaTime * speed, 0));
 
-    }
+//    }
 
-    if (Input.GetKeyDown(KeyCode.R))
-    {
+//    if (Input.GetKey(KeyCode.RightArrow))
+//    {
 
-      GameManager.instance.RespawnPlayer();
+//      characterController.transform.Rotate(new Vector3(0, -20 * Time.deltaTime * speed, 0));
 
-    }
+//    }
 
-  }
-}
+//    if (Input.GetKeyDown(KeyCode.R))
+//    {
+
+//      GameManager.instance.RespawnPlayer();
+
+//    }
+
+//  }
+//}
