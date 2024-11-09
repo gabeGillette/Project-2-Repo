@@ -218,9 +218,9 @@ public class EnemyController : MonoBehaviour, IDamage
             //    player = GameObject.FindGameObjectWithTag("Player");
 
             faceTarget();
-            playerDir = GameManager.instance.player.transform.position - headPos.position;
+            playerDir = GameManager.instance.Player.transform.position - headPos.position;
 
-            agent.SetDestination(GameManager.instance.player.transform.position);
+            agent.SetDestination(GameManager.instance.Player.transform.position);
 
             //TrySpit();
            

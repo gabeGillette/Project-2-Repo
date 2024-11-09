@@ -14,23 +14,66 @@ public class GameManager : MonoBehaviour
 {
     /*------------------------------------------------------ PRIVATE MEMBERS */
 
-    private GameObject menuActive;
+    /// <summary>
+    /// Current open menu.
+    /// </summary>
+    private GameObject _menuActive;
+
+    /// <summary>
+    /// Bitflags for active checkpoints.
+    /// </summary>
     private int _checkPointFlags;
-    private const int CHECKPOINT_MAX = 32;
+
+    /// <summary>
+    /// The max number of checkpoints we can have per stage.
+    /// </summary>
+    // Ints are a assumed to be 32 bit on most platforms.
+    private const int _CHECKPOINT_MAX = 32;
+
+    /// <summary>
+    /// How many checkpoints exist on the map.
+    /// </summary>
     private int _checkPointCount;
-    private bool _playerIsRespawning;
-    GameObject _player;
-    float timeScaleOrig;
-    bool isPaused;
+
+    /// <summary>
+    /// Player reference.
+    /// </summary>
+    private GameObject _player;
+
+    /// <summary>
+    /// Cached timescale. 
+    /// </summary>
+    private float _timeScaleOrig; // Cache me outside. </humor>
+
+    /// <summary>
+    /// Pause flag.
+    /// </summary>
+    private bool _isPaused;
+
+    /// <summary>
+    /// Singleton instance.
+    /// </summary>
     public static GameManager instance;
-    public GameObject playerDamageScreen;
-    public GameObject playerPoisonScreen;
-    public GameObject player;
+
+    /// <summary>
+    /// 
+    /// </summary>
+    
+    
+
     private PlayerState _playerState;
 
-    private CanvasGroup poisonScreenCanvasGroup;
+    private CanvasGroup _poisonScreenCanvasGroup;
+
+
 
     /*--------------------------------------------------- SERIALIZED MEMBERS */
+
+    /// <summary>
+    /// 
+    /// </summary>
+    [SerializeField] GameObject _playerDamagePanel;
+    [SerializeField] GameObject _playerPoisionPanel;
 
     [SerializeField] GameObject menuPause;
     [SerializeField] GameObject menuWin;
@@ -44,22 +87,24 @@ public class GameManager : MonoBehaviour
 
     /*---------------------------------------------------- PUBLIC PROPERTIES */
 
-    public PlayerState CurrentPlayerState => _playerState;
+    public PlayerState CachedPlayerState => _playerState;
     public GameObject Player => _player;
+    public GameObject PlayerDamagePanel => _playerDamagePanel;
+    public GameObject PlayerPoisonPanel => _playerPoisionPanel;
 
     /*--------------------------------------------------------- UNITY EVENTS */
 
     void Awake()
     {
         instance = this;
-        timeScaleOrig = Time.timeScale;
+        _timeScaleOrig = Time.timeScale;
         _player = GameObject.FindWithTag("Player");
 
         _playerState = new PlayerState();
         _checkPointFlags = 0;
         _checkPointCount = 0;
 
-        poisonScreenCanvasGroup = playerPoisonScreen.GetComponent<CanvasGroup>();
+        _poisonScreenCanvasGroup = PlayerPoisonPanel.GetComponent<CanvasGroup>();
 
     }
 
@@ -67,13 +112,13 @@ public class GameManager : MonoBehaviour
     {
         if (Input.GetButtonDown("Cancel"))
         {
-            if (menuActive == null)
+            if (_menuActive == null)
             {
                 statePause();
-                menuActive = menuPause;
-                menuActive.SetActive(true);
+                _menuActive = menuPause;
+                _menuActive.SetActive(true);
             }
-            else if (menuActive == menuPause)
+            else if (_menuActive == menuPause)
             {
                 stateUnpause();
             }
@@ -112,13 +157,13 @@ public class GameManager : MonoBehaviour
     public void youLose()
     {
         statePause();
-        menuActive = menuLose;
-        menuActive.SetActive(true);
+        _menuActive = menuLose;
+        _menuActive.SetActive(true);
     }
 
     public int RegisterCheckpoint()
     {
-        if (_checkPointCount < CHECKPOINT_MAX)
+        if (_checkPointCount < _CHECKPOINT_MAX)
         {
             _checkPointCount++;
             return _checkPointCount;
@@ -145,7 +190,7 @@ public class GameManager : MonoBehaviour
 
     public void statePause()
     {
-        isPaused = true;
+        _isPaused = true;
         Cursor.lockState = CursorLockMode.Confined;
         Cursor.visible = true;
         Time.timeScale = 0;
@@ -153,12 +198,12 @@ public class GameManager : MonoBehaviour
 
     public void stateUnpause()
     {
-        isPaused = false;
+        _isPaused = false;
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
-        Time.timeScale = timeScaleOrig;
-        if (menuActive != null) menuActive.SetActive(false);
-        menuActive = null;
+        Time.timeScale = _timeScaleOrig;
+        if (_menuActive != null) _menuActive.SetActive(false);
+        _menuActive = null;
     }
 
     public void updatePlayerHealth(int total, int max)
@@ -189,16 +234,16 @@ public class GameManager : MonoBehaviour
             menuLose.SetActive(false);
         }
         statePause();
-        menuActive = menuConfirmRestart;
-        menuActive.SetActive(true);
+        _menuActive = menuConfirmRestart;
+        _menuActive.SetActive(true);
     }
 
     public void ConfirmRestart()
     {
-        Time.timeScale = timeScaleOrig; // Reset time scale
+        Time.timeScale = _timeScaleOrig; // Reset time scale
         Scene currentScene = SceneManager.GetActiveScene();
         SceneManager.LoadScene(currentScene.name); // Reload the current level
-        menuActive = null;
+        _menuActive = null;
     }
 
 
@@ -207,7 +252,7 @@ public class GameManager : MonoBehaviour
     public void CancelRestart()
     {
         menuConfirmRestart.SetActive(false);
-        menuActive = null;
+        _menuActive = null;
     }
 
     public void ConfirmQuit()
@@ -218,20 +263,20 @@ public class GameManager : MonoBehaviour
     public void CancelQuit()
     {
         menuConfirmQuit.SetActive(false);
-        menuActive = null;
+        _menuActive = null;
         stateUnpause(); // Resume the game
     }
 
     public void WinGame()
     {
         menuWin.SetActive(true);
-        menuActive = menuWin;
+        _menuActive = menuWin;
         statePause(); // Resume the game
     }
 
     public void FadeOutPoisonScreen(float duration)
     {
-       StartCoroutine(FadeCanvasGroup(poisonScreenCanvasGroup, poisonScreenCanvasGroup.alpha, 0f, duration));
+       StartCoroutine(FadeCanvasGroup(_poisonScreenCanvasGroup, _poisonScreenCanvasGroup.alpha, 0f, duration));
     }
     private IEnumerator FadeCanvasGroup(CanvasGroup canvasGroup, float startAlpha, float endAlpha, float duration)
     {

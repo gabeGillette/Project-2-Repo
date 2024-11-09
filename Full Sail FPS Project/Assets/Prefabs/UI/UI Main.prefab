@@ -3915,9 +3915,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 703171aeecacd2a46bc45a421d6a7c76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerDamageScreen: {fileID: 5597653802093470474}
-  playerPoisonScreen: {fileID: 8397353154590567541}
-  player: {fileID: 0}
+  _playerDamagePanel: {fileID: 5597653802093470474}
+  _playerPoisionPanel: {fileID: 8397353154590567541}
   menuPause: {fileID: 7258775340287495909}
   menuWin: {fileID: 3598490939944376427}
   menuLose: {fileID: 7911646867960487087}

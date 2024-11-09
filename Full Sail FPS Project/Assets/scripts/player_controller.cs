@@ -273,17 +273,17 @@ public class playerController : MonoBehaviour, IDamage
 
     IEnumerator flashDamage()
     {
-        GameManager.instance.playerDamageScreen.SetActive(true);
+        GameManager.instance.PlayerDamagePanel.SetActive(true);
         yield return new WaitForSeconds(0.1f);
-        GameManager.instance.playerDamageScreen.SetActive(false);
+        GameManager.instance.PlayerDamagePanel.SetActive(false);
     }
 
     IEnumerator flashPoison()
     {
-        GameManager.instance.playerPoisonScreen.SetActive(true);
+        GameManager.instance.PlayerPoisonPanel.SetActive(true);
         
         yield return new WaitForSeconds(1f);
-        GameManager.instance.playerPoisonScreen.SetActive(false);
+        GameManager.instance.PlayerPoisonPanel.SetActive(false);
     }
    
 
