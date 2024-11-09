@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class damage : MonoBehaviour
 {
-    enum damageType { spit, melee, stationary}
+    public enum damageType { spit, melee, stationary}
     [SerializeField] damageType type;
     [SerializeField] Rigidbody rb;
 
@@ -13,6 +13,8 @@ public class damage : MonoBehaviour
     [SerializeField] int meleeSpeed;
     [SerializeField] int spitSpeed;
     [SerializeField] float destroyTime;
+
+
 
     // Start is called before the first frame update
     void Start()

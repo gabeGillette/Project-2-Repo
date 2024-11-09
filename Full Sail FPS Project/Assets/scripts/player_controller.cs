@@ -54,6 +54,8 @@ public class playerController : MonoBehaviour, IDamage
     public Color friendColor = Color.green;
     public float maxRaycastDistance = 100f;
 
+    private damage damageType;
+
     // UI prompt to interact
     [SerializeField] GameObject interactPromptUI;
     // Max distance to interact
@@ -164,6 +166,9 @@ public class playerController : MonoBehaviour, IDamage
     {
         // take damage
         healthPoints -= amount;
+        //If poison Damage
+        StartCoroutine(flashPoison());
+        //Else
         StartCoroutine(flashDamage());
         // update the health bar
         GameManager.instance.updatePlayerHealth(healthPoints, initHealth);

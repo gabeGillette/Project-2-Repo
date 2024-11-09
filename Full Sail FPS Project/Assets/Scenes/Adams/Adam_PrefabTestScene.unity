@@ -252,7 +252,7 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 539ad6bcd54da6944aef5879d13b487e, type: 3}
---- !u!1001 &757554494
+--- !u!1001 &684636641
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -262,15 +262,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1191421990192827819, guid: 256b7e021f91aad47bb2ee8a8e73714b, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 14.12565
+      value: 13.387527
       objectReference: {fileID: 0}
     - target: {fileID: 1191421990192827819, guid: 256b7e021f91aad47bb2ee8a8e73714b, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.009989707
+      value: 0.009988038
       objectReference: {fileID: 0}
     - target: {fileID: 1191421990192827819, guid: 256b7e021f91aad47bb2ee8a8e73714b, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 19.35668
+      value: 21.277405
       objectReference: {fileID: 0}
     - target: {fileID: 1191421990192827819, guid: 256b7e021f91aad47bb2ee8a8e73714b, type: 3}
       propertyPath: m_LocalRotation.w
@@ -303,6 +303,14 @@ PrefabInstance:
     - target: {fileID: 2000468293151364881, guid: 256b7e021f91aad47bb2ee8a8e73714b, type: 3}
       propertyPath: m_Name
       value: spitterEnemy
+      objectReference: {fileID: 0}
+    - target: {fileID: 2895214849735529810, guid: 256b7e021f91aad47bb2ee8a8e73714b, type: 3}
+      propertyPath: attackRate
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 8776002678655787875, guid: 256b7e021f91aad47bb2ee8a8e73714b, type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -557,6 +565,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: UI Main
       objectReference: {fileID: 0}
+    - target: {fileID: 8397353154590567541, guid: 1d7dca39d9bee34458b8fbc6dd7240ac, type: 3}
+      propertyPath: m_Name
+      value: PlayerPoisonDamageScreen
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -638,4 +650,4 @@ SceneRoots:
   - {fileID: 337296597}
   - {fileID: 1292179559}
   - {fileID: 2030379855}
-  - {fileID: 757554494}
+  - {fileID: 684636641}

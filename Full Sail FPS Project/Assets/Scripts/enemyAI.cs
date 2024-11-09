@@ -6,66 +6,35 @@ using UnityEngine.AI;
 
 public class EnemyController : MonoBehaviour, IDamage
 {
-    [Header("Movement and Attack")]
-    [SerializeField] float moveSpeed = 2f;
-    [SerializeField] float rotationSpeed = 5f;
-    [SerializeField] float attackRate = 2f; // Time between spits
-    [SerializeField] float attackRange = 10f; // Range to spit at player
+    [Header("Collision Detection and Models")]
     [SerializeField] GameObject spitPrefab; // The spit prefab
     [SerializeField] Transform shootPos; // Where the spit should be fired from
-   // [SerializeField] Transform player; // The player transform
-    [SerializeField] LayerMask ignoreMask; // Layer mask to ignore during attacks
+    [SerializeField] NavMeshAgent agent; //MeshAgent to allow the enemy to move along/avoid terrain
+    [SerializeField] Renderer model; //Allows the identification of the specific renderer model
+    [SerializeField] Transform headPos; //Where the enemy will base it's 'look' from and turn towards player
+    [SerializeField] Transform meleePos; //Where the melee should originate from
+    [SerializeField] GameObject melee;
 
-    private bool isSpiting = false;
+
+    [Header("Character Stats")]
+    [SerializeField] float moveSpeed;
+    [SerializeField] float rotationSpeed;
+    [SerializeField] float attackRate; // Time between spits
+    [SerializeField] float attackRange; // Range to spit at player
+    [SerializeField] int HP; //How many Hit Points the 'Character' has
+    [SerializeField] bool rangedAttacker; //Check if ranged as well as melee attacker
+
+
+    private bool isSpiting;
     private bool canSpit = true;
     private float lastSpitTime;
 
-    //MeshAgent to allow the enemy to move along/avoid terrain
-    [SerializeField] NavMeshAgent agent;
-    //Allows the identification of the specific renderer model
-    [SerializeField] Renderer model;
-    //Where the shoot object should start from
-    //  [SerializeField] Transform shootPos;
-    //Where the enemy will base it's 'look' from and turn towards player
-    [SerializeField] Transform headPos;
-    //Where the melee should originate from
-    [SerializeField] Transform meleePos;
-
-    //How many Hit Points the enemy will have
-    [SerializeField] int HP;
-    //How quickly the enemy will turn towards the player
-    [SerializeField] int faceTargetSpeed;
-
-    //Which object and physics for the spit mechanic
-    //[SerializeField] GameObject spit;
-    //Which object and physics for the melee mechanic
-    [SerializeField] GameObject melee;
-
-    //How fast the enemy can spit/shoot
-    [SerializeField] float spitRate;
-    //How fast teh enemy can melee attack
-    [SerializeField] float meleeAttackRate;
-    //Option to make any enemy ranged or just melee
-    [SerializeField] bool rangedAttacker;
-    //Range at which enemy will attempt a melee attack
-    [SerializeField] float meleeAttackRange;
-
-    ////Fields for Random Wandering Not implemented yet////
-    //[SerializeField] bool canWander; //Check if you want the enemy to wander
-    //[SerializeField] float wanderSpeed;
-    //[SerializeField] float wanderRadius;
-    //[SerializeField] float wanderTime;
-
-    //private Vector3 wanderTargetPosition;
-    //private float timer;
+    private damage.damageType currentDamageType = damage.damageType.melee;
 
 
-    // private GameObject player;
-
-    Color colorOrig;
+    Color colorOrig; //Placeholder to allow for color changes during damage
 
     bool playerInMovementRange; //See if the player is within the sphere collider to start moving towards player
-                                // bool canSpit;  //Only is true if player is within movement range, will turn true for all characters
 
 
     // bool isSpiting; //Check is enemy is ranged attacking
@@ -80,8 +49,8 @@ public class EnemyController : MonoBehaviour, IDamage
     void Start()
     {
         
-        //Setting the original color so we can change it later to show damage
-        colorOrig = model.material.color;
+        colorOrig = model.material.color; //Setting the original color so we can change it later to show damage
+
 
     }
 
@@ -113,23 +82,14 @@ public class EnemyController : MonoBehaviour, IDamage
 
     }
 
-    // This method checks if the enemy can spit and if it's time to do so
-    //private void TrySpit()
-    //{
-    //    if (canSpit && !isSpiting && Vector3.Distance(transform.position, GameManager.instance.player.transform.position) <= attackRange)
-    //    {
-    //        Debug.Log("Ready to spit! Starting shoot coroutine...");
-    //        if (shootPos != null && spitPrefab != null)
-    //        {
-    //            StartCoroutine(Shoot());
-    //        }
-    //    }
-    //}
+
+     public damage.damageType GetDamageType() { return currentDamageType; }
+     public void SetDamageType(damage.damageType newDamageType) { currentDamageType = newDamageType; }
 
     private void LookAtPlayer()
     {
         Quaternion rot = Quaternion.LookRotation(playerDir);
-        transform.rotation = Quaternion.Lerp(transform.rotation, rot, Time.deltaTime * faceTargetSpeed);
+        transform.rotation = Quaternion.Lerp(transform.rotation, rot, Time.deltaTime * rotationSpeed);
 
         //Vector3 directionToPlayer = GameManager.instance.player.transform.position - transform.position;
         //directionToPlayer.y = 0; // Keep the y-axis unaffected (keep enemy upright)
@@ -141,24 +101,25 @@ public class EnemyController : MonoBehaviour, IDamage
     private IEnumerator Shoot()
     {
         isSpiting = true;
+        SetDamageType(damage.damageType.spit);
         Debug.Log("Spitting at player.");
 
         // Instantiate the spit prefab at the shoot position with the correct rotation
-        GameObject spitInstance = Instantiate(spitPrefab, shootPos.position, transform.rotation);
-        Debug.Log($"Instantiating spit at position: {shootPos.position}");
+        Instantiate(spitPrefab, shootPos.position, transform.rotation);
+        //Debug.Log($"Instantiating spit at position: {shootPos.position}");
 
-        // Check if the spit has a Rigidbody for movement
-        Rigidbody spitRb = spitInstance.GetComponent<Rigidbody>();
-        if (spitRb != null)
-        {
-            spitRb.velocity = transform.forward * 10f; // Adjust speed here
-            Debug.Log("Spit moving towards the player.");
-        }
+        //// Check if the spit has a Rigidbody for movement
+        //Rigidbody spitRb = spitInstance.GetComponent<Rigidbody>();
+        //if (spitRb != null)
+        //{
+        //    spitRb.velocity = transform.forward * 10f; // Adjust speed here
+        //    Debug.Log("Spit moving towards the player.");
+        //}
 
         // Wait for the specified rate before allowing another spit
         yield return new WaitForSeconds(attackRate);
         isSpiting = false;
-        canSpit = true;
+        //canSpit = true;
     }
 
     // This is the trigger detection for the spit hitting something
@@ -232,21 +193,21 @@ public class EnemyController : MonoBehaviour, IDamage
     //}
 
     //Allows enemy to do a melee attack if within range
-    IEnumerator meleeAttack()
-    {
-        isMeleeAttacking = true;
+    //IEnumerator meleeAttack()
+    //{
+    //    isMeleeAttacking = true;
 
-        Instantiate(melee, shootPos.position, transform.rotation);
+    //    Instantiate(melee, shootPos.position, transform.rotation);
 
-        yield return new WaitForSeconds(meleeAttackRate);
-        isMeleeAttacking = false;
-    }
+    //    yield return new WaitForSeconds(meleeAttackRate);
+    //    isMeleeAttacking = false;
+    //}
 
     //Makes the enemy always look towards the player smoothly
     void faceTarget()
     {
         Quaternion rot = Quaternion.LookRotation(playerDir);
-        transform.rotation = Quaternion.Lerp(transform.rotation, rot, Time.deltaTime * faceTargetSpeed);
+        transform.rotation = Quaternion.Lerp(transform.rotation, rot, Time.deltaTime * rotationSpeed);
     }
 
     //Process to move towards player and turn/face in the proper direction

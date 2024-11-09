@@ -72,15 +72,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 2e3fc7e5f8867a143bd010a64f435d4a, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 14.12565
+      value: 13.387527
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 2e3fc7e5f8867a143bd010a64f435d4a, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.009989707
+      value: 0.009988038
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 2e3fc7e5f8867a143bd010a64f435d4a, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 19.35668
+      value: 21.277405
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 2e3fc7e5f8867a143bd010a64f435d4a, type: 3}
       propertyPath: m_LocalRotation.w
@@ -136,9 +136,6 @@ PrefabInstance:
       addedObject: {fileID: -1344444323926992281}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 2e3fc7e5f8867a143bd010a64f435d4a, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 3970612844042823276}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 2e3fc7e5f8867a143bd010a64f435d4a, type: 3}
-      insertIndex: -1
       addedObject: {fileID: 4872962099442003902}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 2e3fc7e5f8867a143bd010a64f435d4a, type: 3}
       insertIndex: -1
@@ -146,6 +143,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 2e3fc7e5f8867a143bd010a64f435d4a, type: 3}
       insertIndex: -1
       addedObject: {fileID: 3851602374540915918}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 2e3fc7e5f8867a143bd010a64f435d4a, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6987434478940517777}
   m_SourcePrefab: {fileID: 100100000, guid: 2e3fc7e5f8867a143bd010a64f435d4a, type: 3}
 --- !u!1 &2000468293151364881 stripped
 GameObject:
@@ -164,26 +164,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8dad6379410d7ba4f8c187286bb2cfaf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 2
-  rotationSpeed: 5
-  attackRate: 2
-  attackRange: 10
   spitPrefab: {fileID: 7961641615730851448, guid: 44ced99c337aa094583adc3bdc78ee67, type: 3}
   shootPos: {fileID: 3234226723397055002}
-  ignoreMask:
-    serializedVersion: 2
-    m_Bits: 128
   agent: {fileID: -1344444323926992281}
   model: {fileID: 4872962099442003902}
   headPos: {fileID: 8051620491310816198}
   meleePos: {fileID: 8899758987412374690}
-  HP: 3
-  faceTargetSpeed: 5
   melee: {fileID: 7222818553318368160, guid: 8e08976b5e2fa544e8548940044fa782, type: 3}
-  spitRate: 2
-  meleeAttackRate: 3
+  moveSpeed: 2
+  rotationSpeed: 5
+  attackRate: 4
+  attackRange: 10
+  HP: 3
   rangedAttacker: 1
-  meleeAttackRange: 2
 --- !u!195 &-1344444323926992281
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -206,14 +199,6 @@ NavMeshAgent:
   m_BaseOffset: 0.010100698
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!33 &3970612844042823276
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2000468293151364881}
-  m_Mesh: {fileID: 5461320835613783329, guid: 2e3fc7e5f8867a143bd010a64f435d4a, type: 3}
 --- !u!23 &4872962099442003902
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -273,7 +258,7 @@ MeshCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 5
   m_Convex: 0
   m_CookingOptions: 30
@@ -299,6 +284,29 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 15
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!136 &6987434478940517777
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2000468293151364881}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Height: 2
+  m_Direction: 1
+  m_Center: {x: 0, y: 1, z: 0}
 --- !u!4 &8051620491310816198 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8700783698680967558, guid: 2e3fc7e5f8867a143bd010a64f435d4a, type: 3}

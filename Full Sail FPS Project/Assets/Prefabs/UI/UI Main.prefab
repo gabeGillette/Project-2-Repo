@@ -4230,7 +4230,7 @@ GameObject:
   - component: {fileID: 6938015019224304734}
   - component: {fileID: 6472223844041719595}
   m_Layer: 5
-  m_Name: PlayerDamageScreen (1)
+  m_Name: PlayerPoisonDamageScreen
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
