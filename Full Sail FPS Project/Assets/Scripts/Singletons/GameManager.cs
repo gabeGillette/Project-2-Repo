@@ -1,7 +1,7 @@
 // GameManager
 // Desc: Singleton Class that handles top-level gameplay priorities.
 // Authors: Gabriel Gillette, Kenton Weaver, Adam McKee
-// Last Modified: Nov, 8 2024
+// Last Modified: Nov, 9 2024
 
 using System;
 using System.Collections;
