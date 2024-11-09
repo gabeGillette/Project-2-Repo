@@ -29,7 +29,7 @@ public class EnemyController : MonoBehaviour, IDamage
     private bool canSpit = true;
     private float lastSpitTime;
 
-    private damage.damageType currentDamageType = damage.damageType.melee;
+    public damage.damageType currentDamageType = damage.damageType.melee;
 
 
     Color colorOrig; //Placeholder to allow for color changes during damage

@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Security.Cryptography;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -54,7 +55,7 @@ public class playerController : MonoBehaviour, IDamage
     public Color friendColor = Color.green;
     public float maxRaycastDistance = 100f;
 
-    private damage damageType;
+    private damage.damageType enemyDamageType;
 
     // UI prompt to interact
     [SerializeField] GameObject interactPromptUI;
@@ -164,12 +165,20 @@ public class playerController : MonoBehaviour, IDamage
 
     public void TakeDamage(int amount)
     {
+        
         // take damage
         healthPoints -= amount;
         //If poison Damage
-        StartCoroutine(flashPoison());
-        //Else
-        StartCoroutine(flashDamage());
+        if (enemyDamageType == damage.damageType.spit)
+        {
+            StartCoroutine(flashPoison());
+           // GameManager.instance.FadeOutPoisonScreen(1.5f);
+
+        }
+        else
+        {
+            StartCoroutine(flashDamage());
+        }
         // update the health bar
         GameManager.instance.updatePlayerHealth(healthPoints, initHealth);
 
@@ -272,7 +281,11 @@ public class playerController : MonoBehaviour, IDamage
     IEnumerator flashPoison()
     {
         GameManager.instance.playerPoisonScreen.SetActive(true);
-        yield return new WaitForSeconds(2f);
+        
+        yield return new WaitForSeconds(1f);
         GameManager.instance.playerPoisonScreen.SetActive(false);
     }
+   
+
+
 }

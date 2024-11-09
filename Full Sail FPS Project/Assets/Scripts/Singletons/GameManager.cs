@@ -28,6 +28,8 @@ public class GameManager : MonoBehaviour
     public GameObject player;
     private PlayerState _playerState;
 
+    private CanvasGroup poisonScreenCanvasGroup;
+
     /*--------------------------------------------------- SERIALIZED MEMBERS */
 
     [SerializeField] GameObject menuPause;
@@ -56,6 +58,9 @@ public class GameManager : MonoBehaviour
         _playerState = new PlayerState();
         _checkPointFlags = 0;
         _checkPointCount = 0;
+
+        poisonScreenCanvasGroup = playerPoisonScreen.GetComponent<CanvasGroup>();
+
     }
 
     void Update()
@@ -222,5 +227,25 @@ public class GameManager : MonoBehaviour
         menuWin.SetActive(true);
         menuActive = menuWin;
         statePause(); // Resume the game
+    }
+
+    public void FadeOutPoisonScreen(float duration)
+    {
+       StartCoroutine(FadeCanvasGroup(poisonScreenCanvasGroup, poisonScreenCanvasGroup.alpha, 0f, duration));
+    }
+    private IEnumerator FadeCanvasGroup(CanvasGroup canvasGroup, float startAlpha, float endAlpha, float duration)
+    {
+        float timeElapsed = 0f;
+
+        while (timeElapsed < duration)
+        {
+            // Interpolate the alpha value
+            canvasGroup.alpha = Mathf.Lerp(startAlpha, endAlpha, timeElapsed / duration);
+            timeElapsed += Time.deltaTime;
+            yield return null;
+        }
+
+        // Make sure we set the final alpha
+        canvasGroup.alpha = endAlpha;
     }
 }
