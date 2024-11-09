@@ -13,7 +13,7 @@ public class EnemyController : MonoBehaviour, IDamage
     [SerializeField] float attackRange = 10f; // Range to spit at player
     [SerializeField] GameObject spitPrefab; // The spit prefab
     [SerializeField] Transform shootPos; // Where the spit should be fired from
-    [SerializeField] Transform player; // The player transform
+   // [SerializeField] Transform player; // The player transform
     [SerializeField] LayerMask ignoreMask; // Layer mask to ignore during attacks
 
     private bool isSpiting = false;
@@ -37,7 +37,7 @@ public class EnemyController : MonoBehaviour, IDamage
     [SerializeField] int faceTargetSpeed;
 
     //Which object and physics for the spit mechanic
-    [SerializeField] GameObject spit;
+    //[SerializeField] GameObject spit;
     //Which object and physics for the melee mechanic
     [SerializeField] GameObject melee;
 
@@ -87,19 +87,26 @@ public class EnemyController : MonoBehaviour, IDamage
 
     private void Update()
     {
-        if (player != null)
+        if (playerInMovementRange)
         {
-            LookAtPlayer();
-            TrySpit();
-        }
+            moveTowardsPlayer();
+            
+            //LookAtPlayer();
+            //TrySpit();
 
-        else if (playerInMeleeRange)
-        {
-            if (!isMeleeAttacking)
+            if (!isSpiting)
             {
-                StartCoroutine(meleeAttack());
+                StartCoroutine(Shoot());
             }
         }
+
+        //else if (playerInMeleeRange)
+        //{
+        //    if (!isMeleeAttacking)
+        //    {
+        //        StartCoroutine(meleeAttack());
+        //    }
+        //}
 
 
 
@@ -107,24 +114,27 @@ public class EnemyController : MonoBehaviour, IDamage
     }
 
     // This method checks if the enemy can spit and if it's time to do so
-    private void TrySpit()
-    {
-        if (canSpit && !isSpiting && Vector3.Distance(transform.position, player.position) <= attackRange)
-        {
-            Debug.Log("Ready to spit! Starting shoot coroutine...");
-            if (shootPos != null && spitPrefab != null)
-            {
-                StartCoroutine(Shoot());
-            }
-        }
-    }
+    //private void TrySpit()
+    //{
+    //    if (canSpit && !isSpiting && Vector3.Distance(transform.position, GameManager.instance.player.transform.position) <= attackRange)
+    //    {
+    //        Debug.Log("Ready to spit! Starting shoot coroutine...");
+    //        if (shootPos != null && spitPrefab != null)
+    //        {
+    //            StartCoroutine(Shoot());
+    //        }
+    //    }
+    //}
 
     private void LookAtPlayer()
     {
-        Vector3 directionToPlayer = player.position - transform.position;
-        directionToPlayer.y = 0; // Keep the y-axis unaffected (keep enemy upright)
-        Quaternion rotation = Quaternion.LookRotation(directionToPlayer);
-        transform.rotation = Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime * rotationSpeed);
+        Quaternion rot = Quaternion.LookRotation(playerDir);
+        transform.rotation = Quaternion.Lerp(transform.rotation, rot, Time.deltaTime * faceTargetSpeed);
+
+        //Vector3 directionToPlayer = GameManager.instance.player.transform.position - transform.position;
+        //directionToPlayer.y = 0; // Keep the y-axis unaffected (keep enemy upright)
+        //Quaternion rotation = Quaternion.LookRotation(directionToPlayer);
+        //transform.rotation = Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime * rotationSpeed);
     }
 
     // Coroutine to handle the spit action
@@ -210,16 +220,16 @@ public class EnemyController : MonoBehaviour, IDamage
     }
 
     //Process to start spitting/shooting
-    IEnumerator shoot()
-    {
+    //IEnumerator shoot()
+    //{
 
-        isSpiting = true;
+    //    isSpiting = true;
 
-        Instantiate(spit, shootPos.position, transform.rotation);
+    //    Instantiate(spitPrefab, shootPos.position, transform.rotation);
 
-        yield return new WaitForSeconds(spitRate);
-        isSpiting = false;
-    }
+    //    yield return new WaitForSeconds(spitRate);
+    //    isSpiting = false;
+    //}
 
     //Allows enemy to do a melee attack if within range
     IEnumerator meleeAttack()
@@ -245,23 +255,25 @@ public class EnemyController : MonoBehaviour, IDamage
         if (playerInMovementRange)
         {
             //    player = GameObject.FindGameObjectWithTag("Player");
-            playerDir = player.transform.position - headPos.position;
 
+            faceTarget();
+            playerDir = GameManager.instance.player.transform.position - headPos.position;
 
+            agent.SetDestination(GameManager.instance.player.transform.position);
 
-            //agent.SetDestination(player.transform.position);
-            canSpit = true;
+            //TrySpit();
+           
         }
         //   if (agent.remainingDistance <= agent.stoppingDistance)
-        {
-            faceTarget();
-            canSpit = false;
-        }
+        //{
+        //    faceTarget();
+        //    canSpit = false;
+        //}
         //   if(agent.remainingDistance >= meleeAttackRange && playerInMovementRange)
-        {
-            playerInMeleeRange = true;
+        //{
+        //    playerInMeleeRange = true;
 
-        }
+        //}
 
 
     }
