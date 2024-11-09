@@ -69,7 +69,7 @@ public class GameManager : MonoBehaviour
     /// <summary>
     /// Player reference.
     /// </summary>
-    private GameObject _player;
+    private playerController _player;
 
     /// <summary>
     /// Cached timescale. 
@@ -148,7 +148,7 @@ public class GameManager : MonoBehaviour
     /// <summary>
     /// Access reference to player.
     /// </summary>
-    public GameObject Player => _player;
+    public GameObject Player => _player.gameObject;
 
     /// <summary>
     /// Access Damage Panel;
@@ -174,9 +174,10 @@ public class GameManager : MonoBehaviour
     {
         _instance = this;
         _timeScaleOrig = Time.timeScale;
-        _player = GameObject.FindWithTag("Player");
+        _player = GameObject.FindWithTag("Player").GetComponent<playerController>();
 
         _playerState = new PlayerState();
+        _playerState.SetFromPlayer(_player, true);
         _checkPointFlags = 0;
         _checkPointCount = 0;
 
@@ -216,27 +217,18 @@ public class GameManager : MonoBehaviour
 
     /*------------------------------------------------------- PUBLIC METHODS */
 
+    /// <summary>
+    /// Respawn player at last CheckPoint
+    /// </summary>
     [Obsolete] public void RespawnPlayer()
-    {
-        // TODO: DELETE ME!
-        /*if (!_playerIsRespawning)
-        {
-            _playerIsRespawning = true;
-
-            Debug.LogWarning(_playerState.Position);
-            _player.transform.SetPositionAndRotation(_playerState.Position, _playerState.Rotation);
-            _player.GetComponent<playerController>().Health = 5;
-            _playerIsRespawning = false;
-        }*/
+    {        
         RespawnPlayer(true);
     }
 
     public void RespawnPlayer(bool LastCheckPoint)
     {
         Debug.Log("Player Respawned");
-        //_player.transform.SetPositionAndRotation(_playerState.Position, _playerState.Rotation);
-        _player.GetComponent<playerController>().Health = 5;
-        
+        _playerState.ReflectToPlayer(ref _player, true);
     }
 
     public void youLose()
@@ -267,9 +259,8 @@ public class GameManager : MonoBehaviour
         if ((flag & _checkPointFlags) == 0)
         {
             _checkPointFlags |= flag;
-            //_playerState.Position = _player.transform.position;
-            //_playerState.Rotation = _player.transform.rotation;
-            //_playerState.ActiveCheckpointID = index;
+
+            _playerState.SetFromPlayer(_player, true);
         }
     }
 
@@ -334,8 +325,6 @@ public class GameManager : MonoBehaviour
         Cursor.visible = false;
         Time.timeScale = _timeScaleOrig;
         OpenMenu(MENU.NONE);
-        //if (_menuActive != null) _menuActive.SetActive(false);
-        //_menuActive = null;
     }
 
     public void updatePlayerHealth(int total, int max)
@@ -350,7 +339,7 @@ public class GameManager : MonoBehaviour
         StartCoroutine(_displayInfo(msg, 5));
     }
 
-    IEnumerator _displayInfo(string msg, float time)
+    private IEnumerator _displayInfo(string msg, float time)
     {
         /*infoText.gameObject.SetActive(true);
         infoText.text = msg;*/
@@ -360,23 +349,19 @@ public class GameManager : MonoBehaviour
 
     public void restartlevel()
     {
-        
-        if (_menuLose != null)
-        {
-            _menuLose.SetActive(false);
-        }
-        statePause();
-        _menuActive = _menuConfirmRestart;
-        _menuActive.SetActive(true);
+        Time.timeScale = _timeScaleOrig; // Reset time scale
+        Scene currentScene = SceneManager.GetActiveScene();
+        SceneManager.LoadScene(currentScene.name); // Reload the current level
     }
 
-    public void ConfirmRestart()
+
+    /*public void ConfirmRestart()
     {
         Time.timeScale = _timeScaleOrig; // Reset time scale
         Scene currentScene = SceneManager.GetActiveScene();
         SceneManager.LoadScene(currentScene.name); // Reload the current level
         _menuActive = null;
-    }
+    }*/
 
 
     // ------------ MENU STUFF
