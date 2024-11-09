@@ -19,6 +19,7 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public enum MENU
     {
+        PREV = -1,
         NONE = 0,
         PAUSE = 1,
         LOSE = 2,
@@ -198,7 +199,7 @@ public class GameManager : MonoBehaviour
             }
             else if(_activeMenu > MENU.PAUSE)
             {
-                OpenMenu(_prevMenu);
+                OpenMenu(MENU.PREV);
             }
             else if(_activeMenu == MENU.PAUSE)
             {
@@ -274,35 +275,47 @@ public class GameManager : MonoBehaviour
 
     public void OpenMenu(MENU menu)
     {
-        _prevMenu = _activeMenu;
-        _activeMenu = menu;
-        switch(menu)
+        if (menu < MENU.NONE)
         {
-            case MENU.PAUSE:
-                _menuActive = _menuPause;
-                _menuActive.SetActive(true);
-                break;
-            case MENU.LOSE:
-                _menuActive = _menuLose;
-                _menuActive.SetActive(true);
-                break;
-            case MENU.WIN:
-                _menuActive = _menuWin;
-                _menuActive.SetActive(true);
-                break;
-            case MENU.CONFIRM_QUIT:
-                _menuActive = _menuConfirmQuit;
-                _menuActive.SetActive(true);
-                break;
-            case MENU.CONFIRM_RESTART:
-                _menuActive = _menuConfirmRestart;
-                _menuActive.SetActive(true);
-                break;
-
-            case MENU.NONE:
-            default:
+            OpenMenu(_prevMenu);
+        }
+        else 
+        {
+            if(_menuActive != null)
+            {
                 _menuActive.SetActive(false);
-                break;
+            }
+
+            _prevMenu = _activeMenu;
+            _activeMenu = menu;
+            switch (menu)
+            {
+                case MENU.PAUSE:
+                    _menuActive = _menuPause;
+                    _menuActive.SetActive(true);
+                    break;
+                case MENU.LOSE:
+                    _menuActive = _menuLose;
+                    _menuActive.SetActive(true);
+                    break;
+                case MENU.WIN:
+                    _menuActive = _menuWin;
+                    _menuActive.SetActive(true);
+                    break;
+                case MENU.CONFIRM_QUIT:
+                    _menuActive = _menuConfirmQuit;
+                    _menuActive.SetActive(true);
+                    break;
+                case MENU.CONFIRM_RESTART:
+                    _menuActive = _menuConfirmRestart;
+                    _menuActive.SetActive(true);
+                    break;
+
+                case MENU.NONE:
+                default:
+                    _menuActive.SetActive(false);
+                    break;
+            }
         }
     }
 
@@ -388,8 +401,7 @@ public class GameManager : MonoBehaviour
 
     public void WinGame()
     {
-        _menuWin.SetActive(true);
-        _menuActive = _menuWin;
+        OpenMenu(MENU.WIN);
         statePause(); // Resume the game
     }
 
@@ -397,6 +409,17 @@ public class GameManager : MonoBehaviour
     {
        StartCoroutine(FadeCanvasGroup(_poisonScreenCanvasGroup, _poisonScreenCanvasGroup.alpha, 0f, duration));
     }
+
+    public void QuitGame()
+    {
+        Debug.Log("Exiting the game...");
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#else
+        Application.Quit();
+#endif
+    }
+
     private IEnumerator FadeCanvasGroup(CanvasGroup canvasGroup, float startAlpha, float endAlpha, float duration)
     {
         float timeElapsed = 0f;

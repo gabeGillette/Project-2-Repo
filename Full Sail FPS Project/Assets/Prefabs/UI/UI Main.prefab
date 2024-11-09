@@ -1424,7 +1424,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 4910186864429688728}
         m_TargetAssemblyTypeName: ButtonFunctions, Assembly-CSharp
-        m_MethodName: Restart
+        m_MethodName: ButRestartLevel
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2493,7 +2493,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 4910186864429688728}
         m_TargetAssemblyTypeName: ButtonFunctions, Assembly-CSharp
-        m_MethodName: Resume
+        m_MethodName: ButContinueGame
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3044,7 +3044,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 4910186864429688728}
         m_TargetAssemblyTypeName: ButtonFunctions, Assembly-CSharp
-        m_MethodName: LastCheckPoint
+        m_MethodName: ButLastCheckPoint
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -4547,7 +4547,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 4910186864429688728}
         m_TargetAssemblyTypeName: ButtonFunctions, Assembly-CSharp
-        m_MethodName: LastCheckPoint
+        m_MethodName: ButLastCheckPoint
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -5081,7 +5081,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 4910186864429688728}
         m_TargetAssemblyTypeName: ButtonFunctions, Assembly-CSharp
-        m_MethodName: Restart
+        m_MethodName: ButRestartLevel
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -5480,7 +5480,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 4910186864429688728}
         m_TargetAssemblyTypeName: ButtonFunctions, Assembly-CSharp
-        m_MethodName: Restart
+        m_MethodName: ButRestartLevel
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
