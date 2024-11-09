@@ -80,7 +80,7 @@ public class enemyAI : MonoBehaviour, IDamage
     bool canSeePlayer()
     {
         // I had to inverse the players y to get this to work, no idea why.
-        playerDir = new Vector3(GameManager.instance.Player.transform.position.x, -GameManager.instance.Player.transform.position.y, GameManager.instance.Player.transform.position.z) - transform.position;
+        playerDir = new Vector3(GameManager.Instance.Player.transform.position.x, -GameManager.Instance.Player.transform.position.y, GameManager.Instance.Player.transform.position.z) - transform.position;
         angleToPlayer = Vector3.Angle(playerDir, transform.forward);
         //Debug.DrawLine(headPos.position, GameManager.instance.player.transform.position);
         Debug.DrawRay(headPos.position, playerDir, Color.yellow);
@@ -90,7 +90,7 @@ public class enemyAI : MonoBehaviour, IDamage
         {
             if (hit.collider.CompareTag("Player") && angleToPlayer <= viewAngle)
             {
-                agent.destination = GameManager.instance.Player.transform.position;
+                agent.destination = GameManager.Instance.Player.transform.position;
 
                 if (agent.remainingDistance <= agent.stoppingDistance)
                 {
@@ -113,7 +113,7 @@ public class enemyAI : MonoBehaviour, IDamage
     public void TakeDamage(int damage)
     {
         health -= damage;
-        agent.destination = GameManager.instance.Player.transform.position;
+        agent.destination = GameManager.Instance.Player.transform.position;
         StartCoroutine(flashColor());
         if (health <= 0)
         {

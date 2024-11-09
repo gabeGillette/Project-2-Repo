@@ -53,7 +53,7 @@ public class GameManager : MonoBehaviour
     /// <summary>
     /// Singleton instance.
     /// </summary>
-    public static GameManager instance;
+    private static GameManager _instance;
 
     /// <summary>
     /// 
@@ -92,11 +92,13 @@ public class GameManager : MonoBehaviour
     public GameObject PlayerDamagePanel => _playerDamagePanel;
     public GameObject PlayerPoisonPanel => _playerPoisionPanel;
 
+    public static GameManager Instance => _instance;
+
     /*--------------------------------------------------------- UNITY EVENTS */
 
     void Awake()
     {
-        instance = this;
+        _instance = this;
         _timeScaleOrig = Time.timeScale;
         _player = GameObject.FindWithTag("Player");
 

@@ -5,37 +5,37 @@ public class ButtonFunctions : MonoBehaviour
 {
     public void Resume()
     {
-        GameManager.instance.stateUnpause();
+        GameManager.Instance.stateUnpause();
     }
 
     public void Restart()
     {
-        GameManager.instance.restartlevel();
+        GameManager.Instance.restartlevel();
     }
 
     public void LastCheckPoint()
     {
-        GameManager.instance.RespawnPlayer();
+        GameManager.Instance.RespawnPlayer();
     }
 
     public void ConfirmQuitY()
     {
-        GameManager.instance.ConfirmQuit();
+        GameManager.Instance.ConfirmQuit();
     }
 
     public void ConfirmQuitN()
     {
-        GameManager.instance.CancelQuit();
+        GameManager.Instance.CancelQuit();
     }
 
     public void ConfirmRestartY()
     {
-        GameManager.instance.ConfirmRestart();
+        GameManager.Instance.ConfirmRestart();
     }
 
     public void ConfirmRestartN()
     {
-        GameManager.instance.CancelRestart();
+        GameManager.Instance.CancelRestart();
     }
 
     public void Quit()

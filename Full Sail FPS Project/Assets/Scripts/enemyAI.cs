@@ -164,7 +164,7 @@ public class EnemyController : MonoBehaviour, IDamage
     {
         HP -= amount;
         StartCoroutine(damageFlash());
-        agent.SetDestination(GameManager.instance.Player.transform.position);
+        agent.SetDestination(GameManager.Instance.Player.transform.position);
         if (HP <= 0)
         {
             Destroy(gameObject);
@@ -218,9 +218,9 @@ public class EnemyController : MonoBehaviour, IDamage
             //    player = GameObject.FindGameObjectWithTag("Player");
 
             faceTarget();
-            playerDir = GameManager.instance.Player.transform.position - headPos.position;
+            playerDir = GameManager.Instance.Player.transform.position - headPos.position;
 
-            agent.SetDestination(GameManager.instance.Player.transform.position);
+            agent.SetDestination(GameManager.Instance.Player.transform.position);
 
             //TrySpit();
            

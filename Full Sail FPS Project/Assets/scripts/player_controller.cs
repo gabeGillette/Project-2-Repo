@@ -76,7 +76,7 @@ public class playerController : MonoBehaviour, IDamage
         initHealth = healthPoints;
 
         // update the health bar
-        GameManager.instance.updatePlayerHealth(healthPoints, initHealth);
+        GameManager.Instance.updatePlayerHealth(healthPoints, initHealth);
     }
 
     // Update is called once per frame
@@ -180,13 +180,13 @@ public class playerController : MonoBehaviour, IDamage
             StartCoroutine(flashDamage());
         }
         // update the health bar
-        GameManager.instance.updatePlayerHealth(healthPoints, initHealth);
+        GameManager.Instance.updatePlayerHealth(healthPoints, initHealth);
 
         // death event
         if (healthPoints <= 0)
         {
             //GameManager.instance.youLose();
-            GameManager.instance.RespawnPlayer();
+            GameManager.Instance.RespawnPlayer();
         }
     }
 
@@ -273,17 +273,17 @@ public class playerController : MonoBehaviour, IDamage
 
     IEnumerator flashDamage()
     {
-        GameManager.instance.PlayerDamagePanel.SetActive(true);
+        GameManager.Instance.PlayerDamagePanel.SetActive(true);
         yield return new WaitForSeconds(0.1f);
-        GameManager.instance.PlayerDamagePanel.SetActive(false);
+        GameManager.Instance.PlayerDamagePanel.SetActive(false);
     }
 
     IEnumerator flashPoison()
     {
-        GameManager.instance.PlayerPoisonPanel.SetActive(true);
+        GameManager.Instance.PlayerPoisonPanel.SetActive(true);
         
         yield return new WaitForSeconds(1f);
-        GameManager.instance.PlayerPoisonPanel.SetActive(false);
+        GameManager.Instance.PlayerPoisonPanel.SetActive(false);
     }
    
 
