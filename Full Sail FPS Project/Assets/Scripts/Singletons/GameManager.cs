@@ -1,3 +1,9 @@
+// GameManager
+// Desc: Singleton Class that handles top-level gameplay priorities.
+// Authors: Gabriel Gillette, Kenton Weaver, Adam McKee
+// Last Modified: Nov, 8 2024
+
+using System;
 using System.Collections;
 using TMPro;
 using UnityEngine;
@@ -6,7 +12,24 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
-    [SerializeField] GameObject menuActive;
+    /*------------------------------------------------------ PRIVATE MEMBERS */
+
+    private GameObject menuActive;
+    private int _checkPointFlags;
+    private const int CHECKPOINT_MAX = 32;
+    private int _checkPointCount;
+    private bool _playerIsRespawning;
+    GameObject _player;
+    float timeScaleOrig;
+    bool isPaused;
+    public static GameManager instance;
+    public GameObject playerDamageScreen;
+    public GameObject playerPoisonScreen;
+    public GameObject player;
+    private PlayerState _playerState;
+
+    /*--------------------------------------------------- SERIALIZED MEMBERS */
+
     [SerializeField] GameObject menuPause;
     [SerializeField] GameObject menuWin;
     [SerializeField] GameObject menuLose;
@@ -17,25 +40,12 @@ public class GameManager : MonoBehaviour
     [SerializeField] TMP_Text infoText;
     [SerializeField] float infoTime;
 
-    GameObject _player;
-    float timeScaleOrig;
-    bool isPaused;
+    /*---------------------------------------------------- PUBLIC PROPERTIES */
 
-    public static GameManager instance;
-    public GameObject playerDamageScreen;
-    public GameObject playerPoisonScreen;
-    public GameObject player;
-
-
-    private int _checkPointFlags;
-    private const int CHECKPOINT_MAX = 32;
-    private int _checkPointCount;
-
-    private PlayerState _playerState;
     public PlayerState CurrentPlayerState => _playerState;
     public GameObject Player => _player;
 
-    private bool _playerIsRespawning;
+    /*--------------------------------------------------------- UNITY EVENTS */
 
     void Awake()
     {
@@ -65,9 +75,16 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void RespawnPlayer()
+    /*------------------------------------------------------ PRIVATE METHODS */
+
+
+
+    /*------------------------------------------------------- PUBLIC METHODS */
+
+    [Obsolete] public void RespawnPlayer()
     {
-        if (!_playerIsRespawning)
+        // TODO: DELETE ME!
+        /*if (!_playerIsRespawning)
         {
             _playerIsRespawning = true;
 
@@ -75,7 +92,16 @@ public class GameManager : MonoBehaviour
             _player.transform.SetPositionAndRotation(_playerState.Position, _playerState.Rotation);
             _player.GetComponent<playerController>().Health = 5;
             _playerIsRespawning = false;
-        }
+        }*/
+        RespawnPlayer(true);
+    }
+
+    public void RespawnPlayer(bool LastCheckPoint)
+    {
+        Debug.Log("Player Respawned");
+        //_player.transform.SetPositionAndRotation(_playerState.Position, _playerState.Rotation);
+        _player.GetComponent<playerController>().Health = 5;
+        
     }
 
     public void youLose()
@@ -106,9 +132,9 @@ public class GameManager : MonoBehaviour
         if ((flag & _checkPointFlags) == 0)
         {
             _checkPointFlags |= flag;
-            _playerState.Position = _player.transform.position;
-            _playerState.Rotation = _player.transform.rotation;
-            _playerState.ActiveCheckpointID = index;
+            //_playerState.Position = _player.transform.position;
+            //_playerState.Rotation = _player.transform.rotation;
+            //_playerState.ActiveCheckpointID = index;
         }
     }
 
@@ -169,6 +195,9 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadScene(currentScene.name); // Reload the current level
         menuActive = null;
     }
+
+
+    // ------------ MENU STUFF
 
     public void CancelRestart()
     {
