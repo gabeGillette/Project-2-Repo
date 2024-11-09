@@ -72,15 +72,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 2e3fc7e5f8867a143bd010a64f435d4a, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -2.932572
+      value: 14.12565
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 2e3fc7e5f8867a143bd010a64f435d4a, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.009987799
+      value: 0.009989707
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 2e3fc7e5f8867a143bd010a64f435d4a, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -11.7
+      value: 19.35668
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 2e3fc7e5f8867a143bd010a64f435d4a, type: 3}
       propertyPath: m_LocalRotation.w
@@ -164,14 +164,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8dad6379410d7ba4f8c187286bb2cfaf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  moveSpeed: 2
+  rotationSpeed: 5
+  attackRate: 2
+  attackRange: 10
+  spitPrefab: {fileID: 7961641615730851448, guid: 44ced99c337aa094583adc3bdc78ee67, type: 3}
+  shootPos: {fileID: 3234226723397055002}
+  ignoreMask:
+    serializedVersion: 2
+    m_Bits: 128
   agent: {fileID: -1344444323926992281}
   model: {fileID: 4872962099442003902}
-  shootPos: {fileID: 3234226723397055002}
   headPos: {fileID: 8051620491310816198}
   meleePos: {fileID: 8899758987412374690}
   HP: 3
   faceTargetSpeed: 5
-  spit: {fileID: 7961641615730851448, guid: 44ced99c337aa094583adc3bdc78ee67, type: 3}
   melee: {fileID: 7222818553318368160, guid: 8e08976b5e2fa544e8548940044fa782, type: 3}
   spitRate: 2
   meleeAttackRate: 3
@@ -290,7 +297,7 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 25
+  m_Radius: 15
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!4 &8051620491310816198 stripped
 Transform:
