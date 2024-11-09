@@ -12,42 +12,55 @@ using UnityEngine.UIElements;
 public class PlayerState 
 {
 
-    /*--------------------------------------------------- PRIVATE MEMBERS */
-
-    // Tranfomers, linear algebra in disguise
-    public Vector3 _position;
-    public Quaternion _orientation;
-    public Vector3 _scale;
-
-    // Index of previous checkpoint
-    public int _previousCheckPointID;
-
-    // Current Health
-    public int _curHealth;
-
     /*---------------------------------------------------- PUBLIC PROPERTIES */
 
-    public Vector3 Position {  get { return _position; } set { _position = value; } }
+    // Tranfomers, linear algebra in disguise
+    public Vector3 Position { get; set; }
+    public Quaternion Orientation { get; set; }
+    public Vector3 Scale { get; set; }
+
+    // Index of previous checkpoint
+    public int PrevCheckPointID { get; set; }
+
+    // Current Health
+    public int CurrentHealth { get; set; }
+
+    /*---------------------------------------------------- CONSTRUCTOR */
+
+    public PlayerState() 
+    {
+        Position = Vector3.zero;
+        Orientation = Quaternion.identity;
+        Scale = Vector3.one;
+        PrevCheckPointID = 0;
+        CurrentHealth = 0;
+    }
+
+
+    /*---------------------------------------------------- PUBLIC METHODS */
+
+    // these be setters
+    // couple overloads for convienence
 
     public void SetFromPlayer(playerController player, bool respectTransform=false)
     {
         if(respectTransform)
         {
-            this._position = player.transform.position;
-            this._orientation = player.transform.rotation;
-            this._scale = player.transform.localScale;
+            this.Position = player.transform.position;
+            this.Orientation = player.transform.rotation;
+            this.Scale = player.transform.localScale;
         }
 
-        this._curHealth = player.Health;
+        this.CurrentHealth = player.Health;
 
     }
 
     public void SetFromPlayer(playerController player, Vector3 position, Quaternion orientation, Vector3 scale)
     {
         SetFromPlayer(player, false);
-        this._position = position;
-        this._orientation = player.transform.rotation;
-        this._scale = scale;
+        this.Position = position;
+        this.Orientation = player.transform.rotation;
+        this.Scale = scale;
     }
 
     public void SetFromPlayer(playerController player, Vector3 position, Quaternion orientation)
@@ -55,15 +68,17 @@ public class PlayerState
         SetFromPlayer(player, position, orientation, Vector3.one);
     }
 
+    // Copy state data back to player
+
     public void ReflectToPlayer(ref playerController player, bool respectTransform)
     {
         if (respectTransform)
         {
-            player.transform.position = this._position;
-            player.transform.rotation = this._orientation;
-            player.transform.localScale = this._scale;
+            player.transform.position = this.Position;
+            player.transform.rotation = this.Orientation;
+            player.transform.localScale = this.Scale;
         }
 
-        player.Health = this._curHealth;
+        player.Health = this.CurrentHealth;
     }
 }
