@@ -7,11 +7,26 @@ using System;
 using System.Collections;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
+
+    /// <summary>
+    /// Menu Enum
+    /// </summary>
+    public enum MENU
+    {
+        NONE = 0,
+        PAUSE = 1,
+        LOSE = 2,
+        WIN = 3,
+        CONFIRM_QUIT = 4,
+        CONFIRM_RESTART = 5
+    }
+
     /*------------------------------------------------------ PRIVATE MEMBERS */
 
     /// <summary>
@@ -20,7 +35,17 @@ public class GameManager : MonoBehaviour
     private static GameManager _instance;
 
     /// <summary>
+    /// Previous menu.
+    /// </summary>
+    private MENU _prevMenu;
+
+    /// <summary>
     /// Current open menu.
+    /// </summary>
+    private MENU _activeMenu;
+
+    /// <summary>
+    /// Current open menu GameObject ref.
     /// </summary>
     private GameObject _menuActive;
 
@@ -65,32 +90,62 @@ public class GameManager : MonoBehaviour
     /// </summary>
     private CanvasGroup _poisonScreenCanvasGroup;
 
-
-
     /*--------------------------------------------------- SERIALIZED MEMBERS */
 
     /// <summary>
-    /// 
+    /// The player damage panel;
     /// </summary>
     [SerializeField] GameObject _damagePanel;
+
+    /// <summary>
+    /// The palyer poison panel.
+    /// </summary>
     [SerializeField] GameObject _poisionPanel;
 
+    /// <summary>
+    /// Pause Menu;
+    /// </summary>
     [SerializeField] GameObject _menuPause;
+
+    /// <summary>
+    /// Win Menu
+    /// </summary>
     [SerializeField] GameObject _menuWin;
+
+    /// <summary>
+    /// Lose Menu.
+    /// </summary>
     [SerializeField] GameObject _menuLose;
+
+    /// <summary>
+    /// Confirm Quit menu.
+    /// </summary>
     [SerializeField] GameObject _menuConfirmQuit;
+
+    /// <summary>
+    /// Confirm restart menu.
+    /// </summary>
     [SerializeField] GameObject _menuConfirmRestart;
+
+    /// <summary>
+    /// Graphical health bar.
+    /// </summary>
     [SerializeField] Image _healthBar;
-    [SerializeField] TMP_Text _digitalHealthDisplay;
-    //[SerializeField] TMP_Text infoText;
-    //[SerializeField] float infoTime;
+
+    /// <summary>
+    /// Numeric health display.
+    /// </summary>
+    [SerializeField] TMP_Text _numericHealthDisplay;
 
     /*---------------------------------------------------- PUBLIC PROPERTIES */
 
+    /// <summary>
+    /// Access the previously cached PlayerState.
+    /// </summary>
     public PlayerState CachedPlayerState => _playerState;
 
     /// <summary>
-    /// 
+    /// Access reference to player.
     /// </summary>
     public GameObject Player => _player;
 
@@ -111,6 +166,9 @@ public class GameManager : MonoBehaviour
 
     /*--------------------------------------------------------- UNITY EVENTS */
 
+    /// <summary>
+    /// Init the GameManager before anything else.
+    /// </summary>
     void Awake()
     {
         _instance = this;
@@ -125,20 +183,29 @@ public class GameManager : MonoBehaviour
 
     }
 
+
+    /// <summary>
+    /// GameManager update loop.
+    /// </summary>
     void Update()
     {
         if (Input.GetButtonDown("Cancel"))
         {
-            if (_menuActive == null)
+            if (_activeMenu == MENU.NONE)
             {
                 statePause();
-                _menuActive = _menuPause;
-                _menuActive.SetActive(true);
+                OpenMenu(MENU.PAUSE);
             }
-            else if (_menuActive == _menuPause)
+            else if(_activeMenu > MENU.PAUSE)
             {
+                OpenMenu(_prevMenu);
+            }
+            else if(_activeMenu == MENU.PAUSE)
+            {
+                OpenMenu(MENU.NONE);
                 stateUnpause();
             }
+
         }
     }
 
@@ -205,6 +272,40 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public void OpenMenu(MENU menu)
+    {
+        _prevMenu = _activeMenu;
+        _activeMenu = menu;
+        switch(menu)
+        {
+            case MENU.PAUSE:
+                _menuActive = _menuPause;
+                _menuActive.SetActive(true);
+                break;
+            case MENU.LOSE:
+                _menuActive = _menuLose;
+                _menuActive.SetActive(true);
+                break;
+            case MENU.WIN:
+                _menuActive = _menuWin;
+                _menuActive.SetActive(true);
+                break;
+            case MENU.CONFIRM_QUIT:
+                _menuActive = _menuConfirmQuit;
+                _menuActive.SetActive(true);
+                break;
+            case MENU.CONFIRM_RESTART:
+                _menuActive = _menuConfirmRestart;
+                _menuActive.SetActive(true);
+                break;
+
+            case MENU.NONE:
+            default:
+                _menuActive.SetActive(false);
+                break;
+        }
+    }
+
     public void statePause()
     {
         _isPaused = true;
@@ -219,15 +320,16 @@ public class GameManager : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
         Time.timeScale = _timeScaleOrig;
-        if (_menuActive != null) _menuActive.SetActive(false);
-        _menuActive = null;
+        OpenMenu(MENU.NONE);
+        //if (_menuActive != null) _menuActive.SetActive(false);
+        //_menuActive = null;
     }
 
     public void updatePlayerHealth(int total, int max)
     {
         float normalizedAmt = (float)total / max;
         _healthBar.fillAmount = Mathf.Clamp(normalizedAmt, 0, 1);
-        _digitalHealthDisplay.text = (normalizedAmt * 100).ToString("F0");
+        _numericHealthDisplay.text = (normalizedAmt * 100).ToString("F0");
     }
 
     public void displayInfo(string msg)

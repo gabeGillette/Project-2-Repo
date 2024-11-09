@@ -3923,7 +3923,7 @@ MonoBehaviour:
   _menuConfirmQuit: {fileID: 639261698838691748}
   _menuConfirmRestart: {fileID: 1227371611567923371}
   _healthBar: {fileID: 3643884978121830711}
-  _digitalHealthDisplay: {fileID: 2716155895335732547}
+  _numericHealthDisplay: {fileID: 2716155895335732547}
 --- !u!1 &7851443512782291164
 GameObject:
   m_ObjectHideFlags: 0
