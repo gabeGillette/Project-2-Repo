@@ -3915,17 +3915,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 703171aeecacd2a46bc45a421d6a7c76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _playerDamagePanel: {fileID: 5597653802093470474}
-  _playerPoisionPanel: {fileID: 8397353154590567541}
-  menuPause: {fileID: 7258775340287495909}
-  menuWin: {fileID: 3598490939944376427}
-  menuLose: {fileID: 7911646867960487087}
-  menuConfirmQuit: {fileID: 639261698838691748}
-  menuConfirmRestart: {fileID: 1227371611567923371}
-  playerHPBar: {fileID: 8857964575865151173}
-  playerHPText: {fileID: 2716155895335732547}
-  infoText: {fileID: 657622242584829159}
-  infoTime: 2
+  _damagePanel: {fileID: 5597653802093470474}
+  _poisionPanel: {fileID: 8397353154590567541}
+  _menuPause: {fileID: 7258775340287495909}
+  _menuWin: {fileID: 3598490939944376427}
+  _menuLose: {fileID: 7911646867960487087}
+  _menuConfirmQuit: {fileID: 639261698838691748}
+  _menuConfirmRestart: {fileID: 1227371611567923371}
+  _healthBar: {fileID: 3643884978121830711}
+  _digitalHealthDisplay: {fileID: 2716155895335732547}
 --- !u!1 &7851443512782291164
 GameObject:
   m_ObjectHideFlags: 0
