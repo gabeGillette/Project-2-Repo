@@ -187,6 +187,7 @@ MonoBehaviour:
   playerLayer:
     serializedVersion: 2
     m_Bits: 64
+  colorOrig: {r: 0, g: 1, b: 0.062781096, a: 0}
 --- !u!195 &-1344444323926992281
 NavMeshAgent:
   m_ObjectHideFlags: 0
