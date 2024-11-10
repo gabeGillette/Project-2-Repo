@@ -19,6 +19,7 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public enum MENU
     {
+        PREV = -1,
         NONE = 0,
         PAUSE = 1,
         LOSE = 2,
@@ -68,7 +69,7 @@ public class GameManager : MonoBehaviour
     /// <summary>
     /// Player reference.
     /// </summary>
-    private GameObject _player;
+    private playerController _player;
 
     /// <summary>
     /// Cached timescale. 
@@ -147,7 +148,7 @@ public class GameManager : MonoBehaviour
     /// <summary>
     /// Access reference to player.
     /// </summary>
-    public GameObject Player => _player;
+    public GameObject Player => _player.gameObject;
 
     /// <summary>
     /// Access Damage Panel;
@@ -173,9 +174,10 @@ public class GameManager : MonoBehaviour
     {
         _instance = this;
         _timeScaleOrig = Time.timeScale;
-        _player = GameObject.FindWithTag("Player");
+        _player = GameObject.FindWithTag("Player").GetComponent<playerController>();
 
         _playerState = new PlayerState();
+        _playerState.SetFromPlayer(_player, true);
         _checkPointFlags = 0;
         _checkPointCount = 0;
 
@@ -198,7 +200,7 @@ public class GameManager : MonoBehaviour
             }
             else if(_activeMenu > MENU.PAUSE)
             {
-                OpenMenu(_prevMenu);
+                OpenMenu(MENU.PREV);
             }
             else if(_activeMenu == MENU.PAUSE)
             {
@@ -215,27 +217,18 @@ public class GameManager : MonoBehaviour
 
     /*------------------------------------------------------- PUBLIC METHODS */
 
+    /// <summary>
+    /// Respawn player at last CheckPoint
+    /// </summary>
     [Obsolete] public void RespawnPlayer()
-    {
-        // TODO: DELETE ME!
-        /*if (!_playerIsRespawning)
-        {
-            _playerIsRespawning = true;
-
-            Debug.LogWarning(_playerState.Position);
-            _player.transform.SetPositionAndRotation(_playerState.Position, _playerState.Rotation);
-            _player.GetComponent<playerController>().Health = 5;
-            _playerIsRespawning = false;
-        }*/
+    {        
         RespawnPlayer(true);
     }
 
     public void RespawnPlayer(bool LastCheckPoint)
     {
         Debug.Log("Player Respawned");
-        //_player.transform.SetPositionAndRotation(_playerState.Position, _playerState.Rotation);
-        _player.GetComponent<playerController>().Health = 5;
-        
+        _playerState.ReflectToPlayer(ref _player, true);
     }
 
     public void youLose()
@@ -266,43 +259,54 @@ public class GameManager : MonoBehaviour
         if ((flag & _checkPointFlags) == 0)
         {
             _checkPointFlags |= flag;
-            //_playerState.Position = _player.transform.position;
-            //_playerState.Rotation = _player.transform.rotation;
-            //_playerState.ActiveCheckpointID = index;
+
+            _playerState.SetFromPlayer(_player, true);
         }
     }
 
     public void OpenMenu(MENU menu)
     {
-        _prevMenu = _activeMenu;
-        _activeMenu = menu;
-        switch(menu)
+        if (menu < MENU.NONE)
         {
-            case MENU.PAUSE:
-                _menuActive = _menuPause;
-                _menuActive.SetActive(true);
-                break;
-            case MENU.LOSE:
-                _menuActive = _menuLose;
-                _menuActive.SetActive(true);
-                break;
-            case MENU.WIN:
-                _menuActive = _menuWin;
-                _menuActive.SetActive(true);
-                break;
-            case MENU.CONFIRM_QUIT:
-                _menuActive = _menuConfirmQuit;
-                _menuActive.SetActive(true);
-                break;
-            case MENU.CONFIRM_RESTART:
-                _menuActive = _menuConfirmRestart;
-                _menuActive.SetActive(true);
-                break;
-
-            case MENU.NONE:
-            default:
+            OpenMenu(_prevMenu);
+        }
+        else 
+        {
+            if(_menuActive != null)
+            {
                 _menuActive.SetActive(false);
-                break;
+            }
+
+            _prevMenu = _activeMenu;
+            _activeMenu = menu;
+            switch (menu)
+            {
+                case MENU.PAUSE:
+                    _menuActive = _menuPause;
+                    _menuActive.SetActive(true);
+                    break;
+                case MENU.LOSE:
+                    _menuActive = _menuLose;
+                    _menuActive.SetActive(true);
+                    break;
+                case MENU.WIN:
+                    _menuActive = _menuWin;
+                    _menuActive.SetActive(true);
+                    break;
+                case MENU.CONFIRM_QUIT:
+                    _menuActive = _menuConfirmQuit;
+                    _menuActive.SetActive(true);
+                    break;
+                case MENU.CONFIRM_RESTART:
+                    _menuActive = _menuConfirmRestart;
+                    _menuActive.SetActive(true);
+                    break;
+
+                case MENU.NONE:
+                default:
+                    _menuActive.SetActive(false);
+                    break;
+            }
         }
     }
 
@@ -321,8 +325,6 @@ public class GameManager : MonoBehaviour
         Cursor.visible = false;
         Time.timeScale = _timeScaleOrig;
         OpenMenu(MENU.NONE);
-        //if (_menuActive != null) _menuActive.SetActive(false);
-        //_menuActive = null;
     }
 
     public void updatePlayerHealth(int total, int max)
@@ -337,7 +339,7 @@ public class GameManager : MonoBehaviour
         StartCoroutine(_displayInfo(msg, 5));
     }
 
-    IEnumerator _displayInfo(string msg, float time)
+    private IEnumerator _displayInfo(string msg, float time)
     {
         /*infoText.gameObject.SetActive(true);
         infoText.text = msg;*/
@@ -347,23 +349,19 @@ public class GameManager : MonoBehaviour
 
     public void restartlevel()
     {
-        
-        if (_menuLose != null)
-        {
-            _menuLose.SetActive(false);
-        }
-        statePause();
-        _menuActive = _menuConfirmRestart;
-        _menuActive.SetActive(true);
+        Time.timeScale = _timeScaleOrig; // Reset time scale
+        Scene currentScene = SceneManager.GetActiveScene();
+        SceneManager.LoadScene(currentScene.name); // Reload the current level
     }
 
-    public void ConfirmRestart()
+
+    /*public void ConfirmRestart()
     {
         Time.timeScale = _timeScaleOrig; // Reset time scale
         Scene currentScene = SceneManager.GetActiveScene();
         SceneManager.LoadScene(currentScene.name); // Reload the current level
         _menuActive = null;
-    }
+    }*/
 
 
     // ------------ MENU STUFF
@@ -388,8 +386,7 @@ public class GameManager : MonoBehaviour
 
     public void WinGame()
     {
-        _menuWin.SetActive(true);
-        _menuActive = _menuWin;
+        OpenMenu(MENU.WIN);
         statePause(); // Resume the game
     }
 
@@ -397,6 +394,17 @@ public class GameManager : MonoBehaviour
     {
        StartCoroutine(FadeCanvasGroup(_poisonScreenCanvasGroup, _poisonScreenCanvasGroup.alpha, 0f, duration));
     }
+
+    public void QuitGame()
+    {
+        Debug.Log("Exiting the game...");
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#else
+        Application.Quit();
+#endif
+    }
+
     private IEnumerator FadeCanvasGroup(CanvasGroup canvasGroup, float startAlpha, float endAlpha, float duration)
     {
         float timeElapsed = 0f;

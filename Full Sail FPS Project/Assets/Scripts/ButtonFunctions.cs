@@ -3,48 +3,49 @@ using UnityEngine.SceneManagement;
 
 public class ButtonFunctions : MonoBehaviour
 {
-    public void Resume()
+    public void ButContinueGame()
     {
+        GameManager.Instance.OpenMenu(GameManager.MENU.NONE);
         GameManager.Instance.stateUnpause();
     }
 
-    public void Restart()
+    public void ButRestartLevel()
     {
-        GameManager.Instance.restartlevel();
+        GameManager.Instance.OpenMenu(GameManager.MENU.CONFIRM_RESTART);
     }
 
-    public void LastCheckPoint()
+    public void ButLastCheckPoint()
     {
-        GameManager.Instance.RespawnPlayer();
+        GameManager.Instance.OpenMenu(GameManager.MENU.NONE);
+        GameManager.Instance.stateUnpause();
+        GameManager.Instance.RespawnPlayer(true);
     }
 
     public void ConfirmQuitY()
     {
-        GameManager.Instance.ConfirmQuit();
+        GameManager.Instance.QuitGame();
     }
 
     public void ConfirmQuitN()
     {
-        GameManager.Instance.CancelQuit();
+        GameManager.Instance.OpenMenu(GameManager.MENU.PREV);
     }
 
     public void ConfirmRestartY()
     {
-        GameManager.Instance.ConfirmRestart();
+        GameManager.Instance.OpenMenu(GameManager.MENU.NONE);
+        GameManager.Instance.stateUnpause();
+       // GameManager.Instance.RespawnPlayer(true);
+        GameManager.Instance.restartlevel();
     }
 
     public void ConfirmRestartN()
     {
-        GameManager.Instance.CancelRestart();
+        GameManager.Instance.OpenMenu(GameManager.MENU.PREV);
     }
 
     public void Quit()
     {
-        Debug.Log("Exiting the game...");
-#if UNITY_EDITOR
-        UnityEditor.EditorApplication.isPlaying = false;
-#else
-        Application.Quit();
-#endif
+        GameManager.Instance.OpenMenu(GameManager.MENU.CONFIRM_QUIT);
     }
 }

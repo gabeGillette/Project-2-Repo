@@ -236,6 +236,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 6193462486350736339, guid: 1d7dca39d9bee34458b8fbc6dd7240ac, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ButContinueGame
+      objectReference: {fileID: 0}
     - target: {fileID: 8015569245874062712, guid: 1d7dca39d9bee34458b8fbc6dd7240ac, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -275,6 +279,10 @@ PrefabInstance:
     - target: {fileID: 8015569245874062712, guid: 1d7dca39d9bee34458b8fbc6dd7240ac, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8064552535456734156, guid: 1d7dca39d9bee34458b8fbc6dd7240ac, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ButLastCheckPoint
       objectReference: {fileID: 0}
     - target: {fileID: 8357383448502893695, guid: 1d7dca39d9bee34458b8fbc6dd7240ac, type: 3}
       propertyPath: m_Name
