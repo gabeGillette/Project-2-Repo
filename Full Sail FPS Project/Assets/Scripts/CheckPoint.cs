@@ -27,7 +27,7 @@ public class CheckPoint : MonoBehaviour
         }
 
     //_spawners = new List<GameObject>();
-    _checkPointIndex = GameManager.instance.RegisterCheckpoint();
+    _checkPointIndex = GameManager.Instance.RegisterCheckpoint();
   }
 
 
@@ -40,8 +40,8 @@ public class CheckPoint : MonoBehaviour
     {
       if (other.CompareTag("Player"))
       {
-        GameManager.instance.displayInfo("CheckPoint Reached!");
-        GameManager.instance.ActivateCheckPoint(_checkPointIndex);
+        GameManager.Instance.displayInfo("CheckPoint Reached!");
+        GameManager.Instance.ActivateCheckPoint(_checkPointIndex);
         foreach(GameObject spawner in _spawners)
         {
           spawner.SetActive(true);

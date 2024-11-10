@@ -6,6 +6,7 @@ using System.Security.Cryptography;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
+using static damage;
 
 
 public class playerController : MonoBehaviour, IDamage
@@ -47,6 +48,9 @@ public class playerController : MonoBehaviour, IDamage
     // Player's initial health amount
     private int initHealth;
 
+
+    public static damage.damageType enemyDamageType;
+
     // This is for the reticle color changing
     public Image rifleReticle;
     public Image unarmReticle;
@@ -55,7 +59,6 @@ public class playerController : MonoBehaviour, IDamage
     public Color friendColor = Color.green;
     public float maxRaycastDistance = 100f;
 
-    private damage.damageType enemyDamageType;
 
     // UI prompt to interact
     [SerializeField] GameObject interactPromptUI;
@@ -73,10 +76,12 @@ public class playerController : MonoBehaviour, IDamage
     
     void Start()
     {
+
+
         initHealth = healthPoints;
 
         // update the health bar
-        GameManager.instance.updatePlayerHealth(healthPoints, initHealth);
+        GameManager.Instance.updatePlayerHealth(healthPoints, initHealth);
     }
 
     // Update is called once per frame
@@ -97,6 +102,7 @@ public class playerController : MonoBehaviour, IDamage
         {
             Interact();
         }
+
     }
 
     void movement()
@@ -180,13 +186,13 @@ public class playerController : MonoBehaviour, IDamage
             StartCoroutine(flashDamage());
         }
         // update the health bar
-        GameManager.instance.updatePlayerHealth(healthPoints, initHealth);
+        GameManager.Instance.updatePlayerHealth(healthPoints, initHealth);
 
         // death event
         if (healthPoints <= 0)
         {
             //GameManager.instance.youLose();
-            GameManager.instance.RespawnPlayer();
+            GameManager.Instance.RespawnPlayer();
         }
     }
 
@@ -273,17 +279,47 @@ public class playerController : MonoBehaviour, IDamage
 
     IEnumerator flashDamage()
     {
-        GameManager.instance.playerDamageScreen.SetActive(true);
+        GameManager.Instance.PlayerDamagePanel.SetActive(true);
         yield return new WaitForSeconds(0.1f);
-        GameManager.instance.playerDamageScreen.SetActive(false);
+        GameManager.Instance.PlayerDamagePanel.SetActive(false);
     }
 
     IEnumerator flashPoison()
     {
-        GameManager.instance.playerPoisonScreen.SetActive(true);
-        
+        GameManager.Instance.PlayerPoisonPanel.SetActive(true);
+
+        // Get the CanvasGroup component (add one if it doesn't exist on the panel)
+        CanvasGroup canvasGroup = GameManager.Instance.PlayerPoisonPanel.GetComponent<CanvasGroup>();
+
+        // If no CanvasGroup, add one (you can also add this manually in the Inspector)
+        if (canvasGroup == null)
+        {
+            canvasGroup = GameManager.Instance.PlayerPoisonPanel.AddComponent<CanvasGroup>();
+        }
+
+       
+        float fadeDuration = 0.2f; // Duration of fade
+        float fadeSpeed = 1f / fadeDuration;
+       
+        canvasGroup.alpha = 0.8f; // Ensure fully visible after fade-in
+
+        // Wait for a while with the panel visible
         yield return new WaitForSeconds(1f);
-        GameManager.instance.playerPoisonScreen.SetActive(false);
+
+        // Fade out the panel
+        while (canvasGroup.alpha > 0f)
+        {
+            canvasGroup.alpha -= fadeSpeed * Time.deltaTime;
+            yield return null;
+        }
+        canvasGroup.alpha = 0f; // Ensure fully transparent after fade-out
+
+        // Disable the panel after fading out
+        GameManager.Instance.PlayerPoisonPanel.SetActive(false);
+
+
+
+        
     }
    
 

@@ -283,7 +283,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 703171aeecacd2a46bc45a421d6a7c76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerObject: {fileID: 9121261685113325734, guid: 75193af1191199b4fa5e0832b725f4dd, type: 3}
+  _damagePanel: {fileID: 0}
+  _poisionPanel: {fileID: 0}
+  _menuPause: {fileID: 0}
+  _menuWin: {fileID: 0}
+  _menuLose: {fileID: 0}
+  _menuConfirmQuit: {fileID: 0}
+  _menuConfirmRestart: {fileID: 0}
+  _healthBar: {fileID: 0}
+  _numericHealthDisplay: {fileID: 0}
 --- !u!4 &910900783
 Transform:
   m_ObjectHideFlags: 0

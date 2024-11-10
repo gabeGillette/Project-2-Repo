@@ -20,16 +20,26 @@ public class EnemyController : MonoBehaviour, IDamage
     [SerializeField] float moveSpeed;
     [SerializeField] float rotationSpeed;
     [SerializeField] float attackRate; // Time between spits
-    [SerializeField] float attackRange; // Range to spit at player
+    [SerializeField] float meleeAttackRate; // Time between melee attacks
+    [SerializeField] float meleeAttackRange; // Range to spit at player
+    [SerializeField] float meleeAttackDamage;
     [SerializeField] int HP; //How many Hit Points the 'Character' has
     [SerializeField] bool rangedAttacker; //Check if ranged as well as melee attacker
+    [SerializeField] bool stationaryAttacker; //Shows if it is a mine or stationary attack
+
+    [SerializeField] float wanderRadius = 10f;  // Radius in which the enemy will wander.
+    [SerializeField] float wanderInterval = 3f; //Time to wander to next position
+
+    public LayerMask playerLayer;
 
 
     private bool isSpiting;
-    private bool canSpit = true;
+    private bool canSpit;
     private float lastSpitTime;
+    private bool canExplode;
 
-    public damage.damageType currentDamageType = damage.damageType.melee;
+    private damage.damageType currentDamageType;
+ //   private damage damageScript;
 
 
     Color colorOrig; //Placeholder to allow for color changes during damage
@@ -37,8 +47,7 @@ public class EnemyController : MonoBehaviour, IDamage
     bool playerInMovementRange; //See if the player is within the sphere collider to start moving towards player
 
 
-    // bool isSpiting; //Check is enemy is ranged attacking
-    bool isMeleeAttacking; //Check if enemy is melee attacking
+    bool canMeleeAttack = true; //Check if enemy is melee attacking
     bool playerInSpitRange; //Check if player is in spitRange
     bool playerInMeleeRange; //Check if player is in meleeRange
 
@@ -48,75 +57,55 @@ public class EnemyController : MonoBehaviour, IDamage
     // Start is called before the first frame update
     void Start()
     {
-        
+      //  damageScript = GetComponent<damage>();
         colorOrig = model.material.color; //Setting the original color so we can change it later to show damage
+        if (!stationaryAttacker)
+        {
+            StartCoroutine(Wander());
+        }
 
+        if (rangedAttacker)
+        {
+            canSpit = true;
+        }
 
     }
 
     private void Update()
     {
-        if (playerInMovementRange)
-        {
-            moveTowardsPlayer();
-            
-            //LookAtPlayer();
-            //TrySpit();
 
-            if (!isSpiting)
-            {
-                StartCoroutine(Shoot());
-            }
-        }
+          
+      
+        moveTowardsPlayer();
 
-        //else if (playerInMeleeRange)
-        //{
-        //    if (!isMeleeAttacking)
-        //    {
-        //        StartCoroutine(meleeAttack());
-        //    }
-        //}
-
-
+           
+       
+       
 
 
     }
 
-
-     public damage.damageType GetDamageType() { return currentDamageType; }
-     public void SetDamageType(damage.damageType newDamageType) { currentDamageType = newDamageType; }
+   
 
     private void LookAtPlayer()
     {
         Quaternion rot = Quaternion.LookRotation(playerDir);
         transform.rotation = Quaternion.Lerp(transform.rotation, rot, Time.deltaTime * rotationSpeed);
-
-        //Vector3 directionToPlayer = GameManager.instance.player.transform.position - transform.position;
-        //directionToPlayer.y = 0; // Keep the y-axis unaffected (keep enemy upright)
-        //Quaternion rotation = Quaternion.LookRotation(directionToPlayer);
-        //transform.rotation = Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime * rotationSpeed);
     }
 
     // Coroutine to handle the spit action
     private IEnumerator Shoot()
     {
         isSpiting = true;
-        SetDamageType(damage.damageType.spit);
         Debug.Log("Spitting at player.");
 
         // Instantiate the spit prefab at the shoot position with the correct rotation
-        Instantiate(spitPrefab, shootPos.position, transform.rotation);
-        //Debug.Log($"Instantiating spit at position: {shootPos.position}");
+        GameObject spit = Instantiate(spitPrefab, shootPos.position, transform.rotation);
+        damage damageScript = spit.GetComponent<damage>();
+        damageScript.SetDamageType(damage.damageType.spit);
+        playerController.enemyDamageType = damage.damageType.spit;
 
-        //// Check if the spit has a Rigidbody for movement
-        //Rigidbody spitRb = spitInstance.GetComponent<Rigidbody>();
-        //if (spitRb != null)
-        //{
-        //    spitRb.velocity = transform.forward * 10f; // Adjust speed here
-        //    Debug.Log("Spit moving towards the player.");
-        //}
 
-        // Wait for the specified rate before allowing another spit
         yield return new WaitForSeconds(attackRate);
         isSpiting = false;
         //canSpit = true;
@@ -127,27 +116,47 @@ public class EnemyController : MonoBehaviour, IDamage
     {
         if (other.CompareTag("Player"))
         {
-            playerInMovementRange = true;
+
+           
+
+            if (stationaryAttacker)
+            {
+                damage damageScript = this.GetComponent<damage>();
+                damageScript.SetDamageType(damage.damageType.explosion);
+               // StartCoroutine(explosionEvent());
+
+            }
+            else
+            {
+                playerInMovementRange = true;
+            }
+            
+           
         }
     }
-    //private void OnTriggerExit(Collider other)
-    //{
-    //    if(other.CompareTag("Player"))
-    //    {
-    //        playerInMovementRange = false;
-    //        canSpit = false;
-    //    }
-    //}
 
-    // When the player is in range and can be attacked, the spit can be fired
+
+    //When the player is in range and can be attacked, the spit can be fired
     private void OnTriggerStay(Collider other)
     {
-        if (other.CompareTag("Player") && !isSpiting)
+        if (other.CompareTag("Player"))
         {
-            if (Time.time - lastSpitTime >= attackRate)
+            //See if they can spit
+            if(Vector3.Distance(transform.position, GameManager.Instance.Player.transform.position) > meleeAttackRange && canSpit)
             {
-                canSpit = true;
+
+                if (!isSpiting)
+                {
+                    StartCoroutine(Shoot());
+                }
             }
+
+            //See if they can melee
+            else if ((Vector3.Distance(transform.position, GameManager.Instance.Player.transform.position) <= meleeAttackRange && canMeleeAttack))
+            {
+                StartCoroutine(meleeAttack());
+            }
+
         }
     }
 
@@ -157,6 +166,10 @@ public class EnemyController : MonoBehaviour, IDamage
         if (other.CompareTag("Player"))
         {
             canSpit = false;
+            if (!stationaryAttacker)
+            {
+                StartCoroutine(Wander());
+            }
         }
     }
 
@@ -164,7 +177,7 @@ public class EnemyController : MonoBehaviour, IDamage
     {
         HP -= amount;
         StartCoroutine(damageFlash());
-        agent.SetDestination(GameManager.instance.Player.transform.position);
+        agent.SetDestination(GameManager.Instance.Player.transform.position);
         if (HP <= 0)
         {
             Destroy(gameObject);
@@ -180,30 +193,7 @@ public class EnemyController : MonoBehaviour, IDamage
         model.material.color = colorOrig;
     }
 
-    //Process to start spitting/shooting
-    //IEnumerator shoot()
-    //{
-
-    //    isSpiting = true;
-
-    //    Instantiate(spitPrefab, shootPos.position, transform.rotation);
-
-    //    yield return new WaitForSeconds(spitRate);
-    //    isSpiting = false;
-    //}
-
-    //Allows enemy to do a melee attack if within range
-    //IEnumerator meleeAttack()
-    //{
-    //    isMeleeAttacking = true;
-
-    //    Instantiate(melee, shootPos.position, transform.rotation);
-
-    //    yield return new WaitForSeconds(meleeAttackRate);
-    //    isMeleeAttacking = false;
-    //}
-
-    //Makes the enemy always look towards the player smoothly
+    
     void faceTarget()
     {
         Quaternion rot = Quaternion.LookRotation(playerDir);
@@ -218,32 +208,85 @@ public class EnemyController : MonoBehaviour, IDamage
             //    player = GameObject.FindGameObjectWithTag("Player");
 
             faceTarget();
-            playerDir = GameManager.instance.player.transform.position - headPos.position;
+            playerDir = GameManager.Instance.Player.transform.position - headPos.position;
 
-            agent.SetDestination(GameManager.instance.player.transform.position);
+            agent.SetDestination(GameManager.Instance.Player.transform.position);
 
-            //TrySpit();
+
            
         }
-        //   if (agent.remainingDistance <= agent.stoppingDistance)
-        //{
-        //    faceTarget();
-        //    canSpit = false;
-        //}
-        //   if(agent.remainingDistance >= meleeAttackRange && playerInMovementRange)
-        //{
-        //    playerInMeleeRange = true;
-
-        //}
-
-
     }
 
-  
+    IEnumerator explosionEvent()
+    {
+        // Initial flashing parameters
+        float flashInterval = 0.2f; // Initial flash time interval
+        float minInterval = 0.05f;  // Minimum interval, don't go faster than this
+        int maxFlashes = 10;        // Maximum number of flashes
+
+        for (int i = 0; i < maxFlashes; i++)
+        {
+            // Set the material color to red
+            model.material.color = Color.red;
+
+            // Wait for the current interval
+            yield return new WaitForSeconds(flashInterval);
+
+            // Reset the color to the original color
+            model.material.color = colorOrig;
+
+            // Wait for the current interval again
+            yield return new WaitForSeconds(flashInterval);
+
+            // Gradually reduce the time between flashes (increasing the speed)
+            flashInterval = Mathf.Max(minInterval, flashInterval * 0.8f); // Reduces by 20% each time, but clamps at minInterval
+        }
+        
+    }
+
+    IEnumerator meleeAttack()
+    {
 
 
+        canMeleeAttack = false;
 
+        //Setting up a collidor to make a sphere to overlap from the enemy to what it hits
+        Collider[] hitPlayer = Physics.OverlapSphere(transform.position, meleeAttackRange, playerLayer);
 
+        //Checks to see what collidor is hit
+        foreach (Collider col in hitPlayer)
+        {
+            //If it is the player tag, hit it
+            if (col.CompareTag("Player"))
+            {
+                // Apply damage to the player
+                col.GetComponent<IDamage>().TakeDamage((int)meleeAttackDamage);
+                playerController.enemyDamageType = damage.damageType.melee;
+
+            }
+        }
+        yield return new WaitForSeconds(meleeAttackRate);
+
+        canMeleeAttack = true;
+    }
+
+    IEnumerator Wander()
+    {
+        while (!playerInMovementRange)
+        {
+            //Makes a random direction for the entity to wander x the radius
+            Vector3 randomDirection = Random.insideUnitSphere * wanderRadius;  // Random direction within the radius
+            randomDirection += transform.position;  // Offset by the enemy's current position
+
+            NavMeshHit hit;
+            if (NavMesh.SamplePosition(randomDirection, out hit, wanderRadius, NavMesh.AllAreas))
+            {
+                agent.SetDestination(hit.position);
+            }
+
+            yield return new WaitForSeconds(wanderInterval);  // Wait before choosing a new destination
+        }
+    }
 
 
 }

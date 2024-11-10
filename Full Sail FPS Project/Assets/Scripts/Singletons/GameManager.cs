@@ -1,82 +1,213 @@
 // GameManager
 // Desc: Singleton Class that handles top-level gameplay priorities.
 // Authors: Gabriel Gillette, Kenton Weaver, Adam McKee
-// Last Modified: Nov, 8 2024
+// Last Modified: Nov, 9 2024
 
 using System;
 using System.Collections;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
+
+    /// <summary>
+    /// Menu Enum
+    /// </summary>
+    public enum MENU
+    {
+        PREV = -1,
+        NONE = 0,
+        PAUSE = 1,
+        LOSE = 2,
+        WIN = 3,
+        CONFIRM_QUIT = 4,
+        CONFIRM_RESTART = 5
+    }
+
     /*------------------------------------------------------ PRIVATE MEMBERS */
 
-    private GameObject menuActive;
+    /// <summary>
+    /// Singleton instance.
+    /// </summary>
+    private static GameManager _instance;
+
+    /// <summary>
+    /// Previous menu.
+    /// </summary>
+    private MENU _prevMenu;
+
+    /// <summary>
+    /// Current open menu.
+    /// </summary>
+    private MENU _activeMenu;
+
+    /// <summary>
+    /// Current open menu GameObject ref.
+    /// </summary>
+    private GameObject _menuActive;
+
+    /// <summary>
+    /// Bitflags for active checkpoints.
+    /// </summary>
     private int _checkPointFlags;
-    private const int CHECKPOINT_MAX = 32;
+
+    /// <summary>
+    /// The max number of checkpoints we can have per stage.
+    /// </summary>
+    // Ints are a assumed to be 32 bit on most platforms.
+    private const int _CHECKPOINT_MAX = 32;
+
+    /// <summary>
+    /// How many checkpoints exist on the map.
+    /// </summary>
     private int _checkPointCount;
-    private bool _playerIsRespawning;
-    GameObject _player;
-    float timeScaleOrig;
-    bool isPaused;
-    public static GameManager instance;
-    public GameObject playerDamageScreen;
-    public GameObject playerPoisonScreen;
-    public GameObject player;
+
+    /// <summary>
+    /// Player reference.
+    /// </summary>
+    private playerController _player;
+
+    /// <summary>
+    /// Cached timescale. 
+    /// </summary>
+    private float _timeScaleOrig; // Cache me outside. </humor>
+
+    /// <summary>
+    /// Pause flag.
+    /// </summary>
+    private bool _isPaused;
+
+    /// <summary>
+    /// Player state cache.
+    /// </summary>
     private PlayerState _playerState;
 
-    private CanvasGroup poisonScreenCanvasGroup;
+    /// <summary>
+    /// Cached poisonscreen canvas group.
+    /// </summary>
+    private CanvasGroup _poisonScreenCanvasGroup;
 
     /*--------------------------------------------------- SERIALIZED MEMBERS */
 
-    [SerializeField] GameObject menuPause;
-    [SerializeField] GameObject menuWin;
-    [SerializeField] GameObject menuLose;
-    [SerializeField] GameObject menuConfirmQuit;
-    [SerializeField] GameObject menuConfirmRestart;
-    [SerializeField] Image playerHPBar;
-    [SerializeField] TMP_Text playerHPText;
-    [SerializeField] TMP_Text infoText;
-    [SerializeField] float infoTime;
+    /// <summary>
+    /// The player damage panel;
+    /// </summary>
+    [SerializeField] GameObject _damagePanel;
+
+    /// <summary>
+    /// The palyer poison panel.
+    /// </summary>
+    [SerializeField] GameObject _poisionPanel;
+
+    /// <summary>
+    /// Pause Menu;
+    /// </summary>
+    [SerializeField] GameObject _menuPause;
+
+    /// <summary>
+    /// Win Menu
+    /// </summary>
+    [SerializeField] GameObject _menuWin;
+
+    /// <summary>
+    /// Lose Menu.
+    /// </summary>
+    [SerializeField] GameObject _menuLose;
+
+    /// <summary>
+    /// Confirm Quit menu.
+    /// </summary>
+    [SerializeField] GameObject _menuConfirmQuit;
+
+    /// <summary>
+    /// Confirm restart menu.
+    /// </summary>
+    [SerializeField] GameObject _menuConfirmRestart;
+
+    /// <summary>
+    /// Graphical health bar.
+    /// </summary>
+    [SerializeField] Image _healthBar;
+
+    /// <summary>
+    /// Numeric health display.
+    /// </summary>
+    [SerializeField] TMP_Text _numericHealthDisplay;
 
     /*---------------------------------------------------- PUBLIC PROPERTIES */
 
-    public PlayerState CurrentPlayerState => _playerState;
-    public GameObject Player => _player;
+    /// <summary>
+    /// Access the previously cached PlayerState.
+    /// </summary>
+    public PlayerState CachedPlayerState => _playerState;
+
+    /// <summary>
+    /// Access reference to player.
+    /// </summary>
+    public GameObject Player => _player.gameObject;
+
+    /// <summary>
+    /// Access Damage Panel;
+    /// </summary>
+    public GameObject PlayerDamagePanel => _damagePanel;
+
+    /// <summary>
+    /// Access Poison Panel.
+    /// </summary>
+    public GameObject PlayerPoisonPanel => _poisionPanel;
+
+    /// <summary>
+    /// Access GameManager.
+    /// </summary>
+    public static GameManager Instance => _instance;
 
     /*--------------------------------------------------------- UNITY EVENTS */
 
+    /// <summary>
+    /// Init the GameManager before anything else.
+    /// </summary>
     void Awake()
     {
-        instance = this;
-        timeScaleOrig = Time.timeScale;
-        _player = GameObject.FindWithTag("Player");
+        _instance = this;
+        _timeScaleOrig = Time.timeScale;
+        _player = GameObject.FindWithTag("Player").GetComponent<playerController>();
 
         _playerState = new PlayerState();
+        _playerState.SetFromPlayer(_player, true);
         _checkPointFlags = 0;
         _checkPointCount = 0;
 
-        poisonScreenCanvasGroup = playerPoisonScreen.GetComponent<CanvasGroup>();
+        _poisonScreenCanvasGroup = PlayerPoisonPanel.GetComponent<CanvasGroup>();
 
     }
 
+
+    /// <summary>
+    /// GameManager update loop.
+    /// </summary>
     void Update()
     {
         if (Input.GetButtonDown("Cancel"))
         {
-            if (menuActive == null)
+            if (_activeMenu == MENU.NONE)
             {
                 statePause();
-                menuActive = menuPause;
-                menuActive.SetActive(true);
+                OpenMenu(MENU.PAUSE);
             }
-            else if (menuActive == menuPause)
+            else if(_activeMenu > MENU.PAUSE)
             {
+                OpenMenu(MENU.PREV);
+            }
+            else if(_activeMenu == MENU.PAUSE)
+            {
+                OpenMenu(MENU.NONE);
                 stateUnpause();
             }
+
         }
     }
 
@@ -86,39 +217,30 @@ public class GameManager : MonoBehaviour
 
     /*------------------------------------------------------- PUBLIC METHODS */
 
+    /// <summary>
+    /// Respawn player at last CheckPoint
+    /// </summary>
     [Obsolete] public void RespawnPlayer()
-    {
-        // TODO: DELETE ME!
-        /*if (!_playerIsRespawning)
-        {
-            _playerIsRespawning = true;
-
-            Debug.LogWarning(_playerState.Position);
-            _player.transform.SetPositionAndRotation(_playerState.Position, _playerState.Rotation);
-            _player.GetComponent<playerController>().Health = 5;
-            _playerIsRespawning = false;
-        }*/
+    {        
         RespawnPlayer(true);
     }
 
     public void RespawnPlayer(bool LastCheckPoint)
     {
         Debug.Log("Player Respawned");
-        //_player.transform.SetPositionAndRotation(_playerState.Position, _playerState.Rotation);
-        _player.GetComponent<playerController>().Health = 5;
-        
+        _playerState.ReflectToPlayer(ref _player, true);
     }
 
     public void youLose()
     {
         statePause();
-        menuActive = menuLose;
-        menuActive.SetActive(true);
+        _menuActive = _menuLose;
+        _menuActive.SetActive(true);
     }
 
     public int RegisterCheckpoint()
     {
-        if (_checkPointCount < CHECKPOINT_MAX)
+        if (_checkPointCount < _CHECKPOINT_MAX)
         {
             _checkPointCount++;
             return _checkPointCount;
@@ -137,15 +259,60 @@ public class GameManager : MonoBehaviour
         if ((flag & _checkPointFlags) == 0)
         {
             _checkPointFlags |= flag;
-            //_playerState.Position = _player.transform.position;
-            //_playerState.Rotation = _player.transform.rotation;
-            //_playerState.ActiveCheckpointID = index;
+
+            _playerState.SetFromPlayer(_player, true);
+        }
+    }
+
+    public void OpenMenu(MENU menu)
+    {
+        if (menu < MENU.NONE)
+        {
+            OpenMenu(_prevMenu);
+        }
+        else 
+        {
+            if(_menuActive != null)
+            {
+                _menuActive.SetActive(false);
+            }
+
+            _prevMenu = _activeMenu;
+            _activeMenu = menu;
+            switch (menu)
+            {
+                case MENU.PAUSE:
+                    _menuActive = _menuPause;
+                    _menuActive.SetActive(true);
+                    break;
+                case MENU.LOSE:
+                    _menuActive = _menuLose;
+                    _menuActive.SetActive(true);
+                    break;
+                case MENU.WIN:
+                    _menuActive = _menuWin;
+                    _menuActive.SetActive(true);
+                    break;
+                case MENU.CONFIRM_QUIT:
+                    _menuActive = _menuConfirmQuit;
+                    _menuActive.SetActive(true);
+                    break;
+                case MENU.CONFIRM_RESTART:
+                    _menuActive = _menuConfirmRestart;
+                    _menuActive.SetActive(true);
+                    break;
+
+                case MENU.NONE:
+                default:
+                    _menuActive.SetActive(false);
+                    break;
+            }
         }
     }
 
     public void statePause()
     {
-        isPaused = true;
+        _isPaused = true;
         Cursor.lockState = CursorLockMode.Confined;
         Cursor.visible = true;
         Time.timeScale = 0;
@@ -153,61 +320,56 @@ public class GameManager : MonoBehaviour
 
     public void stateUnpause()
     {
-        isPaused = false;
+        _isPaused = false;
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
-        Time.timeScale = timeScaleOrig;
-        if (menuActive != null) menuActive.SetActive(false);
-        menuActive = null;
+        Time.timeScale = _timeScaleOrig;
+        OpenMenu(MENU.NONE);
     }
 
     public void updatePlayerHealth(int total, int max)
     {
         float normalizedAmt = (float)total / max;
-        playerHPBar.fillAmount = Mathf.Clamp(normalizedAmt, 0, 1);
-        playerHPText.text = (normalizedAmt * 100).ToString("F0");
+        _healthBar.fillAmount = Mathf.Clamp(normalizedAmt, 0, 1);
+        _numericHealthDisplay.text = (normalizedAmt * 100).ToString("F0");
     }
 
     public void displayInfo(string msg)
     {
-        StartCoroutine(_displayInfo(msg, infoTime));
+        StartCoroutine(_displayInfo(msg, 5));
     }
 
-    IEnumerator _displayInfo(string msg, float time)
+    private IEnumerator _displayInfo(string msg, float time)
     {
-        infoText.gameObject.SetActive(true);
-        infoText.text = msg;
+        /*infoText.gameObject.SetActive(true);
+        infoText.text = msg;*/
         yield return new WaitForSeconds(time);
-        infoText.gameObject.SetActive(false);
+        /*infoText.gameObject.SetActive(false);*/
     }
 
     public void restartlevel()
     {
-        
-        if (menuLose != null)
-        {
-            menuLose.SetActive(false);
-        }
-        statePause();
-        menuActive = menuConfirmRestart;
-        menuActive.SetActive(true);
-    }
-
-    public void ConfirmRestart()
-    {
-        Time.timeScale = timeScaleOrig; // Reset time scale
+        Time.timeScale = _timeScaleOrig; // Reset time scale
         Scene currentScene = SceneManager.GetActiveScene();
         SceneManager.LoadScene(currentScene.name); // Reload the current level
-        menuActive = null;
     }
+
+
+    /*public void ConfirmRestart()
+    {
+        Time.timeScale = _timeScaleOrig; // Reset time scale
+        Scene currentScene = SceneManager.GetActiveScene();
+        SceneManager.LoadScene(currentScene.name); // Reload the current level
+        _menuActive = null;
+    }*/
 
 
     // ------------ MENU STUFF
 
     public void CancelRestart()
     {
-        menuConfirmRestart.SetActive(false);
-        menuActive = null;
+        _menuConfirmRestart.SetActive(false);
+        _menuActive = null;
     }
 
     public void ConfirmQuit()
@@ -217,22 +379,32 @@ public class GameManager : MonoBehaviour
 
     public void CancelQuit()
     {
-        menuConfirmQuit.SetActive(false);
-        menuActive = null;
+        _menuConfirmQuit.SetActive(false);
+        _menuActive = null;
         stateUnpause(); // Resume the game
     }
 
     public void WinGame()
     {
-        menuWin.SetActive(true);
-        menuActive = menuWin;
+        OpenMenu(MENU.WIN);
         statePause(); // Resume the game
     }
 
     public void FadeOutPoisonScreen(float duration)
     {
-       StartCoroutine(FadeCanvasGroup(poisonScreenCanvasGroup, poisonScreenCanvasGroup.alpha, 0f, duration));
+       StartCoroutine(FadeCanvasGroup(_poisonScreenCanvasGroup, _poisonScreenCanvasGroup.alpha, 0f, duration));
     }
+
+    public void QuitGame()
+    {
+        Debug.Log("Exiting the game...");
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#else
+        Application.Quit();
+#endif
+    }
+
     private IEnumerator FadeCanvasGroup(CanvasGroup canvasGroup, float startAlpha, float endAlpha, float duration)
     {
         float timeElapsed = 0f;

@@ -8,7 +8,7 @@ public class WinBox : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player"))
         {
-            GameManager.instance.WinGame();
+            GameManager.Instance.WinGame();
         }
     }
 }
