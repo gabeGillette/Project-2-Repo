@@ -53,9 +53,11 @@ MonoBehaviour:
   rb: {fileID: -8272704363750745743}
   spitDamageAmount: 1
   meleeDamageAmount: 0
+  explosionDamageAmount: 0
   meleeSpeed: 0
   spitSpeed: 50
   destroyTime: 0.2
+  model: {fileID: 7990964281592828006}
 --- !u!54 &-8272704363750745743
 Rigidbody:
   m_ObjectHideFlags: 0
