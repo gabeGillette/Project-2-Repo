@@ -20,10 +20,14 @@ public class EnemyController : MonoBehaviour, IDamage
     [SerializeField] float moveSpeed;
     [SerializeField] float rotationSpeed;
     [SerializeField] float attackRate; // Time between spits
-    [SerializeField] float attackRange; // Range to spit at player
+    [SerializeField] float meleeAttackRate; // Time between melee attacks
+    [SerializeField] float meleeAttackRange; // Range to spit at player
+    [SerializeField] float meleeAttackDamage;
     [SerializeField] int HP; //How many Hit Points the 'Character' has
     [SerializeField] bool rangedAttacker; //Check if ranged as well as melee attacker
     [SerializeField] bool stationaryAttacker; //Shows if it is a mine or stationary attack
+
+    public LayerMask playerLayer;
 
 
     private bool isSpiting;
@@ -40,7 +44,7 @@ public class EnemyController : MonoBehaviour, IDamage
     bool playerInMovementRange; //See if the player is within the sphere collider to start moving towards player
 
 
-    bool isMeleeAttacking; //Check if enemy is melee attacking
+    bool canMeleeAttack = true; //Check if enemy is melee attacking
     bool playerInSpitRange; //Check if player is in spitRange
     bool playerInMeleeRange; //Check if player is in meleeRange
 
@@ -63,16 +67,11 @@ public class EnemyController : MonoBehaviour, IDamage
     {
 
           
-       if (rangedAttacker)
-       {
-           moveTowardsPlayer();
+      
+        moveTowardsPlayer();
 
-            if (!isSpiting && canSpit)
-           {
-
-                StartCoroutine(Shoot());
-           }
-       }
+           
+       
        
 
 
@@ -96,6 +95,7 @@ public class EnemyController : MonoBehaviour, IDamage
         GameObject spit = Instantiate(spitPrefab, shootPos.position, transform.rotation);
         damage damageScript = spit.GetComponent<damage>();
         damageScript.SetDamageType(damage.damageType.spit);
+        playerController.enemyDamageType = damage.damageType.spit;
 
 
         yield return new WaitForSeconds(attackRate);
@@ -108,6 +108,8 @@ public class EnemyController : MonoBehaviour, IDamage
     {
         if (other.CompareTag("Player"))
         {
+
+           
 
             if (stationaryAttacker)
             {
@@ -124,17 +126,29 @@ public class EnemyController : MonoBehaviour, IDamage
            
         }
     }
-   
 
-    // When the player is in range and can be attacked, the spit can be fired
+
+    //When the player is in range and can be attacked, the spit can be fired
     private void OnTriggerStay(Collider other)
     {
-        if (other.CompareTag("Player") && !isSpiting)
+        if (other.CompareTag("Player"))
         {
-            if (Time.time - lastSpitTime >= attackRate)
+            //See if they can spit
+            if(Vector3.Distance(transform.position, GameManager.Instance.Player.transform.position) > meleeAttackRange && canSpit)
             {
-                canSpit = true;
+
+                if (!isSpiting)
+                {
+                    StartCoroutine(Shoot());
+                }
             }
+
+            //See if they can melee
+            else if ((Vector3.Distance(transform.position, GameManager.Instance.Player.transform.position) <= meleeAttackRange && canMeleeAttack))
+            {
+                StartCoroutine(meleeAttack());
+            }
+
         }
     }
 
@@ -216,6 +230,32 @@ public class EnemyController : MonoBehaviour, IDamage
             flashInterval = Mathf.Max(minInterval, flashInterval * 0.8f); // Reduces by 20% each time, but clamps at minInterval
         }
         
+    }
+
+    IEnumerator meleeAttack()
+    {
+
+
+        canMeleeAttack = false;
+
+        //Setting up a collidor to make a sphere to overlap from the enemy to what it hits
+        Collider[] hitPlayer = Physics.OverlapSphere(transform.position, meleeAttackRange, playerLayer);
+
+        //Checks to see what collidor is hit
+        foreach (Collider col in hitPlayer)
+        {
+            //If it is the player tag, hit it
+            if (col.CompareTag("Player"))
+            {
+                // Apply damage to the player
+                col.GetComponent<IDamage>().TakeDamage((int)meleeAttackDamage);
+                playerController.enemyDamageType = damage.damageType.melee;
+
+            }
+        }
+        yield return new WaitForSeconds(meleeAttackRate);
+
+        canMeleeAttack = true;
     }
 
 

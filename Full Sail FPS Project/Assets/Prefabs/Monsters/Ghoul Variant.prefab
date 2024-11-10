@@ -12,17 +12,25 @@ PrefabInstance:
       propertyPath: m_Name
       value: Ghoul Variant
       objectReference: {fileID: 0}
+    - target: {fileID: 1309486516299566, guid: 227ee07e9e5b7914ba8fbb8f430be9a5, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 1309486516299566, guid: 227ee07e9e5b7914ba8fbb8f430be9a5, type: 3}
+      propertyPath: m_TagString
+      value: Enemy
+      objectReference: {fileID: 0}
     - target: {fileID: 4467757482891228, guid: 227ee07e9e5b7914ba8fbb8f430be9a5, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -8.044114
+      value: 4.3009415
       objectReference: {fileID: 0}
     - target: {fileID: 4467757482891228, guid: 227ee07e9e5b7914ba8fbb8f430be9a5, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.0000009536743
+      value: 0.00000047683716
       objectReference: {fileID: 0}
     - target: {fileID: 4467757482891228, guid: 227ee07e9e5b7914ba8fbb8f430be9a5, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -11.203936
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 4467757482891228, guid: 227ee07e9e5b7914ba8fbb8f430be9a5, type: 3}
       propertyPath: m_LocalRotation.w
@@ -86,23 +94,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8dad6379410d7ba4f8c187286bb2cfaf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  spitPrefab: {fileID: 7961641615730851448, guid: 44ced99c337aa094583adc3bdc78ee67, type: 3}
+  shootPos: {fileID: 894485452835198158}
   agent: {fileID: 2623316587545883443}
   model: {fileID: 876626657439751057}
-  shootPos: {fileID: 0}
   headPos: {fileID: 894485452835198158}
   meleePos: {fileID: 894098564772141106}
-  HP: 10
-  faceTargetSpeed: 2
-  spit: {fileID: 7961641615730851448, guid: 44ced99c337aa094583adc3bdc78ee67, type: 3}
   melee: {fileID: 7222818553318368160, guid: 8e08976b5e2fa544e8548940044fa782, type: 3}
-  spitRate: 0
-  meleeAttackRate: 2
-  rangedAttacker: 0
+  moveSpeed: 0
+  rotationSpeed: 0
+  attackRate: 0
+  meleeAttackRate: 1.6
   meleeAttackRange: 3
-  canWander: 0
-  wanderSpeed: 0
-  wanderRadius: 0
-  wanderTime: 0
+  meleeAttackDamage: 1
+  HP: 10
+  rangedAttacker: 0
+  stationaryAttacker: 0
+  playerLayer:
+    serializedVersion: 2
+    m_Bits: 64
 --- !u!195 &2623316587545883443
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -117,7 +127,7 @@ NavMeshAgent:
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120
-  m_StoppingDistance: 2
+  m_StoppingDistance: 2.5
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 0
   m_AutoRepath: 1
@@ -186,7 +196,7 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 25
+  m_Radius: 10
   m_Center: {x: 0, y: 1.5, z: 0}
 --- !u!4 &894098564772141106 stripped
 Transform:
