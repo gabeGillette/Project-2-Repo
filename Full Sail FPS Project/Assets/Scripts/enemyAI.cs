@@ -27,6 +27,9 @@ public class EnemyController : MonoBehaviour, IDamage
     [SerializeField] bool rangedAttacker; //Check if ranged as well as melee attacker
     [SerializeField] bool stationaryAttacker; //Shows if it is a mine or stationary attack
 
+    [SerializeField] float wanderRadius = 10f;  // Radius in which the enemy will wander.
+    [SerializeField] float wanderInterval = 3f; //Time to wander to next position
+
     public LayerMask playerLayer;
 
 
@@ -52,10 +55,15 @@ public class EnemyController : MonoBehaviour, IDamage
 
 
     // Start is called before the first frame update
-    void Awake()
+    void Start()
     {
       //  damageScript = GetComponent<damage>();
         colorOrig = model.material.color; //Setting the original color so we can change it later to show damage
+        if (!stationaryAttacker)
+        {
+            StartCoroutine(Wander());
+        }
+
         if (rangedAttacker)
         {
             canSpit = true;
@@ -158,6 +166,10 @@ public class EnemyController : MonoBehaviour, IDamage
         if (other.CompareTag("Player"))
         {
             canSpit = false;
+            if (!stationaryAttacker)
+            {
+                StartCoroutine(Wander());
+            }
         }
     }
 
@@ -256,6 +268,24 @@ public class EnemyController : MonoBehaviour, IDamage
         yield return new WaitForSeconds(meleeAttackRate);
 
         canMeleeAttack = true;
+    }
+
+    IEnumerator Wander()
+    {
+        while (!playerInMovementRange)
+        {
+            //Makes a random direction for the entity to wander x the radius
+            Vector3 randomDirection = Random.insideUnitSphere * wanderRadius;  // Random direction within the radius
+            randomDirection += transform.position;  // Offset by the enemy's current position
+
+            NavMeshHit hit;
+            if (NavMesh.SamplePosition(randomDirection, out hit, wanderRadius, NavMesh.AllAreas))
+            {
+                agent.SetDestination(hit.position);
+            }
+
+            yield return new WaitForSeconds(wanderInterval);  // Wait before choosing a new destination
+        }
     }
 
 
