@@ -90,6 +90,11 @@ public class GameManager : MonoBehaviour
     private PlayerState _playerState;
 
     /// <summary>
+    /// Player state cached from star of scene.
+    /// </summary>
+    private PlayerState _startPlayerState;
+
+    /// <summary>
     /// Cached poisonscreen canvas group.
     /// </summary>
     private CanvasGroup _poisonScreenCanvasGroup;
@@ -181,6 +186,7 @@ public class GameManager : MonoBehaviour
 
         _playerState = new PlayerState();
         _playerState.SetFromPlayer(_player, true);
+        _startPlayerState = new PlayerState(_playerState);
         //_checkPointFlags = 0;
         _checkPointCount = 0;
 
@@ -228,9 +234,14 @@ public class GameManager : MonoBehaviour
         RespawnPlayer(true);
     }
 
-    public void RespawnPlayer(bool LastCheckPoint)
+    [Obsolete] public void RespawnPlayer(bool LastCheckPoint)
     {
         Debug.Log("Player Respawned");
+        _playerState.ReflectToPlayer(ref _player, true);
+    }
+
+    public void RestorePlayerState()
+    {
         _playerState.ReflectToPlayer(ref _player, true);
     }
 
@@ -266,12 +277,12 @@ public class GameManager : MonoBehaviour
 
             _playerState.SetFromPlayer(_player, true);
         }*/
-        ActivateCheckPoint();
+        //ActivateCheckPoint();
     }
 
-    public void ActivateCheckPoint()
+    public void ActivateCheckPoint(Vector3 position, Quaternion orientaion)
     {
-        
+        _playerState.SetFromPlayer(_player, position, orientaion);
     }
 
     public void OpenMenu(MENU menu)
@@ -364,7 +375,7 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadScene(currentScene.name); // Reload the current level
     }
 
-
+    // TODO: Delete me!
     /*public void ConfirmRestart()
     {
         Time.timeScale = _timeScaleOrig; // Reset time scale

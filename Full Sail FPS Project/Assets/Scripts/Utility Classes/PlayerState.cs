@@ -55,6 +55,19 @@ public class PlayerState
         CurrentHealth = 0;
     }
 
+    /*---------------------------------------------- COPY CONSTRUCTOR */
+
+    /// <summary>
+    /// Copy Constructor for PlayerState
+    /// </summary>
+    public PlayerState(PlayerState other)
+    {
+        Position = other.Position;
+        Orientation = other.Orientation;
+        Scale = other.Scale;
+        PrevCheckPointID = other.PrevCheckPointID;
+        CurrentHealth = other.CurrentHealth;
+    }
 
     /*---------------------------------------------------- PUBLIC METHODS */
 
