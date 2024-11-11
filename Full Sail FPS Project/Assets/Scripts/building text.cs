@@ -20,24 +20,32 @@ public class BuildingText : MonoBehaviour
     // Create the label on the building
     public void createLabel()
     {
-        if (label != null) return; // Don't create the label if it already exists
+        if (label != null) return; // Avoid creating duplicate labels
 
         // Create a new GameObject for the label
         label = new GameObject(buildingName + "_Label");
 
         // Set the label as a child of the building
-        label.transform.SetParent(transform);
+        label.transform.SetParent(transform, false); // Maintain local transform properties
 
-        // Dynamically calculate the building's height using the Renderer component
+        // Calculate the exact position for the label
         Renderer buildingRenderer = GetComponent<Renderer>();
         if (buildingRenderer != null)
         {
-            float buildingHeight = buildingRenderer.bounds.size.y; // Get building height
-            label.transform.localPosition = new Vector3(0, buildingHeight + verticalOffset.y, 0);
+            // Get world position of the top center of the building
+            Vector3 topCenter = new Vector3(
+                buildingRenderer.bounds.center.x,
+                buildingRenderer.bounds.max.y,
+                buildingRenderer.bounds.center.z
+            );
+
+            // Apply offset above the building
+            label.transform.position = topCenter + verticalOffset;
         }
         else
         {
-            label.transform.localPosition = verticalOffset; // Use the default offset if no Renderer
+            Debug.LogWarning("Renderer not found! Placing label with default offset.");
+            label.transform.localPosition = verticalOffset; // Default if no Renderer
         }
 
         // Add and configure the TextMesh
@@ -46,7 +54,7 @@ public class BuildingText : MonoBehaviour
         text.color = textColor;
         text.fontSize = fontSize;
         text.characterSize = 0.2f;
-        text.anchor = TextAnchor.MiddleCenter; // Center the text
+        text.anchor = TextAnchor.MiddleCenter;
 
         if (labelFont != null)
         {
@@ -54,8 +62,15 @@ public class BuildingText : MonoBehaviour
             text.GetComponent<MeshRenderer>().material = labelFont.material;
         }
 
+        // Ensure TextMesh renders correctly
+        MeshRenderer meshRenderer = label.GetComponent<MeshRenderer>();
+        meshRenderer.sortingOrder = 10;
+        meshRenderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+
+        // Make the label face the camera
         label.AddComponent<FaceCam>();
     }
+
 
     // Optionally change the label text during runtime
     public void changeLabel(string newName)
