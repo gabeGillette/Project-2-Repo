@@ -58,7 +58,7 @@ public class GameManager : MonoBehaviour
     /// <summary>
     /// The max number of checkpoints we can have per stage.
     /// </summary>
-    // Ints are a assumed to be 32 bit on most platforms.
+    // Ints are assumed to be 32 bit on most platforms.
     private const int _CHECKPOINT_MAX = 32;
 
     /// <summary>
@@ -364,25 +364,6 @@ public class GameManager : MonoBehaviour
     }*/
 
 
-    // ------------ MENU STUFF
-
-    public void CancelRestart()
-    {
-        _menuConfirmRestart.SetActive(false);
-        _menuActive = null;
-    }
-
-    public void ConfirmQuit()
-    {
-        Application.Quit();
-    }
-
-    public void CancelQuit()
-    {
-        _menuConfirmQuit.SetActive(false);
-        _menuActive = null;
-        stateUnpause(); // Resume the game
-    }
 
     public void WinGame()
     {
