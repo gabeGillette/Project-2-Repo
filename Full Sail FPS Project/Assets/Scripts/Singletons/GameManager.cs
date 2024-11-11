@@ -5,6 +5,7 @@
 
 using System;
 using System.Collections;
+using System.Reflection;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -50,16 +51,18 @@ public class GameManager : MonoBehaviour
     /// </summary>
     private GameObject _menuActive;
 
+    // TODO Delete Me
     /// <summary>
     /// Bitflags for active checkpoints.
     /// </summary>
-    private int _checkPointFlags;
+    //private int _checkPointFlags;
 
+    // TODO Delete Me
     /// <summary>
     /// The max number of checkpoints we can have per stage.
     /// </summary>
     // Ints are assumed to be 32 bit on most platforms.
-    private const int _CHECKPOINT_MAX = 32;
+    //private const int _CHECKPOINT_MAX = 32;
 
     /// <summary>
     /// How many checkpoints exist on the map.
@@ -178,7 +181,7 @@ public class GameManager : MonoBehaviour
 
         _playerState = new PlayerState();
         _playerState.SetFromPlayer(_player, true);
-        _checkPointFlags = 0;
+        //_checkPointFlags = 0;
         _checkPointCount = 0;
 
         _poisonScreenCanvasGroup = PlayerPoisonPanel.GetComponent<CanvasGroup>();
@@ -238,6 +241,7 @@ public class GameManager : MonoBehaviour
         _menuActive.SetActive(true);
     }
 
+    /* TODO: Delete Me!
     public int RegisterCheckpoint()
     {
         if (_checkPointCount < _CHECKPOINT_MAX)
@@ -250,18 +254,24 @@ public class GameManager : MonoBehaviour
             Debug.LogError("Too many checkpoints!");
         }
         return 0;
-    }
+    }*/
 
-    public void ActivateCheckPoint(int index)
+    [Obsolete] public void ActivateCheckPoint(int index)
     {
-        int flag = 1 << index;
+        /*int flag = 1 << index;
 
         if ((flag & _checkPointFlags) == 0)
         {
             _checkPointFlags |= flag;
 
             _playerState.SetFromPlayer(_player, true);
-        }
+        }*/
+        ActivateCheckPoint();
+    }
+
+    public void ActivateCheckPoint()
+    {
+        
     }
 
     public void OpenMenu(MENU menu)

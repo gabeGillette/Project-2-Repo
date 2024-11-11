@@ -9,7 +9,7 @@ public class GameEventBasic : MonoBehaviour, IGameEvent
 
     public void FireEvent()
     {
-        throw new System.NotImplementedException();
+        ActivateAllChildren();
     }
 
     // Start is called before the first frame update
@@ -39,7 +39,7 @@ public class GameEventBasic : MonoBehaviour, IGameEvent
     {
         foreach (GameObject child in _children)
         {
-            child.SetActive(false);
+            child.SetActive(true);
         }
     }
 
