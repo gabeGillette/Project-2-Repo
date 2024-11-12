@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class SwitchBehaviours : MonoBehaviour
 {
-    private GameObject targetObject;
+    private GameObject[] targetObjects;
 
     // Start is called before the first frame update
     void Start()
     {
-        targetObject = GameObject.FindWithTag("Label");
+        targetObjects = GameObject.FindGameObjectsWithTag("Label");
 
 
     }
@@ -26,7 +26,7 @@ public class SwitchBehaviours : MonoBehaviour
 
         if (other.CompareTag("Player"))
         {
-            if (targetObject == null)
+            if (targetObjects == null)
             {
                 Debug.LogError("targetObject is null. Make sure an object with the tag 'Label' exists in the scene.");
                 return;
@@ -35,13 +35,19 @@ public class SwitchBehaviours : MonoBehaviour
             // Check the tag of the object this script is attached to
             if (this.CompareTag("LabelOn"))
             {
-                targetObject.SetActive(true);
-                Debug.Log("Object is now active.");
+                foreach (GameObject targetObject in targetObjects)
+                {
+                    targetObject.SetActive(true);
+                    Debug.Log("Object is now active.");
+                }
             }
             else if (this.CompareTag("LabelOff"))
             {
-                targetObject.SetActive(false);
-                Debug.Log("Object is now inactive.");
+                foreach (GameObject targetObject in targetObjects)
+                {
+                    targetObject.SetActive(false);
+                    Debug.Log("Object is now inactive.");
+                }
             }
         }
     }
