@@ -44,7 +44,6 @@ public class BuildingText : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("Renderer not found! Placing label with default offset.");
             label.transform.localPosition = verticalOffset; // Default if no Renderer
         }
 
