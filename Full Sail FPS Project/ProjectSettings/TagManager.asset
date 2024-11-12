@@ -8,6 +8,9 @@ TagManager:
   - Spawn_Trigger
   - Spawn_Container
   - Friend
+  - Label
+  - LabelOn
+  - LabelOff
   layers:
   - Default
   - TransparentFX
