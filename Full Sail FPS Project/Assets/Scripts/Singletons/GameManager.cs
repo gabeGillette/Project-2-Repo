@@ -231,7 +231,7 @@ public class GameManager : MonoBehaviour
 #if UNITY_EDITOR
         if (Input.GetKeyDown(KeyCode.Period))
         {
-            RestorePlayerState();
+            RestoreCheckpointState();
         }
 
         if (Input.GetKeyDown(KeyCode.Comma))
@@ -263,7 +263,10 @@ public class GameManager : MonoBehaviour
         _playerState.ReflectToPlayer(ref _playerGameOb, true);
     }
 
-    public void RestorePlayerState()
+    /// <summary>
+    /// Restores game state back to last checkpoint.
+    /// </summary>
+    public void RestoreCheckpointState()
     {
         _playerState.ReflectToPlayer(ref _playerGameOb, true);
     }
@@ -303,6 +306,12 @@ public class GameManager : MonoBehaviour
         //ActivateCheckPoint();
     }
 
+
+    /// <summary>
+    /// Sets checkpoint
+    /// </summary>
+    /// <param name="position">Player respawn position.</param>
+    /// <param name="orientaion">Player respawn rotation.</param>
     public void ActivateCheckPoint(Vector3 position, Quaternion orientaion)
     {
         _playerState.SetFromPlayer(_playerGameOb, position, orientaion);
