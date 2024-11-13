@@ -48,9 +48,9 @@ public class PlayerState
     /// </summary>
     public PlayerState() 
     {
-        Position = Vector3.zero;
-        Orientation = Quaternion.identity;
-        Scale = Vector3.one;
+        Position = new Vector3(0, 0, 0);
+        Orientation = new Quaternion(Quaternion.identity.x, Quaternion.identity.y, Quaternion.identity.z, Quaternion.identity.w);
+        Scale = new Vector3(1, 1, 1);
         PrevCheckPointID = 0;
         CurrentHealth = 0;
     }
@@ -62,9 +62,9 @@ public class PlayerState
     /// </summary>
     public PlayerState(PlayerState other)
     {
-        Position = other.Position;
-        Orientation = other.Orientation;
-        Scale = other.Scale;
+        Position = new Vector3(other.Position.x, other.Position.y, other.Position.z);
+        Orientation = new Quaternion(other.Orientation.x, other.Orientation.y, other.Orientation.z, other.Orientation.w);
+        Scale = new Vector3(other.Scale.x, other.Scale.y, other.Scale.z);
         PrevCheckPointID = other.PrevCheckPointID;
         CurrentHealth = other.CurrentHealth;
     }
@@ -76,16 +76,18 @@ public class PlayerState
     /// </summary>
     /// <param name="player"> PlayerController object.</param>
     /// <param name="respectTransform"> Whether to care about the Player's transform.</param>
-    public void SetFromPlayer(playerController player, bool respectTransform=false)
+    public void SetFromPlayer(GameObject player, bool respectTransform=false)
     {
+        Transform playerT = player.transform;
         if(respectTransform)
         {
-            this.Position = player.transform.position;
-            this.Orientation = player.transform.rotation;
-            this.Scale = player.transform.localScale;
+            this.Position = new Vector3(playerT.position.x, playerT.position.y, playerT.position.z);
+            this.Orientation = new Quaternion(playerT.rotation.x, playerT.rotation.y, playerT.rotation.z, playerT.rotation.w);
+            this.Scale = new Vector3(playerT.localScale.x, playerT.localScale.y, playerT.localScale.z);
         }
 
-        this.CurrentHealth = player.Health;
+        playerController pc = player.GetComponent<playerController>();
+        CurrentHealth = pc.Health;
 
     }
 
@@ -97,12 +99,12 @@ public class PlayerState
     /// <param name="position"> Global Position </param>
     /// <param name="orientation"> Player orientation. </param>
     /// <param name="scale"> Player scale. </param>
-    public void SetFromPlayer(playerController player, Vector3 position, Quaternion orientation, Vector3 scale)
+    public void SetFromPlayer(GameObject player, Vector3 position, Quaternion orientation, Vector3 scale)
     {
         SetFromPlayer(player, false);
-        this.Position = position;
-        this.Orientation = player.transform.rotation;
-        this.Scale = scale;
+        this.Position = new Vector3(position.x, position.y, position.z);
+        this.Orientation = new Quaternion(orientation.x, orientation.y, orientation.z, orientation.w);
+        this.Scale = new Vector3(scale.x, scale.y, scale.z);
     }
 
 
@@ -112,9 +114,9 @@ public class PlayerState
     /// <param name="player"> PlayerController object. </param>
     /// <param name="position"> Player position. </param>
     /// <param name="orientation"> Player orientation. </param>
-    public void SetFromPlayer(playerController player, Vector3 position, Quaternion orientation)
+    public void SetFromPlayer(GameObject player, Vector3 position, Quaternion orientation)
     {
-        SetFromPlayer(player, position, orientation, Vector3.one);
+        SetFromPlayer(player, position, orientation, new Vector3(1, 1, 1));
     }
 
     
@@ -123,15 +125,23 @@ public class PlayerState
     /// </summary>
     /// <param name="player"> PlayerController object reference </param>
     /// <param name="respectTransform"> Whether to reflect the transform back or not. </param>
-    public void ReflectToPlayer(ref playerController player, bool respectTransform=false)
+    public void ReflectToPlayer(ref GameObject player, bool respectTransform=false)
     {
+        CharacterController controller = player.GetComponent<CharacterController>();
+        controller.enabled = false;
+
         if (respectTransform)
         {
-            player.transform.position = this.Position;
-            player.transform.rotation = this.Orientation;
-            player.transform.localScale = this.Scale;
+            //controller.transform.position = new Vector3(this.Position.x + 100, this.Position.y, this.Position.z);
+            //player.transform.rotation = new Quaternion(this.Orientation.x, this.Orientation.y, this.Orientation.z, this.Orientation.w);
+            //player.transform.localScale = new Vector3(this.Scale.x, this.Scale.y, this.Scale.z);
+            player.transform.position = new Vector3(this.Position.x , this.Position.y, this.Position.z);
+            player.transform.rotation = new Quaternion(this.Orientation.x, this.Orientation.y, this.Orientation.z, this.Orientation.w);
+            player.transform.localScale = new Vector3(this.Scale.x, this.Scale.y, this.Scale.z);
         }
+        controller.enabled = true;
 
-        player.Health = this.CurrentHealth;
+        playerController pc = player.GetComponent<playerController>();
+        pc.Health = this.CurrentHealth;
     }
 }

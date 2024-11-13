@@ -72,6 +72,11 @@ public class GameManager : MonoBehaviour
     /// <summary>
     /// Player reference.
     /// </summary>
+    private GameObject _playerGameOb;
+
+    /// <summary>
+    /// Player reference.
+    /// </summary>
     private playerController _player;
 
     /// <summary>
@@ -156,7 +161,7 @@ public class GameManager : MonoBehaviour
     /// <summary>
     /// Access reference to player.
     /// </summary>
-    public GameObject Player => _player.gameObject;
+    public GameObject Player => _playerGameOb;
 
     /// <summary>
     /// Access Damage Panel;
@@ -182,10 +187,11 @@ public class GameManager : MonoBehaviour
     {
         _instance = this;
         _timeScaleOrig = Time.timeScale;
-        _player = GameObject.FindWithTag("Player").GetComponent<playerController>();
+        _playerGameOb = GameObject.FindWithTag("Player");
+        _player = _playerGameOb.GetComponent<playerController>();
 
         _playerState = new PlayerState();
-        _playerState.SetFromPlayer(_player, true);
+        _playerState.SetFromPlayer(_playerGameOb, true);
         _startPlayerState = new PlayerState(_playerState);
         //_checkPointFlags = 0;
         _checkPointCount = 0;
@@ -207,18 +213,32 @@ public class GameManager : MonoBehaviour
                 statePause();
                 OpenMenu(MENU.PAUSE);
             }
-            else if(_activeMenu > MENU.PAUSE)
+            else if (_activeMenu > MENU.PAUSE)
             {
                 OpenMenu(MENU.PREV);
             }
-            else if(_activeMenu == MENU.PAUSE)
+            else if (_activeMenu == MENU.PAUSE)
             {
                 OpenMenu(MENU.NONE);
                 stateUnpause();
             }
 
         }
+
+#if UNITY_EDITOR
+        if (Input.GetKeyDown(KeyCode.Period))
+        {
+            RestorePlayerState();
+        }
+
+        if (Input.GetKeyDown(KeyCode.Comma))
+        {
+            ActivateCheckPoint(Player.transform.position, Player.transform.rotation);
+        }
+#endif
+
     }
+
 
     /*------------------------------------------------------ PRIVATE METHODS */
 
@@ -237,12 +257,12 @@ public class GameManager : MonoBehaviour
     [Obsolete] public void RespawnPlayer(bool LastCheckPoint)
     {
         Debug.Log("Player Respawned");
-        _playerState.ReflectToPlayer(ref _player, true);
+        _playerState.ReflectToPlayer(ref _playerGameOb, true);
     }
 
     public void RestorePlayerState()
     {
-        _playerState.ReflectToPlayer(ref _player, true);
+        _playerState.ReflectToPlayer(ref _playerGameOb, true);
     }
 
     public void youLose()
@@ -282,7 +302,7 @@ public class GameManager : MonoBehaviour
 
     public void ActivateCheckPoint(Vector3 position, Quaternion orientaion)
     {
-        _playerState.SetFromPlayer(_player, position, orientaion);
+        _playerState.SetFromPlayer(_playerGameOb, position, orientaion);
     }
 
     public void OpenMenu(MENU menu)
