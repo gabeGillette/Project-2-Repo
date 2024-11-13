@@ -5,11 +5,11 @@
 
 using System;
 using System.Collections;
-using System.Reflection;
-using System.Runtime.Remoting.Metadata.W3cXsd2001;
+//using System.Reflection;
+//using System.Runtime.Remoting.Metadata.W3cXsd2001;
 using TMPro;
 using UnityEngine;
-using UnityEngine.EventSystems;
+//using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -152,6 +152,9 @@ public class GameManager : MonoBehaviour
     /// </summary>
     [SerializeField] TMP_Text _numericHealthDisplay;
 
+    /// <summary>
+    /// Reference to checkpoint indicator UI graphic
+    /// </summary>
     [SerializeField] GameObject _checkPointIndicator;
 
     /*---------------------------------------------------- PUBLIC PROPERTIES */
@@ -249,19 +252,11 @@ public class GameManager : MonoBehaviour
 
     /*------------------------------------------------------- PUBLIC METHODS */
 
-    /// <summary>
-    /// Respawn player at last CheckPoint
-    /// </summary>
     [Obsolete] public void RespawnPlayer()
-    {        
-        RespawnPlayer(true);
+    {
+        return;
     }
 
-    [Obsolete] public void RespawnPlayer(bool LastCheckPoint)
-    {
-        Debug.Log("Player Respawned");
-        _playerState.ReflectToPlayer(ref _playerGameOb, true);
-    }
 
     /// <summary>
     /// Restores game state back to last checkpoint.
@@ -271,6 +266,10 @@ public class GameManager : MonoBehaviour
         _playerState.ReflectToPlayer(ref _playerGameOb, true);
     }
 
+
+    /// <summary>
+    /// Display "lose" menu
+    /// </summary>
     public void youLose()
     {
         statePause();
@@ -278,33 +277,6 @@ public class GameManager : MonoBehaviour
         _menuActive.SetActive(true);
     }
 
-    /* TODO: Delete Me!
-    public int RegisterCheckpoint()
-    {
-        if (_checkPointCount < _CHECKPOINT_MAX)
-        {
-            _checkPointCount++;
-            return _checkPointCount;
-        }
-        else
-        {
-            Debug.LogError("Too many checkpoints!");
-        }
-        return 0;
-    }*/
-
-    [Obsolete] public void ActivateCheckPoint(int index)
-    {
-        /*int flag = 1 << index;
-
-        if ((flag & _checkPointFlags) == 0)
-        {
-            _checkPointFlags |= flag;
-
-            _playerState.SetFromPlayer(_player, true);
-        }*/
-        //ActivateCheckPoint();
-    }
 
 
     /// <summary>
@@ -318,6 +290,11 @@ public class GameManager : MonoBehaviour
         StartCoroutine(displayCheckpointMessage(2.0f));
     }
 
+
+    /// <summary>
+    /// Opens a menu specified by enum.
+    /// </summary>
+    /// <param name="menu">Menu to open.</param>
     public void OpenMenu(MENU menu)
     {
         if (menu < MENU.NONE)
@@ -364,6 +341,10 @@ public class GameManager : MonoBehaviour
         }
     }
 
+
+    /// <summary>
+    /// Pauses the game state.
+    /// </summary>
     public void statePause()
     {
         _isPaused = true;
@@ -372,6 +353,10 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 0;
     }
 
+
+    /// <summary>
+    /// Unpauses the game state.
+    /// </summary>
     public void stateUnpause()
     {
         _isPaused = false;
@@ -381,26 +366,23 @@ public class GameManager : MonoBehaviour
         OpenMenu(MENU.NONE);
     }
 
-    public void updatePlayerHealth(int total, int max)
+
+    /// <summary>
+    /// Update the player health UI.
+    /// </summary>
+    /// <param name="total">Current health.</param>
+    /// <param name="max">Max health.</param>
+    public void updateHealthDisplay(int total, int max)
     {
         float normalizedAmt = (float)total / max;
         _healthBar.fillAmount = Mathf.Clamp(normalizedAmt, 0, 1);
         _numericHealthDisplay.text = (normalizedAmt * 100).ToString("F0");
     }
 
-    public void displayInfo(string msg)
-    {
-        StartCoroutine(_displayInfo(msg, 5));
-    }
 
-    private IEnumerator _displayInfo(string msg, float time)
-    {
-        /*infoText.gameObject.SetActive(true);
-        infoText.text = msg;*/
-        yield return new WaitForSeconds(time);
-        /*infoText.gameObject.SetActive(false);*/
-    }
-
+    /// <summary>
+    /// Completely reload the level.
+    /// </summary>
     public void restartlevel()
     {
         Time.timeScale = _timeScaleOrig; // Reset time scale
@@ -408,28 +390,30 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadScene(currentScene.name); // Reload the current level
     }
 
-    // TODO: Delete me!
-    /*public void ConfirmRestart()
-    {
-        Time.timeScale = _timeScaleOrig; // Reset time scale
-        Scene currentScene = SceneManager.GetActiveScene();
-        SceneManager.LoadScene(currentScene.name); // Reload the current level
-        _menuActive = null;
-    }*/
 
-
-
+    /// <summary>
+    /// Starts "win" sequence.
+    /// </summary>
     public void WinGame()
     {
         OpenMenu(MENU.WIN);
         statePause(); // Resume the game
     }
 
+
+    /// <summary>
+    /// Displays poision animation.
+    /// </summary>
+    /// <param name="duration">Seconds to display.</param>
     public void FadeOutPoisonScreen(float duration)
     {
        StartCoroutine(FadeCanvasGroup(_poisonScreenCanvasGroup, _poisonScreenCanvasGroup.alpha, 0f, duration));
     }
 
+
+    /// <summary>
+    /// Quit out of the application completely like a damn quitter.
+    /// </summary>
     public void QuitGame()
     {
         Debug.Log("Exiting the game...");
@@ -440,6 +424,15 @@ public class GameManager : MonoBehaviour
 #endif
     }
 
+
+    /// <summary>
+    /// Fade a canvas group.
+    /// </summary>
+    /// <param name="canvasGroup">Canvas group to fade.</param>
+    /// <param name="startAlpha">Init alpha.</param>
+    /// <param name="endAlpha">Target alpha.</param>
+    /// <param name="duration">Time.</param>
+    /// <returns></returns>
     private IEnumerator FadeCanvasGroup(CanvasGroup canvasGroup, float startAlpha, float endAlpha, float duration)
     {
         float timeElapsed = 0f;
@@ -456,6 +449,12 @@ public class GameManager : MonoBehaviour
         canvasGroup.alpha = endAlpha;
     }
 
+
+    /// <summary>
+    /// Display the checkpoint indicator.
+    /// </summary>
+    /// <param name="time">Seconds to display.</param>
+    /// <returns></returns>
     private IEnumerator displayCheckpointMessage(float time)
     {
         _checkPointIndicator.SetActive(true);

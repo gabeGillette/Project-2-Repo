@@ -18,7 +18,7 @@ public class ButtonFunctions : MonoBehaviour
     {
         GameManager.Instance.OpenMenu(GameManager.MENU.NONE);
         GameManager.Instance.stateUnpause();
-        GameManager.Instance.RespawnPlayer(true);
+        GameManager.Instance.RestoreCheckpointState();
     }
 
     public void ConfirmQuitY()

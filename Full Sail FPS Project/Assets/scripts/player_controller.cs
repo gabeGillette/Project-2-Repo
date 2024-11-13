@@ -81,7 +81,7 @@ public class playerController : MonoBehaviour, IDamage
         initHealth = healthPoints;
 
         // update the health bar
-        GameManager.Instance.updatePlayerHealth(healthPoints, initHealth);
+        GameManager.Instance.updateHealthDisplay(healthPoints, initHealth);
     }
 
     // Update is called once per frame
@@ -186,7 +186,7 @@ public class playerController : MonoBehaviour, IDamage
             StartCoroutine(flashDamage());
         }
         // update the health bar
-        GameManager.Instance.updatePlayerHealth(healthPoints, initHealth);
+        GameManager.Instance.updateHealthDisplay(healthPoints, initHealth);
 
         // death event
         if (healthPoints <= 0)

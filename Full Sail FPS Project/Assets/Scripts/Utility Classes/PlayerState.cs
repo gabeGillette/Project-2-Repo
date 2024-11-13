@@ -1,7 +1,7 @@
 // PlayerState
 // Desc: Struct of player parameters
 // Authors: Gabriel Gillette
-// Last Modified: Nov, 9 2024
+// Last Modified: Nov, 13 2024
 
 using System.Collections;
 using System.Collections.Generic;
@@ -9,7 +9,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class PlayerState 
+public class PlayerState : ScriptableObject
 {
 
     /*---------------------------------------------------- PUBLIC PROPERTIES */
@@ -144,4 +144,10 @@ public class PlayerState
         playerController pc = player.GetComponent<playerController>();
         pc.Health = this.CurrentHealth;
     }
+
+    public string SerializeState()
+    {
+        return JsonUtility.ToJson(this);
+    }
+
 }
