@@ -17,7 +17,7 @@ public class Pentagram : MonoBehaviour, IInteractable
         {
             hasBeenActivated = true;
             ChangeSkyColor();
-            StartMonsterSummoning();
+            StartMonstersInBasement();
         }
     }
 
@@ -26,7 +26,7 @@ public class Pentagram : MonoBehaviour, IInteractable
         RenderSettings.ambientLight = skyColorChange;   // Simple sky color change
     }
 
-    private void StartMonsterSummoning()
+    private void StartMonstersInBasement()
     {
         for (int i = 0; i < numMonsters; i++)
         {
