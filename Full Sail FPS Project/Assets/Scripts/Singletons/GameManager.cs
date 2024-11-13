@@ -6,6 +6,7 @@
 using System;
 using System.Collections;
 using System.Reflection;
+using System.Runtime.Remoting.Metadata.W3cXsd2001;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -150,6 +151,8 @@ public class GameManager : MonoBehaviour
     /// Numeric health display.
     /// </summary>
     [SerializeField] TMP_Text _numericHealthDisplay;
+
+    [SerializeField] GameObject _checkPointIndicator;
 
     /*---------------------------------------------------- PUBLIC PROPERTIES */
 
@@ -303,6 +306,7 @@ public class GameManager : MonoBehaviour
     public void ActivateCheckPoint(Vector3 position, Quaternion orientaion)
     {
         _playerState.SetFromPlayer(_playerGameOb, position, orientaion);
+        StartCoroutine(displayCheckpointMessage(2.0f));
     }
 
     public void OpenMenu(MENU menu)
@@ -441,5 +445,12 @@ public class GameManager : MonoBehaviour
 
         // Make sure we set the final alpha
         canvasGroup.alpha = endAlpha;
+    }
+
+    private IEnumerator displayCheckpointMessage(float time)
+    {
+        _checkPointIndicator.SetActive(true);
+        yield return new WaitForSeconds(time);
+        _checkPointIndicator.SetActive(false);
     }
 }
