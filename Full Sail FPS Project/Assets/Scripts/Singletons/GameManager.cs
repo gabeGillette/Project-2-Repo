@@ -78,7 +78,7 @@ public class GameManager : MonoBehaviour
     /// <summary>
     /// Player reference.
     /// </summary>
-    private playerController _player;
+    public playerController _player;
 
     /// <summary>
     /// Cached timescale. 

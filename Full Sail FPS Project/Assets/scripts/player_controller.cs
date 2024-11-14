@@ -37,6 +37,10 @@ public class playerController : MonoBehaviour, IDamage
     // range of bullet
     [SerializeField] float fireRange;
 
+    [SerializeField] GameObject gunModel;
+
+    [SerializeField] List<gunStats> gunList = new List<gunStats>();
+
     //current amount of jumps
     int jumpCount;
     //direction we're moving
@@ -48,6 +52,7 @@ public class playerController : MonoBehaviour, IDamage
     // Player's initial health amount
     private int initHealth;
 
+    int GunSelect;
 
     public static damage.damageType enemyDamageType;
 
@@ -322,6 +327,40 @@ public class playerController : MonoBehaviour, IDamage
         
     }
    
+    public void getGunStats(gunStats gun)
+    {
+        gunList.Add(gun);
+        GunSelect = gunList.Count - 1;
+        shootDmg = gun.shootDmg;
+        fireRange = gun.fireRange;
+        fireRate = gun.fireRate;
 
+        gunModel.GetComponent<MeshFilter>().sharedMesh = gun.gunModel.GetComponent<MeshFilter>().sharedMesh;
+        gunModel.GetComponent<MeshRenderer>().sharedMaterial = gun.gunModel.GetComponent<MeshRenderer>().sharedMaterial;
+    }
+
+    void Gunselect()
+    {
+        if(Input.GetAxis("Mouse ScrollWheel") > 0 && GunSelect < gunList.Count - 1)
+        {
+            GunSelect++;
+            changeGun();
+
+        } else if (Input.GetAxis("Mouse ScrollWheel") < 0 && GunSelect > 0)
+        {
+            GunSelect--;
+            changeGun();
+        }
+    }
+
+    void changeGun()
+    {
+        shootDmg = gunList[GunSelect].shootDmg;
+        fireRange = gunList[GunSelect].fireRange;
+        fireRate = gunList[GunSelect].fireRate;
+
+        gunModel.GetComponent<MeshFilter>().sharedMesh = gunList[GunSelect].gunModel.GetComponent<MeshFilter>().sharedMesh;
+        gunModel.GetComponent<MeshRenderer>().sharedMaterial = gunList[GunSelect].gunModel.GetComponent<MeshRenderer>().sharedMaterial;
+    }
 
 }
