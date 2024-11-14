@@ -12,6 +12,18 @@ using UnityEngine.UIElements;
 public class PlayerState : ScriptableObject
 {
 
+    /*---------------------------------------------------- PRIVATE MEMBERS */
+
+    //[SerializeField] private Vector3 _position;
+    //[SerializeField] private Quaternion _rotation;
+    //[SerializeField] private Vector3 _scale;
+    //[SerializeField] private int _health;
+
+    [SerializeField] public Vector3 Position;
+    [SerializeField] public Quaternion Orientation;
+    [SerializeField] public Vector3 Scale;
+    [SerializeField] public int CurrentHealth;
+
     /*---------------------------------------------------- PUBLIC PROPERTIES */
 
     // Tranfomers, linear algebra in disguise
@@ -19,17 +31,21 @@ public class PlayerState : ScriptableObject
     /// <summary>
     /// Player position.
     /// </summary>
-    public Vector3 Position { get; set; }
+    //public Vector3 Position { get { return _position; } set { value = _position; } }
+    //[SerializeField] public Vector3 Position { get; set; }
 
     /// <summary>
     /// Player orientation.
     /// </summary>
-    public Quaternion Orientation { get; set; }
+    //public Quaternion Orientation { get { return _rotation; } set { value = _rotation; } }
+    //[SerializeField] public Quaternion Orientation { get; set; }
+
 
     /// <summary>
     /// Player scale.
     /// </summary>
-    public Vector3 Scale { get; set; }
+   // public Vector3 Scale { get { return _scale; } set { value = _scale; } }
+    //[SerializeField] public Vector3 Scale { get; set; }
 
     /// <summary>
     /// Index of previous checkpoint
@@ -39,7 +55,8 @@ public class PlayerState : ScriptableObject
     /// <summary>
     /// Current Player Health.
     /// </summary>
-    public int CurrentHealth { get; set; }
+   // public int CurrentHealth { get { return _health; } set { value = _health; } }
+    //[SerializeField] public int CurrentHealth { get; set; }
 
     /*---------------------------------------------------- CONSTRUCTOR */
 
