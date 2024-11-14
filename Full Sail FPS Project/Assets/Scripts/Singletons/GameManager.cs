@@ -5,9 +5,12 @@
 
 using System;
 using System.Collections;
+using System.IO;
+
 //using System.Reflection;
 //using System.Runtime.Remoting.Metadata.W3cXsd2001;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 //using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
@@ -51,19 +54,6 @@ public class GameManager : MonoBehaviour
     /// Current open menu GameObject ref.
     /// </summary>
     private GameObject _menuActive;
-
-    // TODO Delete Me
-    /// <summary>
-    /// Bitflags for active checkpoints.
-    /// </summary>
-    //private int _checkPointFlags;
-
-    // TODO Delete Me
-    /// <summary>
-    /// The max number of checkpoints we can have per stage.
-    /// </summary>
-    // Ints are assumed to be 32 bit on most platforms.
-    //private const int _CHECKPOINT_MAX = 32;
 
     /// <summary>
     /// How many checkpoints exist on the map.
@@ -240,6 +230,11 @@ public class GameManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Comma))
         {
             ActivateCheckPoint(Player.transform.position, Player.transform.rotation);
+        }
+
+        if (Input.GetKeyDown(KeyCode.F5))
+        {
+            saveGame("test");
         }
 #endif
 
@@ -460,5 +455,28 @@ public class GameManager : MonoBehaviour
         _checkPointIndicator.SetActive(true);
         yield return new WaitForSeconds(time);
         _checkPointIndicator.SetActive(false);
+    }
+
+
+
+    public int saveGame(string filename)
+    {
+
+        string filePath = Path.Combine(Application.persistentDataPath, "filename.sav");
+
+        Directory.CreateDirectory(filePath);
+
+        PlayerState pst = PlayerState.CreateInstance<PlayerState>();
+        //pst = new PlayerState(_playerState);
+        pst.Position = Vector3.zero;
+        pst.Scale = Vector3.one;
+        pst.Orientation = Quaternion.identity;
+        
+
+        string playerSav = JsonUtility.ToJson(pst);
+
+        File.WriteAllText(Path.Combine(filePath, "player.json"), playerSav);
+
+        return 1;
     }
 }
