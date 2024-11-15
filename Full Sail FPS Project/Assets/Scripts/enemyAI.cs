@@ -27,8 +27,8 @@ public class EnemyController : MonoBehaviour, IDamage
     [SerializeField] bool rangedAttacker; //Check if ranged as well as melee attacker
     [SerializeField] bool stationaryAttacker; //Shows if it is a mine or stationary attack
 
-    [SerializeField] float wanderRadius = 10f;  // Radius in which the enemy will wander.
-    [SerializeField] float wanderInterval = 3f; //Time to wander to next position
+   [SerializeField] float wanderRadius = 10f;  // Radius in which the enemy will wander.
+   [SerializeField] float wanderInterval = 3f; //Time to wander to next position
 
     public LayerMask playerLayer;
 
@@ -37,6 +37,9 @@ public class EnemyController : MonoBehaviour, IDamage
     private bool canSpit;
     private float lastSpitTime;
     private bool canExplode;
+
+    [SerializeField] int roamDist;
+    [SerializeField] int roamTimer;
 
     private damage.damageType currentDamageType;
  //   private damage damageScript;
@@ -50,16 +53,26 @@ public class EnemyController : MonoBehaviour, IDamage
     bool canMeleeAttack = true; //Check if enemy is melee attacking
     bool playerInSpitRange; //Check if player is in spitRange
     bool playerInMeleeRange; //Check if player is in meleeRange
+    bool isRoaming;
+
 
     Vector3 playerDir;
+    Vector3 startingPos;
+
+    float angleToPlayer;
+    float stoppingDistOrig;
 
 
     // Start is called before the first frame update
     void Start()
     {
-      //  damageScript = GetComponent<damage>();
+
+        stoppingDistOrig = agent.stoppingDistance;
+        startingPos = transform.position;
+        //  damageScript = GetComponent<damage>();
         colorOrig = model.material.color; //Setting the original color so we can change it later to show damage
-        if (!stationaryAttacker)
+       
+        if(!stationaryAttacker)
         {
             StartCoroutine(Wander());
         }
@@ -169,6 +182,8 @@ public class EnemyController : MonoBehaviour, IDamage
             if (!stationaryAttacker)
             {
                 StartCoroutine(Wander());
+
+                StartCoroutine(roam());
             }
         }
     }
@@ -268,6 +283,24 @@ public class EnemyController : MonoBehaviour, IDamage
         yield return new WaitForSeconds(meleeAttackRate);
 
         canMeleeAttack = true;
+    }
+
+    IEnumerator roam()
+    {
+        isRoaming = true;
+        yield return new WaitForSeconds(roamTimer);
+
+        agent.stoppingDistance = 0;
+        Vector3 randomDistance = Random.insideUnitSphere * roamDist;
+
+        //Makes the entity roam within a certain scope from the initial startingPos
+        randomDistance += startingPos;
+
+        NavMeshHit hit;
+        NavMesh.SamplePosition(randomDistance, out hit, roamDist, 1);
+        agent.SetDestination(hit.position);
+
+        isRoaming = false;
     }
 
     IEnumerator Wander()
