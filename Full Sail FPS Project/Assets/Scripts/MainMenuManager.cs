@@ -23,6 +23,8 @@ public class MainMenuManager : MonoBehaviour
     void Awake()
     {
         _instance = this;
+        _state = MainMenuState.COMPANYLOGO;
+        UpdateState(_state);
     }
 
     // Update is called once per frame
@@ -31,7 +33,7 @@ public class MainMenuManager : MonoBehaviour
         
     }
 
-    public void UpdateState(MainMenuState state)
+    void UpdateState(MainMenuState state)
     {
         switch (state)
         {
@@ -51,6 +53,6 @@ public class MainMenuManager : MonoBehaviour
 
     public void NextState()
     {
-        UpdateState(_state++);
+        UpdateState(++_state);
     }
 }
