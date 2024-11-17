@@ -18,7 +18,8 @@ public class pickup : MonoBehaviour
     {
         if(type == pickupType.gun)
         {
-           //gun._ammoCur = gun._ammoMax;
+            //gun._ammoCur = gun._ammoMax;
+            
         }
     }
 
@@ -26,7 +27,8 @@ public class pickup : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            GameManager.Instance.PlayerScript.getGunStats(gun);
+            gun.RefillAmmo();
+            GameManager.Instance.PlayerScript.addGun(gun);
             Destroy(gameObject);
         }
     }

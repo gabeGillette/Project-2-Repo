@@ -1,3 +1,4 @@
+using System.CodeDom;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,20 +6,13 @@ using UnityEngine;
 public class Lighter : MonoBehaviour
 {
 
-    Light light;
+    [SerializeField] Light _spotLight;
+    bool _active;
 
-    // Start is called before the first frame update
-    void Start()
+    public void SwitchLight()
     {
-        light = GetComponent<Light>();
+        _active = !_active;
+        _spotLight.enabled = _active;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        if (Input.GetKeyUp(KeyCode.B))
-        {
-            light.enabled = !light.enabled;
-        }
-    }
 }

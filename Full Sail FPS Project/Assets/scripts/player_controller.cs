@@ -31,13 +31,15 @@ public class playerController : MonoBehaviour, IDamage
     // health
     [SerializeField] int healthPoints;
     // amount of shooting damage dealt
-    [SerializeField] int shootDmg;
+   // [SerializeField] int shootDmg;
     // rate of fire
-    [SerializeField] float fireRate;
+    //[SerializeField] float fireRate;
     // range of bullet
-    [SerializeField] float fireRange;
+    //[SerializeField] float fireRange;
 
     [SerializeField] GameObject gunViewModel;
+    GameObject currentViewModel;
+    Animator viewModelAnimator;
 
     [SerializeField] List<gunStats> gunList = new List<gunStats>();
 
@@ -52,7 +54,7 @@ public class playerController : MonoBehaviour, IDamage
     // Player's initial health amount
     private int initHealth;
 
-    int GunSelect;
+    int selectedGun;
 
     public static damage.damageType enemyDamageType;
 
@@ -86,7 +88,10 @@ public class playerController : MonoBehaviour, IDamage
     void Update()
     {
         // Draw ray for debugging
-        Debug.DrawRay(Camera.main.transform.position, Camera.main.transform.forward * fireRange, Color.red);
+        if (gunList.Count > 0)
+        {
+            Debug.DrawRay(Camera.main.transform.position, Camera.main.transform.forward * gunList[selectedGun].Range, Color.red);
+        }
 
         //constantly check how we're moving
         movement();
@@ -126,7 +131,7 @@ public class playerController : MonoBehaviour, IDamage
         controller.Move(playerVel * Time.deltaTime);
 
         // If the "shoot" button is trigged and the player can shoot, then shoot.
-        if (Input.GetButton("Fire1") && !isShooting)
+        if (Input.GetButton("Fire1") && gunList.Count > 0 && !isShooting)
         {
             StartCoroutine(Shoot());
         }
@@ -196,27 +201,35 @@ public class playerController : MonoBehaviour, IDamage
         // so the player can shoot only once at a time.
         isShooting = true;
 
-        // Raycast test for shooting.
-        // shooting from the camera.
-        RaycastHit hit;
-        if (Physics.Raycast(Camera.main.transform.position,
-          Camera.main.transform.forward, out hit, fireRange, ~ignoreMask))
+        switch (gunList[selectedGun].WeaponType)
         {
+            case gunStats.WEAPON_TYPE.HITSCAN:
+                    // Raycast test for shooting.
+                    // shooting from the camera.
+                    RaycastHit hit;
+                    if (Physics.Raycast(Camera.main.transform.position,
+                      Camera.main.transform.forward, out hit, gunList[selectedGun].Range, ~ignoreMask))
+                    {
 
-            // log the name of the object hit.
-            Debug.Log(hit.collider.name);
+                        // log the name of the object hit.
+                        Debug.Log(hit.collider.name);
 
-            // run the damage script of the object hit if there is one.
-            IDamage dmg = hit.collider.GetComponent<IDamage>();
-            if (dmg != null)
-            {
-                dmg.TakeDamage(shootDmg);
-            }
+                        // run the damage script of the object hit if there is one.
+                        IDamage dmg = hit.collider.GetComponent<IDamage>();
+                        if (dmg != null)
+                        {
+                            dmg.TakeDamage(gunList[selectedGun].Damage);
+                        }
+                    }
+
+                    
+                break;
+            case gunStats.WEAPON_TYPE.FLASHLIGHT:
+                viewModelAnimator.SetTrigger("fire");
+                break;
         }
-
         // pause for shootRate seconds
-        yield return new WaitForSeconds(fireRate);
-
+        yield return new WaitForSeconds(gunList[selectedGun].FireRate);
         isShooting = false;
     }
 
@@ -281,7 +294,7 @@ public class playerController : MonoBehaviour, IDamage
         
     }
    
-    public void getGunStats(gunStats gun)
+    public void addGun(gunStats gun)
     {
         /*gunList.Add(gun);
         GunSelect = gunList.Count - 1;
@@ -292,20 +305,22 @@ public class playerController : MonoBehaviour, IDamage
         gunModel.GetComponent<MeshFilter>().sharedMesh = gun.gunModel.GetComponent<MeshFilter>().sharedMesh;
         gunModel.GetComponent<MeshRenderer>().sharedMaterial = gun.gunModel.GetComponent<MeshRenderer>().sharedMaterial;*/
 
-
+        
         gunList.Add(gun);
+        selectedGun = gunList.Count - 1;
+        changeGun();
     }
 
     void Gunselect()
     {
-        if(Input.GetAxis("Mouse ScrollWheel") > 0 && GunSelect < gunList.Count - 1)
+        if(Input.GetAxis("Mouse ScrollWheel") > 0 && selectedGun < gunList.Count - 1)
         {
-            GunSelect++;
+            selectedGun++;
             changeGun();
 
-        } else if (Input.GetAxis("Mouse ScrollWheel") < 0 && GunSelect > 0)
+        } else if (Input.GetAxis("Mouse ScrollWheel") < 0 && selectedGun > 0)
         {
-            GunSelect--;
+            selectedGun--;
             changeGun();
         }
     }
@@ -318,6 +333,21 @@ public class playerController : MonoBehaviour, IDamage
 
         gunModel.GetComponent<MeshFilter>().sharedMesh = gunList[GunSelect].gunModel.GetComponent<MeshFilter>().sharedMesh;
         gunModel.GetComponent<MeshRenderer>().sharedMaterial = gunList[GunSelect].gunModel.GetComponent<MeshRenderer>().sharedMaterial;*/
+        /*for (int childIndex = 0; childIndex < gunViewModel.transform.childCount; childIndex++)
+        {
+            Destroy(gunViewModel.transform.GetChild(childIndex).gameObject);
+        }*/
+
+        if (currentViewModel != null)
+        {
+            Destroy(currentViewModel);
+        }
+
+        currentViewModel = Instantiate(gunList[selectedGun].ViewModel);
+
+        currentViewModel.transform.SetParent(gunViewModel.transform, false);
+        viewModelAnimator = currentViewModel.GetComponent<Animator>();
+
     }
 
 }

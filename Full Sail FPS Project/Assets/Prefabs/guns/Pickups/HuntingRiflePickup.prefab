@@ -211,6 +211,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7336023159839807078}
   - component: {fileID: 1711207895336693266}
+  - component: {fileID: 3128945829640942287}
   m_Layer: 0
   m_Name: HuntingRiflePickup
   m_TagString: Untagged
@@ -255,6 +256,20 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.64, y: 0.43, z: 1.74}
   m_Center: {x: 0, y: 0.15, z: 1.02}
+--- !u!114 &3128945829640942287
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3180171742490645341}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 401668252f10e184e90c4f9552bd1747, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  type: 0
+  gun: {fileID: 0}
 --- !u!1 &4623265473232755539
 GameObject:
   m_ObjectHideFlags: 0
