@@ -231,6 +231,8 @@ public class playerController : MonoBehaviour, IDamage
                         // log the name of the object hit.
                         Debug.Log(hit.collider.name);
 
+                    GameObject.Instantiate(gunList[selectedGun].HitEffect, hit.point, Quaternion.identity);
+
                         // run the damage script of the object hit if there is one.
                         IDamage dmg = hit.collider.GetComponent<IDamage>();
                         if (dmg != null)

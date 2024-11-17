@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _type: 0
   _viewModel: {fileID: 2840628851098866889, guid: 37b398d5caf78064eab429fa30d290d4, type: 3}
-  _hitEffect: {fileID: 0}
+  _hitEffect: {fileID: 82444254051500805, guid: a29ab804a102f114181f81324db7b2ce, type: 3}
   _projectile: {fileID: 0}
   _turnedOn: 0
   _damage: 10
