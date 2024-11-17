@@ -202,6 +202,9 @@ public class GameManager : MonoBehaviour
     ///
     [SerializeField] [Range(0.0f, 1000.0f)] float _maxRaycastDistance;
 
+
+  
+
     /*---------------------------------------------------- PUBLIC PROPERTIES */
 
     /// <summary>

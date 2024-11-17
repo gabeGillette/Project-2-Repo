@@ -224,22 +224,34 @@ public class playerController : MonoBehaviour, IDamage
                 // Raycast test for shooting.
                 // shooting from the camera.
                 RaycastHit hit;
-                    if (Physics.Raycast(Camera.main.transform.position,
+                if (Physics.Raycast(Camera.main.transform.position,
                       Camera.main.transform.forward, out hit, gunList[selectedGun].Range, ~ignoreMask))
+                {
+
+                    // log the name of the object hit.
+                    Debug.Log(hit.collider.name);
+
+                    if (!hit.collider.CompareTag("Enemy"))
                     {
-
-                        // log the name of the object hit.
-                        Debug.Log(hit.collider.name);
-
-                    GameObject.Instantiate(gunList[selectedGun].HitEffect, hit.point, Quaternion.identity);
-
-                        // run the damage script of the object hit if there is one.
-                        IDamage dmg = hit.collider.GetComponent<IDamage>();
-                        if (dmg != null)
+                        GameObject.Instantiate(gunList[selectedGun].HitEffect, hit.point, Quaternion.identity);
+                    }
+                    else
+                    {
+                        EnemyController ec = hit.collider.GetComponent<EnemyController>();
+                        if (ec != null)
                         {
-                            dmg.TakeDamage(gunList[selectedGun].Damage);
+                            GameObject.Instantiate(ec.BloodEffect, hit.point, Quaternion.identity);
                         }
                     }
+
+                    // run the damage script of the object hit if there is one.
+                    IDamage dmg = hit.collider.GetComponent<IDamage>();
+                    if (dmg != null)
+                    {
+
+                        dmg.TakeDamage(gunList[selectedGun].Damage);
+                    }
+                }
 
                     
                 break;

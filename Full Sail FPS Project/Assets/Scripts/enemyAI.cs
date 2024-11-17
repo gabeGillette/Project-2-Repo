@@ -41,6 +41,13 @@ public class EnemyController : MonoBehaviour, IDamage
     [SerializeField] int roamDist;
     [SerializeField] int roamTimer;
 
+    [Header("------- Blood Effect ------ ")]
+    /// <summary>
+    /// 
+    /// </summary>
+    [SerializeField] GameObject _bloodEffect;
+    public GameObject BloodEffect => _bloodEffect;
+
     private damage.damageType currentDamageType;
  //   private damage damageScript;
 
