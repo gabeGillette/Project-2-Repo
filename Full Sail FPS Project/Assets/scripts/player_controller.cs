@@ -37,7 +37,7 @@ public class playerController : MonoBehaviour, IDamage
     // range of bullet
     [SerializeField] float fireRange;
 
-    [SerializeField] GameObject gunModel;
+    [SerializeField] GameObject gunViewModel;
 
     [SerializeField] List<gunStats> gunList = new List<gunStats>();
 
@@ -291,6 +291,9 @@ public class playerController : MonoBehaviour, IDamage
 
         gunModel.GetComponent<MeshFilter>().sharedMesh = gun.gunModel.GetComponent<MeshFilter>().sharedMesh;
         gunModel.GetComponent<MeshRenderer>().sharedMaterial = gun.gunModel.GetComponent<MeshRenderer>().sharedMaterial;*/
+
+
+        gunList.Add(gun);
     }
 
     void Gunselect()

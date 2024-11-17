@@ -1,3 +1,8 @@
+// pick up.cs
+// Desc: pickups
+// Authors: Jacquell Frazier, Gabriel Gillette
+// Last Modified: Nov, 16 2024
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,7 +18,7 @@ public class pickup : MonoBehaviour
     {
         if(type == pickupType.gun)
         {
-           // gun.ammoCur = gun.ammoMax;
+           //gun._ammoCur = gun._ammoMax;
         }
     }
 
