@@ -9,6 +9,7 @@ public class MainMenuManager : MonoBehaviour
     [SerializeField] GameObject Book;
     private Animator BookAnimator;
     private Animator CameraAnimator;
+    private BoxCollider BookCollider;
 
     public enum MainMenuState
     {
@@ -29,6 +30,7 @@ public class MainMenuManager : MonoBehaviour
         UpdateState(_state);
         BookAnimator = Book.GetComponent<Animator>();
         CameraAnimator = Camera.main.GetComponent<Animator>();
+        BookCollider = Book.GetComponent<BoxCollider>();
     }
 
     // Update is called once per frame
@@ -54,6 +56,12 @@ public class MainMenuManager : MonoBehaviour
                 Book.SetActive(true);
                 Logo.enabled = false;
                 
+                break;
+
+            case MainMenuState.BOOK_OPEN:
+                BookCollider.enabled = false;
+                BookAnimator.SetTrigger("open");
+
                 break;
         }
 
