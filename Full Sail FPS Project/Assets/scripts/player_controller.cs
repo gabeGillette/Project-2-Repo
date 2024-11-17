@@ -57,12 +57,12 @@ public class playerController : MonoBehaviour, IDamage
     public static damage.damageType enemyDamageType;
 
     // This is for the reticle color changing
-    public Image rifleReticle;
+    /*public Image rifleReticle;
     public Image unarmReticle;
     public Color defaultColor = Color.white;
     public Color enemyColor = Color.red;
     public Color friendColor = Color.green;
-    public float maxRaycastDistance = 100f;
+    public float maxRaycastDistance = 100f;*/
 
 
     // UI prompt to interact
@@ -98,9 +98,6 @@ public class playerController : MonoBehaviour, IDamage
         //constantly check how we're moving
         movement();
         sprint();
-
-        // update reticle
-        UpdateReticle();
 
         // Attempt to interact if the interact button is presses
         if (canInteract && Input.GetButtonDown("Interact"))
@@ -230,43 +227,7 @@ public class playerController : MonoBehaviour, IDamage
         isShooting = false;
     }
 
-    // turn reticle red upon aiming at player
-    void UpdateReticle()
-    {
-        if (rifleReticle != null)
-        {
-            Ray ray = Camera.main.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2, 0));
-            RaycastHit hit;
-
-            if (Physics.Raycast(ray, out hit, maxRaycastDistance))
-            {
-                if (hit.collider.CompareTag("Enemy"))
-                {
-                    rifleReticle.color = enemyColor; // reticle changes color (red)
-                }
-                else
-                {
-                    rifleReticle.color = defaultColor;
-                }
-            }
-            else
-            {
-                rifleReticle.color = defaultColor;
-            }
-
-            if (Physics.Raycast(ray,out hit, maxRaycastDistance))
-            {
-                if (hit.collider.CompareTag("Friend"))
-                {
-                    rifleReticle.color = friendColor; // reticle changes color (green)
-                }
-                else
-                {
-                    rifleReticle.color = defaultColor;
-                }
-            }
-        }
-    }
+  
 
     void Interact()
     {

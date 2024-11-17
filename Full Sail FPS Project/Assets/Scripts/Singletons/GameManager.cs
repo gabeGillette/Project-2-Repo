@@ -33,6 +33,12 @@ public class GameManager : MonoBehaviour
         CONFIRM_RESTART = 5
     }
 
+    public enum RETICLE_TYPE
+    {
+        SIMPLE = 0,
+        WEAPON = 1,
+    }
+
     /*------------------------------------------------------ PRIVATE MEMBERS */
 
     /// <summary>
@@ -94,6 +100,12 @@ public class GameManager : MonoBehaviour
     /// Cached poisonscreen canvas group.
     /// </summary>
     private CanvasGroup _poisonScreenCanvasGroup;
+
+
+    /// <summary>
+    /// Reference to active Reticle
+    /// </summary>
+    private Image _activeReticle;
 
     /*--------------------------------------------------- SERIALIZED MEMBERS */
 
@@ -166,7 +178,7 @@ public class GameManager : MonoBehaviour
     /// </summary>
     [SerializeField] Image _simpReticle;
 
-    [Header("------ RETICLE COLORS ------ ")]
+    [Header("------ Reticle Colors ------ ")]
 
     /// <summary>
     /// 
@@ -182,6 +194,13 @@ public class GameManager : MonoBehaviour
     /// 
     /// </summary>
     [SerializeField] Color _enemyReticleColor;
+
+    [Header("------- Misc Reticle Stuff ------ ")]
+
+    ///
+    ///
+    ///
+    [SerializeField] [Range(0.0f, 1000.0f)] float _maxRaycastDistance;
 
     /*---------------------------------------------------- PUBLIC PROPERTIES */
 
@@ -235,6 +254,8 @@ public class GameManager : MonoBehaviour
 
         _poisonScreenCanvasGroup = PlayerPoisonPanel.GetComponent<CanvasGroup>();
 
+        SetReticle(RETICLE_TYPE.SIMPLE);
+
     }
 
 
@@ -261,6 +282,9 @@ public class GameManager : MonoBehaviour
             }
 
         }
+
+        // update reticle
+        UpdateReticle();
 
 #if UNITY_EDITOR
         if (Input.GetKeyDown(KeyCode.Period))
@@ -375,6 +399,26 @@ public class GameManager : MonoBehaviour
                     break;
             }
         }
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="reticle"></param>
+    public void SetReticle(RETICLE_TYPE reticle)
+    {
+        switch (reticle)
+        {
+            case RETICLE_TYPE.SIMPLE:
+                _activeReticle = _simpReticle;
+                _reticle.enabled = false;
+                break;
+            case RETICLE_TYPE.WEAPON:
+                _activeReticle = _reticle;
+                _simpReticle.enabled = false;
+                break;
+        }
+        _activeReticle.enabled = true;
     }
 
 
@@ -519,5 +563,37 @@ public class GameManager : MonoBehaviour
         File.WriteAllText(Path.Combine(filePath, "player.json"), playerSav);
 
         return 1;
+    }
+
+
+    /// <summary>
+    /// turn reticle red upon aiming at player
+    /// </summary>
+    void UpdateReticle()
+    {
+
+            Ray ray = Camera.main.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2, 0));
+            RaycastHit hit;
+
+            if (Physics.Raycast(ray, out hit, _maxRaycastDistance))
+            {
+                if (hit.collider.CompareTag("Enemy"))
+                {
+                    _activeReticle.color = _enemyReticleColor; // reticle changes color (red)
+                }
+                else if(hit.collider.CompareTag("Friend"))
+                {
+                    _activeReticle.color = _friendReticleColor;
+                }
+                else
+                {
+                    _activeReticle.color = _defualtReticleColor;
+                }
+            }
+            else
+            {
+                _activeReticle.color = _defualtReticleColor;
+            }
+        
     }
 }
