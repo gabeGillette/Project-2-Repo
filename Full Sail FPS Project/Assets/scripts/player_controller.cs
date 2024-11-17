@@ -131,9 +131,24 @@ public class playerController : MonoBehaviour, IDamage
         controller.Move(playerVel * Time.deltaTime);
 
         // If the "shoot" button is trigged and the player can shoot, then shoot.
-        if (Input.GetButton("Fire1") && gunList.Count > 0 && !isShooting)
+
+        if (gunList.Count > 0)
         {
-            StartCoroutine(Shoot());
+            switch (gunList[selectedGun].WeaponType)
+            {
+                case gunStats.WEAPON_TYPE.FLASHLIGHT:
+                    if (Input.GetButtonDown("Fire1") && !isShooting)
+                    {
+                        StartCoroutine(Shoot());
+                    }
+                    break;
+                case gunStats.WEAPON_TYPE.HITSCAN:
+                    if (Input.GetButton("Fire1") && !isShooting)
+                    {
+                        StartCoroutine(Shoot());
+                    }
+                    break;
+            }
         }
     }
 
