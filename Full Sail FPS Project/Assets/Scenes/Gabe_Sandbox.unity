@@ -425,6 +425,81 @@ Transform:
   - {fileID: 134190053}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1196398558
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1196398559}
+  - component: {fileID: 1196398561}
+  - component: {fileID: 1196398560}
+  m_Layer: 5
+  m_Name: TargetReticle
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1196398559
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1196398558}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.3, y: 0.3, z: 0.3}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4276839221480517248}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 125, y: 125}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1196398560
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1196398558}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 21300000, guid: 317d004b764873d4c884fec2abab9146, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &1196398561
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1196398558}
+  m_CullTransparentMesh: 1
 --- !u!1 &1234151009
 GameObject:
   m_ObjectHideFlags: 0
@@ -3536,7 +3611,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 703171aeecacd2a46bc45a421d6a7c76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _player: {fileID: 0}
   _damagePanel: {fileID: 7440459417748499576}
   _poisionPanel: {fileID: 2017877812541810234}
   _menuPause: {fileID: 6361319698747006955}
@@ -3547,11 +3621,11 @@ MonoBehaviour:
   _healthBar: {fileID: 236632637532391993}
   _numericHealthDisplay: {fileID: 5931263088720222036}
   _checkPointIndicator: {fileID: 5072723659075496420}
-  _reticle: {fileID: 0}
-  _simpReticle: {fileID: 0}
-  _defualtReticleColor: {r: 0, g: 0, b: 0, a: 0}
-  _friendReticleColor: {r: 0, g: 0, b: 0, a: 0}
-  _enemyReticleColor: {r: 0, g: 0, b: 0, a: 0}
+  _reticle: {fileID: 1196398560}
+  _simpReticle: {fileID: 5225840911073118461}
+  _defualtReticleColor: {r: 1, g: 1, b: 1, a: 1}
+  _friendReticleColor: {r: 0.084815264, g: 1, b: 0, a: 1}
+  _enemyReticleColor: {r: 1, g: 0, b: 0, a: 1}
 --- !u!95 &3517632268070988874
 Animator:
   serializedVersion: 5
@@ -4212,6 +4286,7 @@ RectTransform:
   m_Children:
   - {fileID: 751422445771582610}
   - {fileID: 7020091588980161404}
+  - {fileID: 1196398559}
   - {fileID: 4362367799400205374}
   - {fileID: 4768890318475129969}
   - {fileID: 3801106214696460341}
@@ -8120,7 +8195,7 @@ GameObject:
   - component: {fileID: 7159846922324624910}
   - component: {fileID: 5225840911073118461}
   m_Layer: 5
-  m_Name: Reticle
+  m_Name: SimpleReticle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
