@@ -203,7 +203,21 @@ public class GameManager : MonoBehaviour
     [SerializeField] [Range(0.0f, 1000.0f)] float _maxRaycastDistance;
 
 
-  
+    public bool hasJournal;
+    public bool hasDog;
+    public bool touchedPentagram;
+    public bool hasBackpack;
+
+    [Header("-----Collectibles-----")]
+    public GameObject _journal;
+    public GameObject _backpack;
+    public GameObject _dog;
+    public GameObject _note;
+
+    public GameObject interactWindow;
+    public GameObject playerSpawnPos;
+
+
 
     /*---------------------------------------------------- PUBLIC PROPERTIES */
 
