@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f1d9a9362df025c49883ab23c709b847, type: 3}
-  m_Name: Flashlight
+  m_Name: Hunting Rifle
   m_EditorClassIdentifier: 
-  type: 3
+  type: 0
   _viewModel: {fileID: 0}
   _hitEffect: {fileID: 0}
   _projectile: {fileID: 0}

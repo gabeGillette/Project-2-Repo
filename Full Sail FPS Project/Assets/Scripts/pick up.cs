@@ -13,7 +13,7 @@ public class pickup : MonoBehaviour
     {
         if(type == pickupType.gun)
         {
-            gun.ammoCur = gun.ammoMax;
+           // gun.ammoCur = gun.ammoMax;
         }
     }
 

@@ -56,13 +56,6 @@ public class playerController : MonoBehaviour, IDamage
 
     public static damage.damageType enemyDamageType;
 
-    // This is for the reticle color changing
-    /*public Image rifleReticle;
-    public Image unarmReticle;
-    public Color defaultColor = Color.white;
-    public Color enemyColor = Color.red;
-    public Color friendColor = Color.green;
-    public float maxRaycastDistance = 100f;*/
 
 
     // UI prompt to interact
@@ -290,14 +283,14 @@ public class playerController : MonoBehaviour, IDamage
    
     public void getGunStats(gunStats gun)
     {
-        gunList.Add(gun);
+        /*gunList.Add(gun);
         GunSelect = gunList.Count - 1;
         shootDmg = gun.shootDmg;
         fireRange = gun.fireRange;
         fireRate = gun.fireRate;
 
         gunModel.GetComponent<MeshFilter>().sharedMesh = gun.gunModel.GetComponent<MeshFilter>().sharedMesh;
-        gunModel.GetComponent<MeshRenderer>().sharedMaterial = gun.gunModel.GetComponent<MeshRenderer>().sharedMaterial;
+        gunModel.GetComponent<MeshRenderer>().sharedMaterial = gun.gunModel.GetComponent<MeshRenderer>().sharedMaterial;*/
     }
 
     void Gunselect()
@@ -316,12 +309,12 @@ public class playerController : MonoBehaviour, IDamage
 
     void changeGun()
     {
-        shootDmg = gunList[GunSelect].shootDmg;
+        /*shootDmg = gunList[GunSelect].shootDmg;
         fireRange = gunList[GunSelect].fireRange;
         fireRate = gunList[GunSelect].fireRate;
 
         gunModel.GetComponent<MeshFilter>().sharedMesh = gunList[GunSelect].gunModel.GetComponent<MeshFilter>().sharedMesh;
-        gunModel.GetComponent<MeshRenderer>().sharedMaterial = gunList[GunSelect].gunModel.GetComponent<MeshRenderer>().sharedMaterial;
+        gunModel.GetComponent<MeshRenderer>().sharedMaterial = gunList[GunSelect].gunModel.GetComponent<MeshRenderer>().sharedMaterial;*/
     }
 
 }
