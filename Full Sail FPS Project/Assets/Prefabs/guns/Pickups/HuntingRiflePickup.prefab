@@ -269,7 +269,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: 0
-  gun: {fileID: 0}
+  gun: {fileID: 11400000, guid: 7842380725fe11b4085dee8af4e375a8, type: 2}
 --- !u!1 &4623265473232755539
 GameObject:
   m_ObjectHideFlags: 0

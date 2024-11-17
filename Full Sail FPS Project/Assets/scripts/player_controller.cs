@@ -134,6 +134,7 @@ public class playerController : MonoBehaviour, IDamage
 
         if (gunList.Count > 0)
         {
+            Gunselect();
             switch (gunList[selectedGun].WeaponType)
             {
                 case gunStats.WEAPON_TYPE.FLASHLIGHT:
@@ -219,9 +220,10 @@ public class playerController : MonoBehaviour, IDamage
         switch (gunList[selectedGun].WeaponType)
         {
             case gunStats.WEAPON_TYPE.HITSCAN:
-                    // Raycast test for shooting.
-                    // shooting from the camera.
-                    RaycastHit hit;
+                viewModelAnimator.SetTrigger("fire");
+                // Raycast test for shooting.
+                // shooting from the camera.
+                RaycastHit hit;
                     if (Physics.Raycast(Camera.main.transform.position,
                       Camera.main.transform.forward, out hit, gunList[selectedGun].Range, ~ignoreMask))
                     {

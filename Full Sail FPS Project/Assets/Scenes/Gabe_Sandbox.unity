@@ -4606,6 +4606,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1711207895336693266, guid: 69eeafedf43576b42aec231e63c15cbd, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3180171742490645341, guid: 69eeafedf43576b42aec231e63c15cbd, type: 3}
       propertyPath: m_Name
       value: HuntingRiflePickup
