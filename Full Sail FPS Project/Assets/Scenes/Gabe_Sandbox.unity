@@ -1169,8 +1169,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2000468293151364881, guid: 256b7e021f91aad47bb2ee8a8e73714b, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2895214849735529810, guid: 256b7e021f91aad47bb2ee8a8e73714b, type: 3}
+      propertyPath: _bloodEffect
+      value: 
+      objectReference: {fileID: 5917682586402392790, guid: ce4b5f9303c76d9468671432c7d2e2d0, type: 3}
     - target: {fileID: 8776002678655787875, guid: 256b7e021f91aad47bb2ee8a8e73714b, type: 3}
       propertyPath: m_Enabled
       value: 0
@@ -4887,7 +4891,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4009336909614713013, guid: 10f7fa273e0332040974a28ab3d8ce15, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.146
+      value: 0.368
       objectReference: {fileID: 0}
     - target: {fileID: 4009336909614713013, guid: 10f7fa273e0332040974a28ab3d8ce15, type: 3}
       propertyPath: m_LocalPosition.z
