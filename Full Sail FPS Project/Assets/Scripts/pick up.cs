@@ -21,7 +21,7 @@ public class pickup : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            GameManager.Instance._player.getGunStats(gun);
+            GameManager.Instance.PlayerScript.getGunStats(gun);
             Destroy(gameObject);
         }
     }

@@ -1,7 +1,7 @@
 // GameManager
 // Desc: Singleton Class that handles top-level gameplay priorities.
 // Authors: Gabriel Gillette, Kenton Weaver, Adam McKee
-// Last Modified: Nov, 9 2024
+// Last Modified: Nov, 16 2024
 
 using System;
 using System.Collections;
@@ -68,7 +68,7 @@ public class GameManager : MonoBehaviour
     /// <summary>
     /// Player reference.
     /// </summary>
-    public playerController _player;
+    private playerController _player;
 
     /// <summary>
     /// Cached timescale. 
@@ -97,6 +97,8 @@ public class GameManager : MonoBehaviour
 
     /*--------------------------------------------------- SERIALIZED MEMBERS */
 
+    [Header("------ UI Panels ------")]
+
     /// <summary>
     /// The player damage panel;
     /// </summary>
@@ -106,6 +108,9 @@ public class GameManager : MonoBehaviour
     /// The palyer poison panel.
     /// </summary>
     [SerializeField] GameObject _poisionPanel;
+
+
+    [Header("------ Menus ------")]
 
     /// <summary>
     /// Pause Menu;
@@ -132,6 +137,8 @@ public class GameManager : MonoBehaviour
     /// </summary>
     [SerializeField] GameObject _menuConfirmRestart;
 
+    [Header("------ UI HUD ------")]
+
     /// <summary>
     /// Graphical health bar.
     /// </summary>
@@ -146,6 +153,35 @@ public class GameManager : MonoBehaviour
     /// Reference to checkpoint indicator UI graphic
     /// </summary>
     [SerializeField] GameObject _checkPointIndicator;
+
+    [Header("------ Reticles ------")]
+
+    /// <summary>
+    /// UI target Reticle 
+    /// </summary>
+    [SerializeField] Image _reticle;
+
+    /// <summary>
+    /// UI simple Reticle 
+    /// </summary>
+    [SerializeField] Image _simpReticle;
+
+    [Header("------ RETICLE COLORS ------ ")]
+
+    /// <summary>
+    /// 
+    /// </summary>
+    [SerializeField] Color _defualtReticleColor;
+
+    /// <summary>
+    /// 
+    /// </summary>
+    [SerializeField] Color _friendReticleColor;
+
+    /// <summary>
+    /// 
+    /// </summary>
+    [SerializeField] Color _enemyReticleColor;
 
     /*---------------------------------------------------- PUBLIC PROPERTIES */
 
@@ -173,6 +209,11 @@ public class GameManager : MonoBehaviour
     /// Access GameManager.
     /// </summary>
     public static GameManager Instance => _instance;
+
+    /// <summary>
+    /// Getter for Player Script.
+    /// </summary>
+    public playerController PlayerScript => _player;
 
     /*--------------------------------------------------------- UNITY EVENTS */
 
