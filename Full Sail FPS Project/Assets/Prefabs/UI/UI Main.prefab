@@ -3258,7 +3258,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 95, y: 33.7}
+  m_AnchoredPosition: {x: 95, y: 33.69995}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!95 &3862196708092836348
@@ -4210,7 +4210,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _damagePanel: {fileID: 7064378646286776782}
-  _poisionPanel: {fileID: 1821870656089666444}
+  _poisonPanel: {fileID: 1821870656089666444}
   _menuPause: {fileID: 6705743398271076957}
   _menuWin: {fileID: 7081384173325469189}
   _menuLose: {fileID: 2686135807110535498}
@@ -4219,6 +4219,21 @@ MonoBehaviour:
   _healthBar: {fileID: 432579455869591439}
   _numericHealthDisplay: {fileID: 6275890062669562594}
   _checkPointIndicator: {fileID: 4840678912658177106}
+  _reticle: {fileID: 5606293270241697099}
+  _simpReticle: {fileID: 5606293270241697099}
+  _defaultReticleColor: {r: 1, g: 1, b: 1, a: 0}
+  _friendReticleColor: {r: 0, g: 1, b: 0.12013221, a: 0}
+  _enemyReticleColor: {r: 0.9528302, g: 0.08517665, b: 0.049439307, a: 0}
+  _maxRaycastDistance: 0
+  interactWindow: {fileID: 3258582876634046488}
+  playerSpawnPos: {fileID: 0}
+  hasJournal: 0
+  hasDog: 0
+  touchedPentagram: 0
+  hasBackpack: 0
+  _journal: {fileID: 0}
+  _backpack: {fileID: 0}
+  _dog: {fileID: 0}
 --- !u!1 &6018427170584000466
 GameObject:
   m_ObjectHideFlags: 0

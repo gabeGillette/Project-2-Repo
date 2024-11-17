@@ -74,12 +74,18 @@ public class playerController : MonoBehaviour, IDamage
 
     public bool Shooting { get { return isShooting; } }
     
+   
+    void Awake()
+    {
+        spawnPlayer();
+
+    }
+
     void Start()
     {
 
 
         initHealth = healthPoints;
-
         // update the health bar
         GameManager.Instance.updateHealthDisplay(healthPoints, initHealth);
     }
@@ -105,7 +111,15 @@ public class playerController : MonoBehaviour, IDamage
 
     }
 
-    void movement()
+    public void spawnPlayer()
+    {
+        controller.enabled = false;
+        transform.position = GameManager.Instance.playerSpawnPos.transform.position;
+        controller.enabled = true;
+       // HP = HPOriginal;
+    }
+
+        void movement()
     {
         //if player is grounded
         if (controller.isGrounded)

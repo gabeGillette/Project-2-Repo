@@ -119,7 +119,7 @@ public class GameManager : MonoBehaviour
     /// <summary>
     /// The palyer poison panel.
     /// </summary>
-    [SerializeField] GameObject _poisionPanel;
+    [SerializeField] GameObject _poisonPanel;
 
 
     [Header("------ Menus ------")]
@@ -183,7 +183,7 @@ public class GameManager : MonoBehaviour
     /// <summary>
     /// 
     /// </summary>
-    [SerializeField] Color _defualtReticleColor;
+    [SerializeField] Color _defaultReticleColor;
 
     /// <summary>
     /// 
@@ -201,6 +201,23 @@ public class GameManager : MonoBehaviour
     ///
     ///
     [SerializeField] [Range(0.0f, 1000.0f)] float _maxRaycastDistance;
+
+    public GameObject interactWindow;
+    public GameObject playerSpawnPos;
+
+    public bool hasJournal;
+    public bool hasDog;
+    public bool touchedPentagram;
+    public bool hasBackpack;
+
+    [Header("-----Collectibles-----")]
+    public GameObject _journal;
+    public GameObject _backpack;
+    public GameObject _dog;
+    public GameObject _note;
+
+    // [SerializeField] GameObject _pentagram;
+
 
     /*---------------------------------------------------- PUBLIC PROPERTIES */
 
@@ -222,7 +239,7 @@ public class GameManager : MonoBehaviour
     /// <summary>
     /// Access Poison Panel.
     /// </summary>
-    public GameObject PlayerPoisonPanel => _poisionPanel;
+    public GameObject PlayerPoisonPanel => _poisonPanel;
 
     /// <summary>
     /// Access GameManager.
@@ -258,6 +275,11 @@ public class GameManager : MonoBehaviour
 
     }
 
+    private void Start()
+    {
+        playerSpawnPos = GameObject.FindWithTag("Player Spawn Pos");
+
+    }
 
     /// <summary>
     /// GameManager update loop.
@@ -587,12 +609,12 @@ public class GameManager : MonoBehaviour
                 }
                 else
                 {
-                    _activeReticle.color = _defualtReticleColor;
+                    _activeReticle.color = _defaultReticleColor;
                 }
             }
             else
             {
-                _activeReticle.color = _defualtReticleColor;
+                _activeReticle.color = _defaultReticleColor;
             }
         
     }

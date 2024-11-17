@@ -10,6 +10,7 @@ public class SwitchBehaviours : MonoBehaviour
     void Start()
     {
         targetObjects = GameObject.FindGameObjectsWithTag("Label");
+      
 
 
     }

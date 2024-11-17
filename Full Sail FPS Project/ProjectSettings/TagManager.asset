@@ -12,6 +12,11 @@ TagManager:
   - LabelOn
   - LabelOff
   - MainMenuJournal
+  - Player Spawn Pos
+  - Journal
+  - Backpack
+  - Dog
+  - BackPack
   layers:
   - Default
   - TransparentFX
