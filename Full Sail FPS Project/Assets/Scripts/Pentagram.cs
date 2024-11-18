@@ -8,6 +8,7 @@ using UnityEngine.UIElements;
 public class Pentagram : MonoBehaviour, IInteractable
 {
     [SerializeField] Color skyColorChange = Color.red;  // Change to desired color
+    [SerializeField] Material skyMaterial;
     //[SerializeField] float spawnRadius = 10f;           // Radius around the pentagram to spawn monsters
     //[SerializeField] GameObject monsterPrefab;          // Assign your monster prefab in the Inspector
     //[SerializeField] int numMonsters = 5;               // Number of monsters to spawn
@@ -18,12 +19,16 @@ public class Pentagram : MonoBehaviour, IInteractable
 
     private TMP_Text taskTracker;
 
+    AudioSource audioSource;
+
+
 
     private void Start()
     {
         escapeWall = GameObject.FindGameObjectWithTag("EscapeWall");
         exitSign = GameObject.FindGameObjectWithTag("ExitSign");
         taskTracker = GameManager.Instance.taskTrackerText;
+        audioSource = GetComponent<AudioSource>();
 
 
     }
@@ -36,6 +41,7 @@ public class Pentagram : MonoBehaviour, IInteractable
     private void ChangeSkyColor()
     {
         RenderSettings.ambientLight = skyColorChange;   // Simple sky color change
+        RenderSettings.skybox = skyMaterial;
     }
 
     //private void StartMonstersInBasement()
@@ -50,7 +56,7 @@ public class Pentagram : MonoBehaviour, IInteractable
     //}
 
 
-    
+
 
     private void OnTriggerEnter(Collider other)
     {
@@ -64,10 +70,21 @@ public class Pentagram : MonoBehaviour, IInteractable
 
                 taskTracker.text += "Grab Gun!";
                 ChangeSkyColor();
+                PlayAudio();
+
                 // StartMonstersInBasement();
                 Destroy(escapeWall);
 
             }
         }
     }
+
+    public void PlayAudio()
+    {
+        if (audioSource != null && !audioSource.isPlaying)
+        {
+            audioSource.Play(); // Play the audio
+        }
+    }
+
 }
