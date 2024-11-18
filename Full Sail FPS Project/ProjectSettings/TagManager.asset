@@ -17,6 +17,8 @@ TagManager:
   - Backpack
   - Dog
   - BackPack
+  - SpitterSpawner
+  - GhoulSpawner
   layers:
   - Default
   - TransparentFX
