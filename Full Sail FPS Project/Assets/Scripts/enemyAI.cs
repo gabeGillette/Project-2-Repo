@@ -6,7 +6,7 @@ using UnityEngine.AI;
 
 public class EnemyController : MonoBehaviour, IDamage
 {
-    [Header("Collision Detection and Models")]
+    [Header("-----Collision Detection and Models-----")]
     [SerializeField] GameObject spitPrefab; // The spit prefab
     [SerializeField] Transform shootPos; // Where the spit should be fired from
     [SerializeField] NavMeshAgent agent; //MeshAgent to allow the enemy to move along/avoid terrain
@@ -16,7 +16,7 @@ public class EnemyController : MonoBehaviour, IDamage
     [SerializeField] GameObject melee;
 
 
-    [Header("Character Stats")]
+    [Header("-----Character Stats-----")]
     [SerializeField] float moveSpeed;
     [SerializeField] float rotationSpeed;
     [SerializeField] float attackRate; // Time between spits
@@ -27,8 +27,8 @@ public class EnemyController : MonoBehaviour, IDamage
     [SerializeField] bool rangedAttacker; //Check if ranged as well as melee attacker
     [SerializeField] bool stationaryAttacker; //Shows if it is a mine or stationary attack
 
-   [SerializeField] float wanderRadius = 10f;  // Radius in which the enemy will wander.
-   [SerializeField] float wanderInterval = 3f; //Time to wander to next position
+    [SerializeField] float wanderRadius = 10f;  // Radius in which the enemy will wander.
+    [SerializeField] float wanderInterval = 3f; //Time to wander to next position
 
     public LayerMask playerLayer;
 
@@ -38,8 +38,9 @@ public class EnemyController : MonoBehaviour, IDamage
     private float lastSpitTime;
     private bool canExplode;
 
-    [SerializeField] int roamDist;
-    [SerializeField] int roamTimer;
+    [Header("-----Roam/Wander Mechanics-----")]
+    [SerializeField] int roamDist;  //Determines how far the entity will roam from the previous point.
+    [SerializeField] int roamTimer; //Determines how long between times the entity will roam before changing direction.
 
     [Header("------- Blood Effect ------ ")]
     /// <summary>
@@ -54,20 +55,21 @@ public class EnemyController : MonoBehaviour, IDamage
 
     Color colorOrig; //Placeholder to allow for color changes during damage
 
+    /// <summary>
+    /// Basic bools for checking the abilities of the enemies to do certain things including melee/ranged attack and roaming
+    /// </summary>
     bool playerInMovementRange; //See if the player is within the sphere collider to start moving towards player
-
-
     bool canMeleeAttack = true; //Check if enemy is melee attacking
     bool playerInSpitRange; //Check if player is in spitRange
     bool playerInMeleeRange; //Check if player is in meleeRange
     bool isRoaming;
-
+    float angleToPlayer;
+    float stoppingDistOrig;
 
     Vector3 playerDir;
     Vector3 startingPos;
 
-    float angleToPlayer;
-    float stoppingDistOrig;
+    
 
 
     // Start is called before the first frame update
@@ -97,12 +99,6 @@ public class EnemyController : MonoBehaviour, IDamage
           
       
         moveTowardsPlayer();
-
-           
-       
-       
-
-
     }
 
    

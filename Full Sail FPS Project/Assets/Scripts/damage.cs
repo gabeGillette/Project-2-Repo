@@ -4,17 +4,23 @@ using UnityEngine;
 
 public class damage : MonoBehaviour
 {
-    public enum damageType { initial, spit, melee, stationary, explosion}
-   // [SerializeField] damageType type;
+    public enum damageType { initial, spit, melee, stationary, explosion }
+    // [SerializeField] damageType type;
     [SerializeField] Rigidbody rb;
 
-    [SerializeField] int spitDamageAmount;
-    [SerializeField] int meleeDamageAmount;
-    [SerializeField] int explosionDamageAmount = 1;
-    [SerializeField] int meleeSpeed;
-    [SerializeField] int spitSpeed;
+    [Header("-----DamageTypes-----")]
+    [SerializeField][Range(0, 100)] int spitDamageAmount;
+    [SerializeField][Range(0, 50)] int spitSpeed;
+
+    [SerializeField][Range(0, 100)] int meleeDamageAmount;
+    [SerializeField][Range(0, 50)] int meleeSpeed;
+
+    [SerializeField][Range(0, 10)] int explosionDamageAmount;
+
+    [Header("-----Timers-----")]
     [SerializeField] float destroyTime;
 
+    [Header("-----Visuals-----")]
     [SerializeField] Renderer model; //Allows the identification of the specific renderer model
     Color colorOrig;
 

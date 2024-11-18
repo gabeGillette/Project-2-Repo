@@ -4,10 +4,11 @@ using UnityEngine;
 
 public class cameracontrol : MonoBehaviour
 {
+    [Header("-----Controls-----")]
     //camera sensitivity
-    [SerializeField] int sens;
+    [SerializeField] [Range(0, 100)] int sens;
     //min and max of lock
-    [SerializeField] int lockvertmin, lockvertmax;
+    [SerializeField] [Range(0, 180)] int lockvertmin, lockvertmax;
     //plane comtrols
     [SerializeField] bool inverty;
     //x's rotation

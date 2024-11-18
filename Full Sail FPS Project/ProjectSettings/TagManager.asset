@@ -19,6 +19,9 @@ TagManager:
   - BackPack
   - SpitterSpawner
   - GhoulSpawner
+  - EscapeWall
+  - ExitSign
+  - FrontDoor
   layers:
   - Default
   - TransparentFX

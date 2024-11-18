@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class spawner : MonoBehaviour
 {
-
-    [SerializeField] GameObject spitterToSpawn;
-    [SerializeField] GameObject ghoulToSpawn;
+    [SerializeField] GameObject[] enemiesToSpawn;
+    //[SerializeField] GameObject spitterToSpawn;
+    //[SerializeField] GameObject ghoulToSpawn;
     [SerializeField] int numberToSpawn;
     [SerializeField] int timeBetweenSpawns;
     [SerializeField] Transform[] spawnPos;
@@ -19,7 +19,6 @@ public class spawner : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
     }
 
     // Update is called once per frame
@@ -44,17 +43,13 @@ public class spawner : MonoBehaviour
     {
         isSpawning = true;
         yield return new WaitForSeconds(timeBetweenSpawns);
+
+        int enemyIndex = Random.Range(0, enemiesToSpawn.Length);
+        GameObject enemyToSpawn = enemiesToSpawn[enemyIndex];
         int spawnInt = Random.Range(0, spawnPos.Length);
 
-        if (GameObject.FindGameObjectWithTag("SpitterSpawner"))
-        {
-            Instantiate(spitterToSpawn, spawnPos[spawnInt].position, spawnPos[spawnInt].rotation);
-        }
-        else if(GameObject.FindGameObjectWithTag("GhoulSpawner"))
-        {
-            Instantiate(ghoulToSpawn, spawnPos[spawnInt].position, spawnPos[spawnInt].rotation);
+        Instantiate(enemyToSpawn, spawnPos[spawnInt].position, spawnPos[spawnInt].rotation);
 
-        }
 
         isSpawning = false;
     }

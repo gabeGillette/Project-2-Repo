@@ -77,12 +77,12 @@ public class playerController : MonoBehaviour, IDamage
    
     void Awake()
     {
-        spawnPlayer();
 
     }
 
     void Start()
     {
+        spawnPlayer();
 
 
         initHealth = healthPoints;
@@ -222,7 +222,7 @@ public class playerController : MonoBehaviour, IDamage
         if (healthPoints <= 0)
         {
             //GameManager.instance.youLose();
-            GameManager.Instance.RespawnPlayer();
+           // GameManager.Instance.RespawnPlayer();
         }
     }
 
@@ -341,16 +341,16 @@ public class playerController : MonoBehaviour, IDamage
    
     public void addGun(gunStats gun)
     {
-        /*gunList.Add(gun);
-        GunSelect = gunList.Count - 1;
-        shootDmg = gun.shootDmg;
-        fireRange = gun.fireRange;
-        fireRate = gun.fireRate;
+        //gunList.Add(gun);
+        //GunSelect = gunList.Count - 1;
+        //shootDmg = gun.shootDmg;
+        //fireRange = gun.fireRange;
+        //fireRate = gun.fireRate;
 
-        gunModel.GetComponent<MeshFilter>().sharedMesh = gun.gunModel.GetComponent<MeshFilter>().sharedMesh;
-        gunModel.GetComponent<MeshRenderer>().sharedMaterial = gun.gunModel.GetComponent<MeshRenderer>().sharedMaterial;*/
+        //gunModel.GetComponent<MeshFilter>().sharedMesh = gun.gunModel.GetComponent<MeshFilter>().sharedMesh;
+        //gunModel.GetComponent<MeshRenderer>().sharedMaterial = gun.gunModel.GetComponent<MeshRenderer>().sharedMaterial;
 
-        
+
         gunList.Add(gun);
         selectedGun = gunList.Count - 1;
         changeGun();

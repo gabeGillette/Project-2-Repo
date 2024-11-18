@@ -205,14 +205,21 @@ public class GameManager : MonoBehaviour
 
     public bool hasJournal;
     public bool hasDog;
-    public bool touchedPentagram;
     public bool hasBackpack;
+    public bool hasNote;
+    public bool hasGun;
+    public bool canHaveGun;
 
     [Header("-----Collectibles-----")]
     public GameObject _journal;
     public GameObject _backpack;
     public GameObject _dog;
     public GameObject _note;
+    public GameObject _gun;
+
+
+    [SerializeField] public TMP_Text taskTrackerText;
+
 
     public GameObject interactWindow;
     public GameObject playerSpawnPos;

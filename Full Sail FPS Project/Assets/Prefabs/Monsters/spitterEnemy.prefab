@@ -71,16 +71,28 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 2e3fc7e5f8867a143bd010a64f435d4a, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 2e3fc7e5f8867a143bd010a64f435d4a, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 2e3fc7e5f8867a143bd010a64f435d4a, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 2e3fc7e5f8867a143bd010a64f435d4a, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 20.527946
+      value: 204.81105
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 2e3fc7e5f8867a143bd010a64f435d4a, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.0000019073486
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 2e3fc7e5f8867a143bd010a64f435d4a, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 22.408688
+      value: 87.5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 2e3fc7e5f8867a143bd010a64f435d4a, type: 3}
       propertyPath: m_LocalRotation.w
@@ -122,6 +134,10 @@ PrefabInstance:
       propertyPath: m_TagString
       value: Enemy
       objectReference: {fileID: 0}
+    - target: {fileID: 2664098864995057252, guid: 2e3fc7e5f8867a143bd010a64f435d4a, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 33215ad7a3eac5c41a4940f534012447, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -184,10 +200,14 @@ MonoBehaviour:
   HP: 3
   rangedAttacker: 1
   stationaryAttacker: 0
+  wanderRadius: 10
+  wanderInterval: 3
   playerLayer:
     serializedVersion: 2
     m_Bits: 64
-  colorOrig: {r: 0, g: 1, b: 0.062781096, a: 0}
+  roamDist: 10
+  roamTimer: 2
+  _bloodEffect: {fileID: 0}
 --- !u!195 &-1344444323926992281
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -230,7 +250,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2525662007637093263, guid: 2e3fc7e5f8867a143bd010a64f435d4a, type: 3}
+  - {fileID: 2100000, guid: a36a53421a56015439bbeb439a9a4568, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
