@@ -60,7 +60,7 @@ public class InteractWithObject : MonoBehaviour
         {
             if (Input.GetButtonDown("Interact"))
             {
-                if (journal != null && journal.activeInHierarchy)
+                if (journal != null && journal.activeInHierarchy && GameManager.Instance.hasJournal == false)
                 {
                     GameManager.Instance.hasJournal = true;
                    // this.gameObject.SetActive(false);
