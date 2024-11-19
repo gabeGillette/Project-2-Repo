@@ -22,6 +22,7 @@ TagManager:
   - EscapeWall
   - ExitSign
   - FrontDoor
+  - BedroomDoor
   layers:
   - Default
   - TransparentFX

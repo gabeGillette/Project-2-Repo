@@ -12,6 +12,7 @@ public class InteractWithObject : MonoBehaviour
     private GameObject dog;
     private GameObject note;
     private GameObject gun;
+    private GameObject bedroomDoor;
 
 
     [Header("-----Text Object References-----")]
@@ -29,6 +30,9 @@ public class InteractWithObject : MonoBehaviour
         note = GameManager.Instance._note;
         gun = GameManager.Instance._gun;
         taskTracker = GameManager.Instance.taskTrackerText;
+        bedroomDoor = GameObject.FindGameObjectWithTag("BedroomDoor");
+
+
 
 
 
@@ -60,7 +64,7 @@ public class InteractWithObject : MonoBehaviour
                 {
                     GameManager.Instance.hasJournal = true;
                    // this.gameObject.SetActive(false);
-                    Destroy(gameObject); // Destroy the object after interaction
+                    Destroy(bedroomDoor); // Destroy the object after interaction
                     GameManager.Instance.interactWindow.SetActive(false);
                     
                     taskTracker.text = "Show Mom Game Design Journal.";
