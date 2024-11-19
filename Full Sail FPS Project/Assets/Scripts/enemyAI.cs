@@ -133,7 +133,7 @@ public class EnemyController : MonoBehaviour, IDamage
         if (other.CompareTag("Player"))
         {
 
-           
+            isRoaming = false;
 
             if (stationaryAttacker)
             {
