@@ -66,7 +66,7 @@ public class InteractWithObject : MonoBehaviour
                    // this.gameObject.SetActive(false);
                     Destroy(bedroomDoor); // Destroy the object after interaction
                     GameManager.Instance.interactWindow.SetActive(false);
-                    
+                    Destroy(gameObject);
                     taskTracker.text = "Show Mom Game Design Journal.";
                     return;
                 }

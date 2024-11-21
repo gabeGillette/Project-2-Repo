@@ -8910,7 +8910,7 @@ MonoBehaviour:
   hasGun: 0
   canHaveGun: 0
   _journal: {fileID: 4383200312206206420}
-  _backpack: {fileID: 0}
+  _backpack: {fileID: 891366024}
   _dog: {fileID: 5909557765767038929}
   _note: {fileID: 6616149701689068965}
   _gun: {fileID: 0}
@@ -11115,7 +11115,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2015128964195215192, guid: fba8f0864c909834f8d35444ad28bbd0, type: 3}
       propertyPath: lockvertmin
-      value: 0
+      value: -90
       objectReference: {fileID: 0}
     - target: {fileID: 2201551670486214176, guid: fba8f0864c909834f8d35444ad28bbd0, type: 3}
       propertyPath: m_LocalPosition.x
