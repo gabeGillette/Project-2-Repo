@@ -104,7 +104,7 @@ public class GameManager : MonoBehaviour
     /// <summary>
     /// Reference to active Reticle
     /// </summary>
-    private Image _activeReticle;
+    [SerializeField] Image _activeReticle;
 
     /*--------------------------------------------------- SERIALIZED MEMBERS */
 
@@ -182,7 +182,7 @@ public class GameManager : MonoBehaviour
     /// <summary>
     /// 
     /// </summary>
-    [SerializeField] Color _defualtReticleColor;
+    [SerializeField] Color _defaultReticleColor;
 
     /// <summary>
     /// 
@@ -307,7 +307,7 @@ public class GameManager : MonoBehaviour
         }
 
         // update reticle
-        UpdateReticle();
+        //UpdateReticle();
 
 #if UNITY_EDITOR
         if (Input.GetKeyDown(KeyCode.Period))
@@ -594,29 +594,51 @@ public class GameManager : MonoBehaviour
     /// </summary>
     void UpdateReticle()
     {
+        // Raycast from the camera through the mouse position
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        RaycastHit hit;
 
-            Ray ray = Camera.main.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2, 0));
-            RaycastHit hit;
-
-            if (Physics.Raycast(ray, out hit, _maxRaycastDistance))
+        // Check if the ray hits an object
+        if (Physics.Raycast(ray, out hit))
+        {
+            // Check if the object hit has the "Enemy" tag
+            if (hit.collider.CompareTag("Enemy"))
             {
-                if (hit.collider.CompareTag("Enemy"))
-                {
-                    _activeReticle.color = _enemyReticleColor; // reticle changes color (red)
-                }
-                else if(hit.collider.CompareTag("Friend"))
-                {
-                    _activeReticle.color = _friendReticleColor;
-                }
-                else
-                {
-                    _activeReticle.color = _defualtReticleColor;
-                }
+                // Change the reticle color to enemyColor if hit object has "Enemy" tag
+                _activeReticle.color = _enemyReticleColor;
             }
-            //else
-            //{
-            //    _activeReticle.color = _defualtReticleColor;
-            //}
-        
+            else
+            {
+                // Reset to default color if not hovering over an enemy
+                _activeReticle.color = _defaultReticleColor;
+            }
+        }
+        //else
+        //{
+        //    // Reset to default color if no hit (or no object under the cursor)
+        //    _activeReticle.color = _defaultReticleColor;
+        //}
+        //Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition); RaycastHit hit;
+
+        // if (Physics.Raycast(ray, out hit, _maxRaycastDistance))
+        // {
+        //     if (hit.collider.CompareTag("Enemy"))
+        //     {
+        //         _activeReticle.color = _enemyReticleColor; // reticle changes color (red)
+        //     }
+        //     else if(hit.collider.CompareTag("Friend"))
+        //     {
+        //         _activeReticle.color = _friendReticleColor;
+        //     }
+        //     else
+        //     {
+        //         _activeReticle.color = _defualtReticleColor;
+        //     }
+        // }
+        // //else
+        // //{
+        // //    _activeReticle.color = _defualtReticleColor;
+        // //}
+
     }
 }

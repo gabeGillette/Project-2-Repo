@@ -8944,6 +8944,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 703171aeecacd2a46bc45a421d6a7c76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _activeReticle: {fileID: 5606293269777883034}
   _damagePanel: {fileID: 7064378645945154335}
   _poisionPanel: {fileID: 1821870656548237661}
   _menuPause: {fileID: 6705743397928503436}
@@ -8956,10 +8957,10 @@ MonoBehaviour:
   _checkPointIndicator: {fileID: 4840678912446676611}
   _reticle: {fileID: 5606293269777883034}
   _simpReticle: {fileID: 5606293269777883034}
-  _defualtReticleColor: {r: 1, g: 1, b: 1, a: 0}
+  _defaultReticleColor: {r: 1, g: 1, b: 1, a: 0}
   _friendReticleColor: {r: 0, g: 1, b: 0.12013221, a: 0}
   _enemyReticleColor: {r: 0.9528302, g: 0.08517665, b: 0.049439307, a: 0}
-  _maxRaycastDistance: 0
+  _maxRaycastDistance: 70
   hasJournal: 0
   hasDog: 0
   hasBackpack: 0
@@ -11278,6 +11279,10 @@ PrefabInstance:
       propertyPath: gunModel
       value: 
       objectReference: {fileID: 1098473123}
+    - target: {fileID: 8792911356774683022, guid: fba8f0864c909834f8d35444ad28bbd0, type: 3}
+      propertyPath: audStepsVol
+      value: 0.2
+      objectReference: {fileID: 0}
     - target: {fileID: 8792911356774683022, guid: fba8f0864c909834f8d35444ad28bbd0, type: 3}
       propertyPath: muzzleFlash
       value: 
