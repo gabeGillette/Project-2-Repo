@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 public class RiflePickup : MonoBehaviour, IInteractable
 {
@@ -10,13 +11,23 @@ public class RiflePickup : MonoBehaviour, IInteractable
 
     private bool hasBeenPickedUp = false;
 
+    private TMP_Text taskTracker;
+
+    void Start()
+    {
+        taskTracker = GameManager.Instance.taskTrackerText;
+
+    }
+
     public void OnInteract()
     {
         if (!hasBeenPickedUp)
         {
             hasBeenPickedUp = true;
             ActivateMainUI();
-            SpawnMonstersOnGroundLevel();
+            taskTracker.text = "RUN TO THE FOREST TO ESCAPE!";
+
+            //SpawnMonstersOnGroundLevel();
             Destroy(gameObject); // Remove the rifle pickup after interaction
         }
     }
