@@ -42,8 +42,8 @@ public class gunStats : ScriptableObject
     [SerializeField] [Range(0, 120)] float _fireRate;
     [SerializeField] [Range(0, 32)] int _raysPerFire;
     [SerializeField] [Range(0, 5)] float _spreadAmt;
-    [SerializeField] [Range(0, 1024)] int _ammoMax;
-    [SerializeField] [Range(0, 1024)] int _ammoCur;
+    [SerializeField] [Range(0, 1024)] public int _ammoMax;
+    [SerializeField] [Range(0, 1024)] public int _ammoCur;
 
     [Header(" ------ Sound ------ ")]
 

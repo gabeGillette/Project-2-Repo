@@ -42,12 +42,12 @@ public class EnemyController : MonoBehaviour, IDamage
     [SerializeField] int roamDist;  //Determines how far the entity will roam from the previous point.
     [SerializeField] int roamTimer; //Determines how long between times the entity will roam before changing direction.
 
-    [Header("------- Blood Effect ------ ")]
-    /// <summary>
-    /// 
-    /// </summary>
-    [SerializeField] GameObject _bloodEffect;
-    public GameObject BloodEffect => _bloodEffect;
+    //[Header("------- Blood Effect ------ ")]
+    ///// <summary>
+    ///// 
+    ///// </summary>
+    //[SerializeField] GameObject _bloodEffect;
+    //public GameObject BloodEffect => _bloodEffect;
 
     private damage.damageType currentDamageType;
  //   private damage damageScript;

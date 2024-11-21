@@ -249,14 +249,14 @@ public class playerController : MonoBehaviour, IDamage
                     {
                         GameObject.Instantiate(gunList[selectedGun].HitEffect, hit.point, Quaternion.identity);
                     }
-                    else
-                    {
-                        EnemyController ec = hit.collider.GetComponent<EnemyController>();
-                        if (ec != null)
-                        {
-                            GameObject.Instantiate(ec.BloodEffect, hit.point, Quaternion.identity);
-                        }
-                    }
+                    //else
+                    //{
+                    //    EnemyController ec = hit.collider.GetComponent<EnemyController>();
+                    //    if (ec != null)
+                    //    {
+                    //        GameObject.Instantiate(ec.BloodEffect, hit.point, Quaternion.identity);
+                    //    }
+                    //}
 
                     // run the damage script of the object hit if there is one.
                     IDamage dmg = hit.collider.GetComponent<IDamage>();

@@ -23,6 +23,7 @@ TagManager:
   - ExitSign
   - FrontDoor
   - BedroomDoor
+  - Main Gun
   layers:
   - Default
   - TransparentFX
