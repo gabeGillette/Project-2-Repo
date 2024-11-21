@@ -168,8 +168,9 @@ public class EnemyController : MonoBehaviour, IDamage
             }
 
             //See if they can melee
-            else if ((Vector3.Distance(transform.position, GameManager.Instance.Player.transform.position) <= meleeAttackRange && canMeleeAttack))
+            else if ((Vector3.Distance(transform.position, GameManager.Instance.Player.transform.position) >= meleeAttackRange && canMeleeAttack))
             {
+                playerInMeleeRange = true;
                 StartCoroutine(meleeAttack());
             }
 
@@ -266,7 +267,7 @@ public class EnemyController : MonoBehaviour, IDamage
     {
 
 
-        canMeleeAttack = false;
+        //canMeleeAttack = false;
 
         //Setting up a collidor to make a sphere to overlap from the enemy to what it hits
         Collider[] hitPlayer = Physics.OverlapSphere(transform.position, meleeAttackRange, playerLayer);
@@ -285,7 +286,7 @@ public class EnemyController : MonoBehaviour, IDamage
         }
         yield return new WaitForSeconds(meleeAttackRate);
 
-        canMeleeAttack = true;
+       // canMeleeAttack = true;
     }
 
     IEnumerator roam()

@@ -195,12 +195,12 @@ MonoBehaviour:
   rotationSpeed: 5
   attackRate: 4
   meleeAttackRate: 2
-  meleeAttackRange: 4
+  meleeAttackRange: 1
   meleeAttackDamage: 1
   HP: 3
   rangedAttacker: 1
   stationaryAttacker: 0
-  wanderRadius: 100
+  wanderRadius: 10
   wanderInterval: 3
   playerLayer:
     serializedVersion: 2
