@@ -32,11 +32,11 @@ public class GameManager : MonoBehaviour
         CONFIRM_RESTART = 5
     }
 
-    public enum RETICLE_TYPE
-    {
-        SIMPLE = 0,
-        WEAPON = 1,
-    }
+    //public enum RETICLE_TYPE
+    //{
+    //    SIMPLE = 0,
+    //    WEAPON = 1,
+    //}
 
     /*------------------------------------------------------ PRIVATE MEMBERS */
 
@@ -277,7 +277,7 @@ public class GameManager : MonoBehaviour
 
         _poisonScreenCanvasGroup = PlayerPoisonPanel.GetComponent<CanvasGroup>();
 
-        SetReticle(RETICLE_TYPE.SIMPLE);
+       // SetReticle(RETICLE_TYPE.SIMPLE);
 
     }
 
@@ -428,21 +428,21 @@ public class GameManager : MonoBehaviour
     /// 
     /// </summary>
     /// <param name="reticle"></param>
-    public void SetReticle(RETICLE_TYPE reticle)
-    {
-        switch (reticle)
-        {
-            case RETICLE_TYPE.SIMPLE:
-                _activeReticle = _simpReticle;
-                _reticle.enabled = false;
-                break;
-            case RETICLE_TYPE.WEAPON:
-                _activeReticle = _reticle;
-                _simpReticle.enabled = false;
-                break;
-        }
-        _activeReticle.enabled = true;
-    }
+    //public void SetReticle(RETICLE_TYPE reticle)
+    //{
+    //    switch (reticle)
+    //    {
+    //        case RETICLE_TYPE.SIMPLE:
+    //            _activeReticle = _simpReticle;
+    //            _reticle.enabled = false;
+    //            break;
+    //        case RETICLE_TYPE.WEAPON:
+    //            _activeReticle = _reticle;
+    //            _simpReticle.enabled = false;
+    //            break;
+    //    }
+    //    _activeReticle.enabled = true;
+    //}
 
 
     /// <summary>
@@ -613,10 +613,10 @@ public class GameManager : MonoBehaviour
                     _activeReticle.color = _defualtReticleColor;
                 }
             }
-            else
-            {
-                _activeReticle.color = _defualtReticleColor;
-            }
+            //else
+            //{
+            //    _activeReticle.color = _defualtReticleColor;
+            //}
         
     }
 }

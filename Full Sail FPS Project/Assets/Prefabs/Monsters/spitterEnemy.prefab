@@ -195,7 +195,7 @@ MonoBehaviour:
   rotationSpeed: 5
   attackRate: 4
   meleeAttackRate: 2
-  meleeAttackRange: 2
+  meleeAttackRange: 4
   meleeAttackDamage: 1
   HP: 3
   rangedAttacker: 1
@@ -207,7 +207,6 @@ MonoBehaviour:
     m_Bits: 64
   roamDist: 10
   roamTimer: 2
-  _bloodEffect: {fileID: 0}
 --- !u!195 &-1344444323926992281
 NavMeshAgent:
   m_ObjectHideFlags: 0
