@@ -83,6 +83,12 @@ public class playerController : MonoBehaviour, IDamage
     float shootDist;
     [SerializeField] AudioSource aud;
 
+    [SerializeField] AudioClip[] audSteps;
+    [SerializeField][Range(0, 1)] float audStepsVol;
+
+    bool isPlayingSteps;
+    bool isSprinting;
+
 
 
     void Awake()
@@ -166,6 +172,10 @@ public class playerController : MonoBehaviour, IDamage
             StartCoroutine(Shoot());
         }
 
+        if (controller.isGrounded && moveDir.magnitude > 0.3f && !isPlayingSteps)
+        {
+            StartCoroutine(playStep());
+        }
         // If the "shoot" button is trigged and the player can shoot, then shoot.
 
         //if (gunList.Count > 0)
@@ -189,7 +199,20 @@ public class playerController : MonoBehaviour, IDamage
         //}
     }
 
+    IEnumerator playStep()
+    {
+        isPlayingSteps = true;
 
+        aud.PlayOneShot(audSteps[UnityEngine.Random.Range(0, audSteps.Length)], audStepsVol);
+
+        if (!isSprinting)
+        {
+            yield return new WaitForSeconds(0.5f);
+        }
+        else
+            yield return new WaitForSeconds(0.3f);
+        isPlayingSteps = false;
+    }
 
     //how we handle jump
     void jump()
@@ -210,11 +233,15 @@ public class playerController : MonoBehaviour, IDamage
         {
             //multiply speed by modifier
             speed *= sprintMod;
+            isSprinting = true;
+
 
         }
         else if (Input.GetButtonUp("Sprint"))
         {
             speed /= sprintMod;
+            isSprinting = false;
+
         }
 
 
