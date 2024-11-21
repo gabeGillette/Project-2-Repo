@@ -1,6 +1,5 @@
 // pick up.cs
 // Desc: pickups
-// Authors: Jacquell Frazier, Gabriel Gillette
 // Last Modified: Nov, 16 2024
 
 using System.Collections;
@@ -18,7 +17,7 @@ public class pickup : MonoBehaviour
     {
         if(type == pickupType.gun)
         {
-            gun._ammoCur = gun._ammoMax;
+            gun.ammoCur = gun.ammoMax;
             
         }
     }
@@ -27,7 +26,7 @@ public class pickup : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            gun.RefillAmmo();
+            //gun.reload();
             GameManager.Instance.PlayerScript.addGun(gun);
            // GameObject.FindGameObjectWithTag("Main Gun").SetActive(true);
             Destroy(gameObject);

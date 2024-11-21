@@ -1,6 +1,5 @@
 // GameManager
 // Desc: Singleton Class that handles top-level gameplay priorities.
-// Authors: Gabriel Gillette, Kenton Weaver, Adam McKee
 // Last Modified: Nov, 16 2024
 
 using System;

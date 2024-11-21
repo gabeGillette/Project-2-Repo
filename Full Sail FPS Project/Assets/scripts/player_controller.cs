@@ -41,7 +41,7 @@ public class playerController : MonoBehaviour, IDamage
     GameObject currentViewModel;
     Animator viewModelAnimator;
 
-    [SerializeField] List<gunStats> gunList = new List<gunStats>();
+   // [SerializeField] List<gunStats> gunList = new List<gunStats>();
 
     //current amount of jumps
     int jumpCount;
@@ -73,8 +73,18 @@ public class playerController : MonoBehaviour, IDamage
     public int Health {  get { return healthPoints; } set { healthPoints = value; } }
 
     public bool Shooting { get { return isShooting; } }
-    
-   
+
+
+    [SerializeField] List<gunStats> gunList = new List<gunStats>();
+    [SerializeField] GameObject gunModel;
+    [SerializeField] GameObject muzzleFlash;
+    int shootDamage;
+    float shootRate;
+    float shootDist;
+    [SerializeField] AudioSource aud;
+
+
+
     void Awake()
     {
 
@@ -96,21 +106,28 @@ public class playerController : MonoBehaviour, IDamage
         // Draw ray for debugging
         if (gunList.Count > 0)
         {
-            Debug.DrawRay(Camera.main.transform.position, Camera.main.transform.forward * gunList[selectedGun].Range, Color.red);
+            Debug.DrawRay(Camera.main.transform.position, Camera.main.transform.forward * gunList[selectedGun].shootDistance, Color.red);
         }
 
         //constantly check how we're moving
         movement();
         sprint();
-
+        reload();
         // Attempt to interact if the interact button is presses
         if (canInteract && Input.GetButtonDown("Interact"))
         {
             Interact();
         }
+        
 
     }
-
+    void reload()
+    {
+        if (Input.GetButtonDown("Reload") && gunList.Count > 0)
+        {
+            gunList[selectedGun].ammoCur = gunList[selectedGun].ammoMax;
+        }
+    }
     public void spawnPlayer()
     {
         controller.enabled = false;
@@ -144,27 +161,32 @@ public class playerController : MonoBehaviour, IDamage
         //we move the player in the air based on velocity
         controller.Move(playerVel * Time.deltaTime);
 
+        if (Input.GetButton("Fire1") && gunList.Count > 0 && gunList[selectedGun].ammoCur > 0 && !isShooting)
+        {
+            StartCoroutine(Shoot());
+        }
+
         // If the "shoot" button is trigged and the player can shoot, then shoot.
 
-        if (gunList.Count > 0)
-        {
-            Gunselect();
-            switch (gunList[selectedGun].WeaponType)
-            {
-                case gunStats.WEAPON_TYPE.FLASHLIGHT:
-                    if (Input.GetButtonDown("Fire1") && !isShooting)
-                    {
-                        StartCoroutine(Shoot());
-                    }
-                    break;
-                case gunStats.WEAPON_TYPE.HITSCAN:
-                    if (Input.GetButton("Fire1") && !isShooting)
-                    {
-                        StartCoroutine(Shoot());
-                    }
-                    break;
-            }
-        }
+        //if (gunList.Count > 0)
+        //{
+        //    Gunselect();
+        //    switch (gunList[selectedGun].WeaponType)
+        //    {
+        //        case gunStats.WEAPON_TYPE.FLASHLIGHT:
+        //            if (Input.GetButtonDown("Fire1") && !isShooting)
+        //            {
+        //                StartCoroutine(Shoot());
+        //            }
+        //            break;
+        //        case gunStats.WEAPON_TYPE.HITSCAN:
+        //            if (Input.GetButton("Fire1") && !isShooting)
+        //            {
+        //                StartCoroutine(Shoot());
+        //            }
+        //            break;
+        //    }
+        //}
     }
 
 
@@ -228,57 +250,84 @@ public class playerController : MonoBehaviour, IDamage
 
     IEnumerator Shoot()
     {
-        // so the player can shoot only once at a time.
         isShooting = true;
+        gunList[selectedGun].ammoCur--;
+        aud.PlayOneShot(gunList[selectedGun].shootSound[UnityEngine.Random.Range(0, gunList[selectedGun].shootSound.Length)], gunList[selectedGun].shootVol);
+        // StartCoroutine(flashMuzzle());
 
-        switch (gunList[selectedGun].WeaponType)
+        RaycastHit hit;
+        if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, shootDist, ~ignoreMask))
         {
-            case gunStats.WEAPON_TYPE.HITSCAN:
-                viewModelAnimator.SetTrigger("fire");
-                // Raycast test for shooting.
-                // shooting from the camera.
-                RaycastHit hit;
-                if (Physics.Raycast(Camera.main.transform.position,
-                      Camera.main.transform.forward, out hit, gunList[selectedGun].Range, ~ignoreMask))
-                {
+            Debug.Log(hit.collider.name);
+            IDamage dmg = hit.collider.GetComponent<IDamage>();
 
-                    // log the name of the object hit.
-                    Debug.Log(hit.collider.name);
+            if (dmg != null)
+            {
+                dmg.TakeDamage(shootDamage);
+            }
 
-                    if (!hit.collider.CompareTag("Enemy"))
-                    {
-                        GameObject.Instantiate(gunList[selectedGun].HitEffect, hit.point, Quaternion.identity);
-                    }
-                    //else
-                    //{
-                    //    EnemyController ec = hit.collider.GetComponent<EnemyController>();
-                    //    if (ec != null)
-                    //    {
-                    //        GameObject.Instantiate(ec.BloodEffect, hit.point, Quaternion.identity);
-                    //    }
-                    //}
-
-                    // run the damage script of the object hit if there is one.
-                    IDamage dmg = hit.collider.GetComponent<IDamage>();
-                    if (dmg != null)
-                    {
-
-                        dmg.TakeDamage(gunList[selectedGun].Damage);
-                    }
-                }
-
-                    
-                break;
-            case gunStats.WEAPON_TYPE.FLASHLIGHT:
-                viewModelAnimator.SetTrigger("fire");
-                break;
         }
-        // pause for shootRate seconds
-        yield return new WaitForSeconds(gunList[selectedGun].FireRate);
+        //Instantiate(gunList[selectedGun].hitEffect, hit.point, Quaternion.identity);
+
+        yield return new WaitForSeconds(shootRate);
         isShooting = false;
+
     }
 
-  
+
+    //IEnumerator Shoot()
+    //{
+    //     so the player can shoot only once at a time.
+    //    isShooting = true;
+
+    //    switch (gunList[selectedGun].WeaponType)
+    //    {
+    //        case gunStats.WEAPON_TYPE.HITSCAN:
+    //            viewModelAnimator.SetTrigger("fire");
+    //             Raycast test for shooting.
+    //             shooting from the camera.
+    //            RaycastHit hit;
+    //            if (Physics.Raycast(Camera.main.transform.position,
+    //                  Camera.main.transform.forward, out hit, gunList[selectedGun].Range, ~ignoreMask))
+    //            {
+
+    //                 log the name of the object hit.
+    //                Debug.Log(hit.collider.name);
+
+    //                if (!hit.collider.CompareTag("Enemy"))
+    //                {
+    //                    GameObject.Instantiate(gunList[selectedGun].HitEffect, hit.point, Quaternion.identity);
+    //                }
+    //                else
+    //                {
+    //                    EnemyController ec = hit.collider.GetComponent<EnemyController>();
+    //                    if (ec != null)
+    //                    {
+    //                        GameObject.Instantiate(ec.BloodEffect, hit.point, Quaternion.identity);
+    //                    }
+    //                }
+
+    //                 run the damage script of the object hit if there is one.
+    //                IDamage dmg = hit.collider.GetComponent<IDamage>();
+    //                if (dmg != null)
+    //                {
+
+    //                    dmg.TakeDamage(gunList[selectedGun].Damage);
+    //                }
+    //            }
+
+
+    //            break;
+    //        case gunStats.WEAPON_TYPE.FLASHLIGHT:
+    //            viewModelAnimator.SetTrigger("fire");
+    //            break;
+    //    }
+    //     pause for shootRate seconds
+    //    yield return new WaitForSeconds(gunList[selectedGun].FireRate);
+    //    isShooting = false;
+    //}
+
+
 
     void Interact()
     {
@@ -338,23 +387,38 @@ public class playerController : MonoBehaviour, IDamage
 
         
     }
-   
+
     public void addGun(gunStats gun)
     {
-        //gunList.Add(gun);
-        //GunSelect = gunList.Count - 1;
-        //shootDmg = gun.shootDmg;
-        //fireRange = gun.fireRange;
-        //fireRate = gun.fireRate;
-
-        //gunModel.GetComponent<MeshFilter>().sharedMesh = gun.gunModel.GetComponent<MeshFilter>().sharedMesh;
-        //gunModel.GetComponent<MeshRenderer>().sharedMaterial = gun.gunModel.GetComponent<MeshRenderer>().sharedMaterial;
-
-
         gunList.Add(gun);
         selectedGun = gunList.Count - 1;
-        changeGun();
+
+        //Stats
+        shootDamage = gun.shootDamage;
+        shootDist = gun.shootDistance;
+        shootRate = gun.shootRate;
+
+        //Visual Gun
+        gunModel.GetComponent<MeshFilter>().sharedMesh = gun.gunModel.GetComponent<MeshFilter>().sharedMesh;
+        gunModel.GetComponent<MeshRenderer>().sharedMaterial = gun.gunModel.GetComponent<MeshRenderer>().sharedMaterial;
     }
+
+    //public void addGun(gunStats gun)
+    //{
+    //    gunList.Add(gun);
+    //    GunSelect = gunList.Count - 1;
+    //    shootDmg = gun.shootDmg;
+    //    fireRange = gun.fireRange;
+    //    fireRate = gun.fireRate;
+
+    //    gunModel.GetComponent<MeshFilter>().sharedMesh = gun.gunModel.GetComponent<MeshFilter>().sharedMesh;
+    //    gunModel.GetComponent<MeshRenderer>().sharedMaterial = gun.gunModel.GetComponent<MeshRenderer>().sharedMaterial;
+
+
+    //    gunList.Add(gun);
+    //    selectedGun = gunList.Count - 1;
+    //    changeGun();
+    //}
 
     void Gunselect()
     {
@@ -388,7 +452,7 @@ public class playerController : MonoBehaviour, IDamage
             Destroy(currentViewModel);
         }
 
-        currentViewModel = Instantiate(gunList[selectedGun].ViewModel);
+        currentViewModel = Instantiate(gunList[selectedGun].gunModel);
 
         currentViewModel.transform.SetParent(gunViewModel.transform, false);
         viewModelAnimator = currentViewModel.GetComponent<Animator>();
