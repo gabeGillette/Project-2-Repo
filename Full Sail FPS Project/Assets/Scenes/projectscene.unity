@@ -8899,7 +8899,7 @@ MonoBehaviour:
   _checkPointIndicator: {fileID: 4840678912446676611}
   _reticle: {fileID: 5606293269777883034}
   _simpReticle: {fileID: 5606293269777883034}
-  _defualtReticleColor: {r: 0, g: 0, b: 0, a: 0}
+  _defualtReticleColor: {r: 1, g: 1, b: 1, a: 0}
   _friendReticleColor: {r: 0, g: 1, b: 0.12013221, a: 0}
   _enemyReticleColor: {r: 0.9528302, g: 0.08517665, b: 0.049439307, a: 0}
   _maxRaycastDistance: 0
