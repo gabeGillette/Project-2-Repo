@@ -66,9 +66,13 @@ MonoBehaviour:
   HP: 0
   rangedAttacker: 0
   stationaryAttacker: 1
+  wanderRadius: 10
+  wanderInterval: 3
   playerLayer:
     serializedVersion: 2
     m_Bits: 0
+  roamDist: 0
+  roamTimer: 0
 --- !u!114 &1102048441220198536
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -83,10 +87,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rb: {fileID: 8807678457071914679}
   spitDamageAmount: 0
-  meleeDamageAmount: 0
-  explosionDamageAmount: 1
-  meleeSpeed: 0
   spitSpeed: 0
+  meleeDamageAmount: 0
+  meleeSpeed: 0
+  explosionDamageAmount: 1
   destroyTime: 0
   model: {fileID: 8130853494276391182}
 --- !u!33 &99529786037187914
@@ -205,7 +209,7 @@ Rigidbody:
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 0
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0

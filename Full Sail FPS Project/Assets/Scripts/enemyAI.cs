@@ -84,6 +84,8 @@ public class EnemyController : MonoBehaviour, IDamage
         if(!stationaryAttacker)
         {
             StartCoroutine(Wander());
+            StartCoroutine(roam());
+
         }
 
         if (rangedAttacker)
@@ -265,9 +267,40 @@ public class EnemyController : MonoBehaviour, IDamage
 
     IEnumerator meleeAttack()
     {
-
-
+        //// Prevents rapid triggering of melee attack
         //canMeleeAttack = false;
+
+        //// Setting up a sphere to overlap in the world, centered at the attacker's position
+        //Collider[] hitPlayers = Physics.OverlapSphere(transform.position, meleeAttackRange, playerLayer);
+
+        //// Loop through all the colliders in the sphere
+        //foreach (Collider col in hitPlayers)
+        //{
+        //    // If the collider belongs to an object with the "Player" tag
+        //    if (col.CompareTag("Player"))
+        //    {
+        //        // Apply damage to the player using the IDamage interface
+        //        var damageable = col.GetComponent<IDamage>();
+        //        if (damageable != null)
+        //        {
+        //            damageable.TakeDamage((int)meleeAttackDamage); // Apply damage
+        //        }
+
+        //        // Set the damage type for the playerController
+        //        if (playerController != null)
+        //        {
+        //            playerController.enemyDamageType = damage.damageType.melee;
+        //        }
+        //    }
+        //}
+
+        //// Wait for the melee attack rate before allowing another attack
+        //yield return new WaitForSeconds(meleeAttackRate);
+
+        //// Allow melee attack again
+        //canMeleeAttack = true;
+
+        canMeleeAttack = false;
 
         //Setting up a collidor to make a sphere to overlap from the enemy to what it hits
         Collider[] hitPlayer = Physics.OverlapSphere(transform.position, meleeAttackRange, playerLayer);
@@ -286,7 +319,7 @@ public class EnemyController : MonoBehaviour, IDamage
         }
         yield return new WaitForSeconds(meleeAttackRate);
 
-       // canMeleeAttack = true;
+        canMeleeAttack = true;
     }
 
     IEnumerator roam()

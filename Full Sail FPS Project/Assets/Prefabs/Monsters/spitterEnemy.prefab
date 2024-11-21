@@ -193,7 +193,7 @@ MonoBehaviour:
   melee: {fileID: 7222818553318368160, guid: 8e08976b5e2fa544e8548940044fa782, type: 3}
   moveSpeed: 2
   rotationSpeed: 5
-  attackRate: 4
+  attackRate: 2
   meleeAttackRate: 2
   meleeAttackRange: 1
   meleeAttackDamage: 1

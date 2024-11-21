@@ -49,14 +49,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d043788b2e44b741a800209b23b22cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 0
   rb: {fileID: -8272704363750745743}
   spitDamageAmount: 1
-  meleeDamageAmount: 0
-  explosionDamageAmount: 0
-  meleeSpeed: 0
   spitSpeed: 50
-  destroyTime: 0.2
+  meleeDamageAmount: 2
+  meleeSpeed: 2
+  explosionDamageAmount: 0
+  destroyTime: 0.6
   model: {fileID: 7990964281592828006}
 --- !u!54 &-8272704363750745743
 Rigidbody:

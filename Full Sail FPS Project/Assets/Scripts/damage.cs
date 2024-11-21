@@ -50,12 +50,16 @@ public class damage : MonoBehaviour
         if (type == damageType.spit)
         {
             rb.velocity = transform.forward * spitSpeed;
-            Destroy(gameObject, destroyTime);
+            Physics.IgnoreLayerCollision(gameObject.layer, LayerMask.NameToLayer("Enemy"));
+
+           Destroy(gameObject, destroyTime);
         }
         if (type == damageType.melee)
         {
             rb.velocity = transform.forward * meleeSpeed;
-            Destroy(gameObject, destroyTime);
+            Physics.IgnoreLayerCollision(gameObject.layer, LayerMask.NameToLayer("Enemy"));
+
+           Destroy(gameObject, destroyTime);
         }
     }
 

@@ -10,8 +10,14 @@ public class SwitchBehaviours : MonoBehaviour
     void Start()
     {
         targetObjects = GameObject.FindGameObjectsWithTag("Label");
-      
 
+        foreach (GameObject target in targetObjects)
+        {
+            if (target != null)
+            {
+                target.SetActive(false); // Deactivate each GameObject
+            }
+        }
 
     }
 

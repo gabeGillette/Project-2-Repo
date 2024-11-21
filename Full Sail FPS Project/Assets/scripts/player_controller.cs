@@ -172,10 +172,10 @@ public class playerController : MonoBehaviour, IDamage
             StartCoroutine(Shoot());
         }
 
-        if (controller.isGrounded && moveDir.magnitude > 0.3f && !isPlayingSteps)
-        {
-            StartCoroutine(playStep());
-        }
+        //if (controller.isGrounded && moveDir.magnitude > 0.3f && !isPlayingSteps)
+        //{
+        //    StartCoroutine(playStep());
+        //}
         // If the "shoot" button is trigged and the player can shoot, then shoot.
 
         //if (gunList.Count > 0)

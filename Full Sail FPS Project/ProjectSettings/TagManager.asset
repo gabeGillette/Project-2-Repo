@@ -24,6 +24,7 @@ TagManager:
   - FrontDoor
   - BedroomDoor
   - Main Gun
+  - Moms Door
   layers:
   - Default
   - TransparentFX
